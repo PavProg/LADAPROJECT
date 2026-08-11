@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://mct2ysnvdd64"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_g6kdb"]
+[ext_resource type="Resource" uid="uid://q03funlekuwj" path="res://core/data/treska/hummer_data.tres" id="2_1hvvi"]
+[ext_resource type="Script" uid="uid://bfw45oj5nnn7y" path="res://core/components/attack_component.gd" id="3_1hvvi"]
+[ext_resource type="ArrayMesh" uid="uid://dsjqymsc8gpjs" path="res://models/meshes/Cube_001.res" id="3_lahvl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_587ir"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jjdla"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7m3sa"]
+
+[node name="Hummer" type="RigidBody3D" unique_id=1336073646]
+collision_layer = 8
+collision_mask = 15
+can_sleep = false
+script = ExtResource("1_g6kdb")
+export_item_data = ExtResource("2_1hvvi")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1289574582]
+transform = Transform3D(0.095, 0, 0, 0, 0.12, 0, 0, 0, 1.03, 0, 0, 0.006643027)
+shape = SubResource("BoxShape3D_587ir")
+
+[node name="Collision1" type="CollisionShape3D" parent="." unique_id=608711824]
+transform = Transform3D(0.34, 0, 0, 0, 0.735, 0, 0, 0, 0.335, 0, 0, -0.31163672)
+shape = SubResource("BoxShape3D_587ir")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=297047954]
+transform = Transform3D(15, 0, 0, 0, 35, 0, 0, 0, 15, 0, 0, -0.225847)
+mesh = ExtResource("3_lahvl")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=340319306]
+replication_config = SubResource("SceneReplicationConfig_jjdla")
+
+[node name="AttackComponent" type="Node3D" parent="." unique_id=1266149267]
+script = ExtResource("3_1hvvi")
+
+[node name="HitArea" type="Area3D" parent="." unique_id=1574176634]
+transform = Transform3D(0.34, 0, 0, 0, 0.735, 0, 0, 0, 0.335, 0, 0, -0.312)
+collision_layer = 1024
+collision_mask = 1024
+
+[node name="HitBox" type="CollisionShape3D" parent="HitArea" unique_id=1465053062]
+transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
+shape = SubResource("BoxShape3D_7m3sa")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1849054176]
+
+[connection signal="area_entered" from="HitArea" to="AttackComponent" method="_on_hit_area_area_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="AttackComponent" method="_on_damage_timer_timeout"]

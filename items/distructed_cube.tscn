@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://bcw70ue3kdj3p"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_01cni"]
+friction = 0.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lfp4g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sdj06"]
+
+[node name="DistructedCube" type="Node3D" unique_id=717686250]
+
+[node name="Cubic" type="RigidBody3D" parent="." unique_id=243649128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.25, -0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic" unique_id=246859806]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic" unique_id=510106122]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic2" type="RigidBody3D" parent="." unique_id=1525450971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.25, -0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic2" unique_id=432349979]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic2" unique_id=1286650767]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic3" type="RigidBody3D" parent="." unique_id=310129913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.25, 0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic3" unique_id=1362858281]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic3" unique_id=12962268]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic4" type="RigidBody3D" parent="." unique_id=1318135215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.25, 0.25)
+collision_layer = 1032
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic4" unique_id=1420276084]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic4" unique_id=1475661091]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic5" type="RigidBody3D" parent="." unique_id=725810622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.25, -0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic5" unique_id=688433318]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic5" unique_id=809839038]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic6" type="RigidBody3D" parent="." unique_id=206720667]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.25, -0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic6" unique_id=707974735]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic6" unique_id=1084697949]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic7" type="RigidBody3D" parent="." unique_id=1798665704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.25, 0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic7" unique_id=853855148]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic7" unique_id=2095618944]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")
+
+[node name="Cubic8" type="RigidBody3D" parent="." unique_id=1165588263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.25, 0.25)
+collision_layer = 8
+collision_mask = 1039
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_01cni")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubic8" unique_id=974314543]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubic8" unique_id=1751373828]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_sdj06")

@@ -1,0 +1,28 @@
+# Godot 4+ itself
+.godot/
+# Exported builds
+/export/
+/build/
+/dist/
+# Temporary / cache files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+# IDE / editor files
+.vscode/
+.idea/
+*.sln
+*.csproj
+*.user
+*.userprefs
+# Mono / C# generated files
+.mono/
+obj/
+bin/
+# Godot logs
+*.log

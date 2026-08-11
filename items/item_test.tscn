@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cuxwhr2p1n0m7"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_gqaaj"]
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="2_2aiil"]
+
+[sub_resource type="PackedScene" id="PackedScene_2aiil"]
+
+[sub_resource type="Resource" id="Resource_gqaaj"]
+script = ExtResource("2_2aiil")
+scene = SubResource("PackedScene_2aiil")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lfp4g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sdj06"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdhtc"]
+albedo_color = Color(0.68726206, 0.6642648, 0.1580956, 1)
+metallic = 0.6
+roughness = 0.15
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ru0cx"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="ItemTest" type="RigidBody3D" unique_id=1938691233]
+collision_layer = 8
+collision_mask = 15
+script = ExtResource("1_gqaaj")
+data = SubResource("Resource_gqaaj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=239143227]
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1543911555]
+mesh = SubResource("BoxMesh_sdj06")
+surface_material_override/0 = SubResource("StandardMaterial3D_mdhtc")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=285399496]
+replication_config = SubResource("SceneReplicationConfig_ru0cx")

@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://dr4l7sro6i750"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_4kwhn"]
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="2_2gj82"]
+[ext_resource type="Script" uid="uid://hkwhjw5f6qwo" path="res://core/components/break_component.gd" id="3_2gj82"]
+
+[sub_resource type="PackedScene" id="PackedScene_1hvvi"]
+
+[sub_resource type="Resource" id="Resource_wao7j"]
+script = ExtResource("2_2gj82")
+scene = SubResource("PackedScene_1hvvi")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0lckc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_uobov"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6s84"]
+albedo_color = Color(0.68726206, 0.6642648, 0.1580956, 1)
+metallic = 0.6
+roughness = 0.15
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7m3sa"]
+
+[node name="BreakItemTest" type="RigidBody3D" unique_id=1572425250]
+collision_layer = 8
+collision_mask = 15
+can_sleep = false
+script = ExtResource("1_4kwhn")
+data = SubResource("Resource_wao7j")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
+shape = SubResource("BoxShape3D_0lckc")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=342978242]
+mesh = SubResource("BoxMesh_uobov")
+surface_material_override/0 = SubResource("StandardMaterial3D_o6s84")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("3_2gj82")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+collision_layer = 512
+collision_mask = 1024
+
+[node name="HurtBox" type="CollisionShape3D" parent="HurtArea" unique_id=442209875]
+transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
+shape = SubResource("BoxShape3D_7m3sa")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bj8w7g4o3owg4"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_06bfk"]
+[ext_resource type="Resource" uid="uid://dqsuuqkovkbhm" path="res://core/data/treska/attack_item_data.tres" id="2_riln6"]
+[ext_resource type="Script" uid="uid://dfb0yfagf2t7" path="res://core/components/attack_component.gd" id="2_stlo3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_587ir"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_7ik05"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7m3sa"]
+albedo_color = Color(0.68726206, 0.6642648, 0.1580956, 1)
+metallic = 0.6
+roughness = 0.15
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jjdla"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7m3sa"]
+
+[node name="AttackItemTest" type="RigidBody3D" unique_id=1336073646]
+collision_layer = 8
+collision_mask = 15
+can_sleep = false
+script = ExtResource("1_06bfk")
+filename = "attack_item"
+export_item_data = ExtResource("2_riln6")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1289574582]
+shape = SubResource("BoxShape3D_587ir")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=297047954]
+mesh = SubResource("BoxMesh_7ik05")
+surface_material_override/0 = SubResource("StandardMaterial3D_7m3sa")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=340319306]
+replication_config = SubResource("SceneReplicationConfig_jjdla")
+
+[node name="AttackComponent" type="Node3D" parent="." unique_id=1266149267]
+script = ExtResource("2_stlo3")
+
+[node name="HitArea" type="Area3D" parent="." unique_id=1574176634]
+collision_layer = 1024
+collision_mask = 1024
+
+[node name="HitBox" type="CollisionShape3D" parent="HitArea" unique_id=1465053062]
+transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
+shape = SubResource("BoxShape3D_7m3sa")
+
+[connection signal="area_entered" from="HitArea" to="AttackComponent" method="_on_hit_area_area_entered"]

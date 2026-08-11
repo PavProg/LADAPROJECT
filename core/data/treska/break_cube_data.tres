@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ckh7r1yxky12m"]
+
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="1_varvg"]
+[ext_resource type="PackedScene" uid="uid://bcw70ue3kdj3p" path="res://items/distructed_cube.tscn" id="1_wqwha"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_varvg")
+distructed_scene = ExtResource("1_wqwha")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"

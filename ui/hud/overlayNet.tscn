@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://vnniyul7taep"]
+
+[ext_resource type="Script" uid="uid://c6qrmqtpuoy2e" path="res://ui/hud/netOverlay.gd" id="1_mix2c"]
+
+[node name="SubViewport" type="SubViewport" unique_id=2049008166]
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="Control" type="Control" parent="." unique_id=1643020500]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control" unique_id=19572554]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_mix2c")

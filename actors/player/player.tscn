@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://x2n4k5cm17qp"]
+
+[ext_resource type="Script" uid="uid://ce7h4h105nqat" path="res://actors/player/Player.gd" id="1_ilk7j"]
+[ext_resource type="Script" uid="uid://bdyrhn4o2bi7m" path="res://actors/player/CameraController.gd" id="2_ax26v"]
+[ext_resource type="Script" uid="uid://denqqixng63id" path="res://core/components/grab_component.gd" id="3_ax26v"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sdj06"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lfp4g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ru0cx"]
+albedo_color = Color(0.26085955, 0.50544983, 2.8878452e-07, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lfp4g"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ilk7j"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CameraController:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=177930427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8367965, 0)
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1_ilk7j")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1739736669]
+shape = SubResource("CapsuleShape3D_sdj06")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=482798277]
+mesh = SubResource("CapsuleMesh_lfp4g")
+surface_material_override/0 = SubResource("StandardMaterial3D_ru0cx")
+
+[node name="CameraController" type="Node3D" parent="." unique_id=2064664966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -0.45)
+script = ExtResource("2_ax26v")
+
+[node name="Camera3D" type="Camera3D" parent="CameraController" unique_id=595914896]
+
+[node name="HoldPoint" type="Node3D" parent="CameraController" unique_id=770011001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="GrabComponent" type="Node3D" parent="CameraController" unique_id=770011002 node_paths=PackedStringArray("camera")]
+script = ExtResource("3_ax26v")
+camera = NodePath("../Camera3D")
+
+[node name="HurtBoxArea" type="Area3D" parent="." unique_id=520539261]
+collision_layer = 16
+collision_mask = 128
+
+[node name="HurtBoxCollision" type="CollisionShape3D" parent="HurtBoxArea" unique_id=910520968]
+shape = SubResource("CapsuleShape3D_lfp4g")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1995317254]
+replication_config = SubResource("SceneReplicationConfig_ilk7j")
+
+[node name="EnduranceTimer" type="Timer" parent="." unique_id=2042337692]
+
+[connection signal="timeout" from="EnduranceTimer" to="." method="_on_endurance_timer_timeout"]
