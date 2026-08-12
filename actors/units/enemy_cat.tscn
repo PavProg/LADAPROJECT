@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bw74kaqmpdsim"]
+
+[ext_resource type="Script" uid="uid://dnik08j3kfn18" path="res://actors/units/enemy.gd" id="1_s1eyu"]
+[ext_resource type="Script" uid="uid://bmddpkq8lhvtq" path="res://actors/units/core-scripts/hurt_box.gd" id="2_s1eyu"]
+[ext_resource type="Script" uid="uid://cedl65d0ve2k4" path="res://actors/units/core-scripts/hit_box.gd" id="3_lh3u4"]
+[ext_resource type="Script" uid="uid://b037s53dcf3ut" path="res://actors/units/core-scripts/health.gd" id="4_hlkwo"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f67l4"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_85m6q"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wfqx3"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Rats" type="CharacterBody3D" unique_id=1947853292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9447746, 2.3087406, -5.072309)
+script = ExtResource("1_s1eyu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1127707562]
+shape = SubResource("CylinderShape3D_f67l4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1426534237]
+mesh = SubResource("CylinderMesh_85m6q")
+
+[node name="HurtBox" type="Area3D" parent="." unique_id=1630252179]
+script = ExtResource("2_s1eyu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=1739727803]
+
+[node name="HitBox" type="Area3D" parent="." unique_id=1652937244]
+script = ExtResource("3_lh3u4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=525896280]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1017588754]
+replication_config = SubResource("SceneReplicationConfig_wfqx3")
+
+[node name="Health" type="Node" parent="." unique_id=799030308]
+script = ExtResource("4_hlkwo")
+metadata/_custom_type_script = "uid://b037s53dcf3ut"

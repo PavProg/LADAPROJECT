@@ -15,7 +15,6 @@ var endurance_recovering: bool = false
 func _ready() -> void:
 	pass
 
-
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 

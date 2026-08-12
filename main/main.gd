@@ -2,6 +2,10 @@ extends Node3D
 
 
 func _ready() -> void:
+	# управление квотой
+	GameManager.on_level_start(GameManager.required_quote_next_level)
+	
+	#############################################
 	var args := OS.get_cmdline_args()
 	if "--server" in args:
 		Net.host_game()

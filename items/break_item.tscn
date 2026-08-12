@@ -1,15 +1,8 @@
 [gd_scene format=3 uid="uid://dr4l7sro6i750"]
 
 [ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_4kwhn"]
-[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="2_2gj82"]
-[ext_resource type="Script" uid="uid://hkwhjw5f6qwo" path="res://core/components/break_component.gd" id="3_2gj82"]
-
-[sub_resource type="PackedScene" id="PackedScene_1hvvi"]
-
-[sub_resource type="Resource" id="Resource_wao7j"]
-script = ExtResource("2_2gj82")
-scene = SubResource("PackedScene_1hvvi")
-metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+[ext_resource type="Resource" uid="uid://ckh7r1yxky12m" path="res://core/data/treska/break_cube_data.tres" id="2_2gj82"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="3_2gj82"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0lckc"]
 
@@ -35,7 +28,8 @@ collision_layer = 8
 collision_mask = 15
 can_sleep = false
 script = ExtResource("1_4kwhn")
-data = SubResource("Resource_wao7j")
+filename = "break_item"
+export_item_data = ExtResource("2_2gj82")
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
 shape = SubResource("BoxShape3D_0lckc")
@@ -52,7 +46,7 @@ script = ExtResource("3_2gj82")
 
 [node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
 collision_layer = 512
-collision_mask = 1024
+collision_mask = 0
 
 [node name="HurtBox" type="CollisionShape3D" parent="HurtArea" unique_id=442209875]
 transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)

@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.7")
 Net="*uid://cht5x8ekvvbrk"
 Events="*uid://w0oukeejjxqh"
 GameManager="*uid://bolgnd8v275bh"
+SteamNetTest="*uid://71xp410b20xv"
 
 [display]
 

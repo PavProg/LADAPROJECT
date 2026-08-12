@@ -1,11 +1,12 @@
 extends Node
 # Работает с multiplayer напрямую
 const PORT: int = 7777
+const UUID: int = 0
 const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
-const ITEMS := preload("../items/hummer.tscn")
-const BREAK_ITEMS := preload("../items/break_item.tscn")
-var peer: ENetMultiplayerPeer
+const ITEMS := preload("res://items/hummer.tscn")
+const BREAK_ITEMS := preload("res://items/break_item.tscn")
+var peer: SteamMultiplayerPeer
 
 var players: Dictionary = {}	# id ПИРА -> узел игрока
 
@@ -17,25 +18,31 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
+################################# СТИМОВСКОЕ ПОДКЛЮЧЕНИЕ
+
 func host_game() -> Error:	# создать апи, создать сервер, проверить, подключить мультиплеер пир, заспавнить, вернуть ошибку/подтверждение
-	peer = ENetMultiplayerPeer.new()
-	var serv = peer.create_server(PORT, MAX_PLAYERS)
+	peer = SteamMultiplayerPeer.new()
+	var serv = peer.create_server(UUID, MAX_PLAYERS)
 	if serv != OK:
 		push_error("Сервер не поднялся: ", error_string(serv))
 		return serv
+	DisplayServer.clipboard_set(str(UUID))
 	multiplayer.multiplayer_peer = peer
+	_spawn_hummers()
 	_spawn_items()
 	_spawn_players(1)	# Спавним, тк подключения к пиру не было, а хост тоже игрок
 	return OK
-	
-func join_game(ip: String) -> Error:
-	peer = ENetMultiplayerPeer.new()
-	var cli = peer.create_client(ip, PORT)
+
+func join_game(id: int) -> Error:	# Стимовский айдишник ьерется в network_steam (соседний синглтон)
+	peer = SteamMultiplayerPeer.new()
+	var cli = peer.create_client(id, UUID)	# create_client принимает стимовский id и UUID лобби
 	if cli != OK:
 		push_error("Клиент не появился: ", error_string(cli))
 		return cli
 	multiplayer.multiplayer_peer = peer
 	return OK
+
+#################################
 
 func _on_peer_connected(id: int) -> void:
 	if multiplayer.is_server():
@@ -55,7 +62,7 @@ func _spawn_players(id: int) -> void:
 	container.add_child(p, true)
 	players[id] = p
 
-func _spawn_items(count: int = 4) -> void:
+func _spawn_hummers(count: int = 4) -> void:
 	# спавнит ТОЛЬКО сервер; MItemsSpawner2 реплицирует предметы всем
 	var container := get_tree().current_scene.get_node("Items")
 	for n in count:
@@ -63,9 +70,9 @@ func _spawn_items(count: int = 4) -> void:
 		i.position = Vector3(randf_range(-6.0, 6.0), 3.0, randf_range(-6.0, 6.0))  # позицию ставим ДО add_child
 		container.add_child(i, true)
 
-func _spawn_break_items(count: int = 5) -> void:
+func _spawn_items(count: int = 5) -> void:
 	var container := get_tree().current_scene.get_node("Items")
 	for n in count:
 		var i := BREAK_ITEMS.instantiate()
-		i.position = Vector3(randf_range(-10.0, 6.0), 3.0, randf_range(-10.0, 6.0))  # позицию ставим ДО add_child
+		i.position = Vector3(randf_range(-10.0, 6.0), 1.5, randf_range(-10.0, 6.0))
 		container.add_child(i, true)

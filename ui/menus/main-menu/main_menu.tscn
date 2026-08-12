@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://c0xgm3ws0xtei"]
+
+[ext_resource type="Script" uid="uid://hldpggu5wmik" path="res://ui/menus/main-menu/main_menu_controller.gd" id="1_5oih7"]
+[ext_resource type="PackedScene" uid="uid://cs3denirr1c0u" path="res://levels/hub/TestHub.tscn" id="2_gprl0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l3h4r"]
+
+[node name="MainMenu" type="Control" unique_id=1966418668]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5oih7")
+host_scene = ExtResource("2_gprl0")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1164670235]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuButtonsContainer" type="VBoxContainer" parent="." unique_id=372557173]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.5
+anchor_right = 0.25
+anchor_bottom = 0.85
+grow_vertical = 0
+
+[node name="Header" type="Label" parent="MenuButtonsContainer" unique_id=898666652]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_l3h4r")
+text = "Menu"
+
+[node name="HostButton" type="Button" parent="MenuButtonsContainer" unique_id=1254954455]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Host Game"
+
+[node name="JoinButton" type="Button" parent="MenuButtonsContainer" unique_id=426112911]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Join Game"
+
+[node name="ExitButton" type="Button" parent="MenuButtonsContainer" unique_id=290121378]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Exit"
+
+[node name="JoinGamePopup" type="Panel" parent="." unique_id=1690467849]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.35
+anchor_right = 0.6
+anchor_bottom = 0.55
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="JoinGamePopup" unique_id=1454928721]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="JoinPopupPromt" type="Label" parent="JoinGamePopup/VBoxContainer" unique_id=334212627]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "To join the game, enter its UID"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="JoinGamePopup/VBoxContainer" unique_id=1387092143]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="UIDEnterBox" type="LineEdit" parent="JoinGamePopup/VBoxContainer/MarginContainer" unique_id=398922008]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="JoinGamePopup/VBoxContainer" unique_id=140865587]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ConfirmJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=1075445809]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Join"
+
+[node name="CancelJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=647102314]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Cancel"
