@@ -5,12 +5,7 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sdj06"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wao7j"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0.28235295)
-
 [sub_resource type="BoxMesh" id="BoxMesh_sdj06"]
-material = SubResource("StandardMaterial3D_wao7j")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_lfp4g"]
 viewport_path = NodePath("Sprite3D/SubViewport")
@@ -25,11 +20,11 @@ transform = Transform3D(1, 0, 0, 0, 0.837368, 0.5466395, 0, -0.5466395, 0.837368
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=179184874]
-transform = Transform3D(40, 0, 0, 0, 2, 0, 0, 0, 40, 0, 0, 0)
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 shape = SubResource("BoxShape3D_sdj06")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=983206545]
-transform = Transform3D(40, 0, 0, 0, 2, 0, 0, 0, 40, 0, 0, 0)
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("BoxMesh_sdj06")
 
 [node name="Players" type="Node3D" parent="." unique_id=353135908]
@@ -37,7 +32,7 @@ mesh = SubResource("BoxMesh_sdj06")
 [node name="MPlayersSpawner" type="MultiplayerSpawner" parent="." unique_id=337539569]
 _spawnable_scenes = PackedStringArray("uid://x2n4k5cm17qp")
 spawn_path = NodePath("../Players")
-spawn_limit = 4
+spawn_limit = 2
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1465226241]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8110099, -10.015193)

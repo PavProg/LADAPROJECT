@@ -28,7 +28,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _on_host_pressed():
 	if host_scene:
-		get_tree().change_scene_to_packed(host_scene)
+		#get_tree().change_scene_to_packed(host_scene)
+		NetworkSteam.create_group()
 	else:
 		print("Ошибка: хост-сцена не назначена в инспекторе!")
 
@@ -37,6 +38,8 @@ func _on_join_pressed():
 	join_popup.visible = true
 	uid_enter_box.text = ""
 	uid_enter_box.grab_focus()
+	
+	
 
 func _on_exit_pressed():
 	get_tree().quit()

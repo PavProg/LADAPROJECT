@@ -1,7 +1,6 @@
 extends Node
 # Работает с multiplayer напрямую
 const PORT: int = 7777
-const UUID: int = 0
 const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
 const ITEMS := preload("res://items/hummer.tscn")
@@ -20,22 +19,25 @@ func _ready() -> void:
 	
 ################################# СТИМОВСКОЕ ПОДКЛЮЧЕНИЕ
 
+# Откатить для локальных тестов:
+# SteamMultiplayerPeer -> EnetMultiplayerPeer, (NetworkSteam.VIRTUAL_PORT, MAX_PLAYERS) -> (PORT, MAX_PLAYERS)
+# (host_steam_id, NetworkSteam.VIRTUAL_PORT) -> (id, PORT)
+
 func host_game() -> Error:	# создать апи, создать сервер, проверить, подключить мультиплеер пир, заспавнить, вернуть ошибку/подтверждение
 	peer = SteamMultiplayerPeer.new()
-	var serv = peer.create_server(UUID, MAX_PLAYERS)
+	var serv = peer.create_server(NetworkSteam.VIRTUAL_PORT, MAX_PLAYERS)
 	if serv != OK:
 		push_error("Сервер не поднялся: ", error_string(serv))
 		return serv
-	DisplayServer.clipboard_set(str(UUID))
 	multiplayer.multiplayer_peer = peer
 	_spawn_hummers()
 	_spawn_items()
 	_spawn_players(1)	# Спавним, тк подключения к пиру не было, а хост тоже игрок
 	return OK
 
-func join_game(id: int) -> Error:	# Стимовский айдишник ьерется в network_steam (соседний синглтон)
+func join_game(host_steam_id: int) -> Error:	 # Стимовский айдишник берется в network_steam
 	peer = SteamMultiplayerPeer.new()
-	var cli = peer.create_client(id, UUID)	# create_client принимает стимовский id и UUID лобби
+	var cli = peer.create_client(host_steam_id, NetworkSteam.VIRTUAL_PORT)
 	if cli != OK:
 		push_error("Клиент не появился: ", error_string(cli))
 		return cli
@@ -54,7 +56,9 @@ func _on_peer_disconnected(id: int) -> void:
 		players[id].queue_free()
 	players.erase(id)
 	player_disconnect.emit(id)
-	
+
+# На будующее сделать отдельную функцию под спавн всех объектов нужных
+
 func _spawn_players(id: int) -> void:
 	var container := get_tree().current_scene.get_node("Players")
 	var p := PLAYER.instantiate()

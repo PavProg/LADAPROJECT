@@ -14,6 +14,6 @@ static func generate_uuid() -> String:
 		hex.substr(0, 8),
 		hex.substr(8, 4),
 		hex.substr(12, 4),
-		hex.sybstr(16, 4),
+		hex.substr(16, 4),
 		hex.substr(20, 12)
 	]
