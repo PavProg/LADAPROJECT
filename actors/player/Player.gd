@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @onready var data: Resource = preload("res://core/data/treska/player_data.tres")
 @onready var endurance_timer: Timer = $EnduranceTimer # таймер, по истечении которого начинает восстанавливаться выносливость
+@onready var ui_button: Button = get_parent().get_parent().get_node("button/SubViewport/Control/Button") #$button/SubViewport/Control/Button
 
 var air_speed_reduction = 0.1   # насколько каждый кадр снижается скорость в воздухе после прыжка
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -39,6 +40,11 @@ func _physics_process(delta: float) -> void:
 		})
 		movement(delta)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact"):
+		if is_instance_valid(ui_button) and ui_button.is_visible_in_tree():
+			# Имитируем нажатие: это вызовет все подключенные к pressed() функции
+			ui_button.pressed.emit()
 
 func _process(delta: float) -> void:
 	if endurance_recovering:

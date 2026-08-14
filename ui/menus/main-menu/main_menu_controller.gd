@@ -22,6 +22,9 @@ func _ready():
 	confirm_join_button.pressed.connect(_on_confirm_join_pressed)
 	cancel_join_button.pressed.connect(_on_cancel_join_pressed)
 	
+	# Статусы подключения Steam
+	NetworkSteam.status.connect(func(msg): print(msg))
+	
 	# Закрытие попапа по нажатию Escape
 	join_popup.focus_entered.connect(_on_popup_focus_entered)
 
@@ -39,7 +42,6 @@ func _on_join_pressed():
 	uid_enter_box.text = ""
 	uid_enter_box.grab_focus()
 	
-	
 
 func _on_exit_pressed():
 	get_tree().quit()
@@ -52,11 +54,9 @@ func _on_confirm_join_pressed():
 		return
 	
 	print("Подключение к игре с UID: ", uid)
-	# Здесь будет логика подключения к игре
-	# Например: NetworkManager.join_game(uid)
-	
 	# Закрываем попап после подтверждения
 	join_popup.visible = false
+	NetworkSteam._on_group_joined_by_uuid(uid)
 
 func _on_cancel_join_pressed():
 	join_popup.visible = false

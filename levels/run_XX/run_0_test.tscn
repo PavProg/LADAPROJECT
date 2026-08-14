@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://bktvnrtag1nb4"]
 
-[ext_resource type="Script" uid="uid://cnmnd80x5t76o" path="res://main/main.gd" id="1_mdhtc"]
 [ext_resource type="PackedScene" uid="uid://vnniyul7taep" path="res://ui/hud/overlayNet.tscn" id="3_mdhtc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sdj06"]
@@ -11,7 +10,6 @@
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Run0Test" type="Node3D" unique_id=151505141]
-script = ExtResource("1_mdhtc")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=906363854]
 transform = Transform3D(1, 0, 0, 0, 0.837368, 0.5466395, 0, -0.5466395, 0.837368, 0, 8.402865, 6.6928854)
@@ -27,12 +25,12 @@ shape = SubResource("BoxShape3D_sdj06")
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("BoxMesh_sdj06")
 
-[node name="Players" type="Node3D" parent="." unique_id=353135908]
+[node name="PlayersCont" type="Node3D" parent="." unique_id=353135908]
 
 [node name="MPlayersSpawner" type="MultiplayerSpawner" parent="." unique_id=337539569]
 _spawnable_scenes = PackedStringArray("uid://x2n4k5cm17qp")
-spawn_path = NodePath("../Players")
-spawn_limit = 2
+spawn_path = NodePath("../PlayersCont")
+spawn_limit = 4
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1465226241]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8110099, -10.015193)

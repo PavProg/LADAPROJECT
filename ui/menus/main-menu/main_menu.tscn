@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c0xgm3ws0xtei"]
 
 [ext_resource type="Script" uid="uid://hldpggu5wmik" path="res://ui/menus/main-menu/main_menu_controller.gd" id="1_5oih7"]
+[ext_resource type="PackedScene" uid="uid://cs3denirr1c0u" path="res://levels/hub/TestHub.tscn" id="2_gprl0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l3h4r"]
 
@@ -12,6 +13,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5oih7")
+host_scene = ExtResource("2_gprl0")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1164670235]
 layout_mode = 1

@@ -12,10 +12,10 @@ var players: Dictionary = {}	# id ПИРА -> узел игрока
 signal player_connect(id: int)
 signal player_disconnect(id: int)
 
-func _ready() -> void:
-	# Коннектим пиры
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+#func _ready() -> void:
+	## Коннектим пиры
+	#multiplayer.peer_connected.connect(_on_peer_connected)
+	#multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
 ################################# СТИМОВСКОЕ ПОДКЛЮЧЕНИЕ
 
@@ -25,14 +25,11 @@ func _ready() -> void:
 
 func host_game() -> Error:	# создать апи, создать сервер, проверить, подключить мультиплеер пир, заспавнить, вернуть ошибку/подтверждение
 	peer = SteamMultiplayerPeer.new()
-	var serv = peer.create_server(NetworkSteam.VIRTUAL_PORT, MAX_PLAYERS)
+	var serv = peer.create_host(NetworkSteam.VIRTUAL_PORT)
 	if serv != OK:
 		push_error("Сервер не поднялся: ", error_string(serv))
 		return serv
 	multiplayer.multiplayer_peer = peer
-	_spawn_hummers()
-	_spawn_items()
-	_spawn_players(1)	# Спавним, тк подключения к пиру не было, а хост тоже игрок
 	return OK
 
 func join_game(host_steam_id: int) -> Error:	 # Стимовский айдишник берется в network_steam
@@ -46,21 +43,35 @@ func join_game(host_steam_id: int) -> Error:	 # Стимовский айдиш�
 
 #################################
 
-func _on_peer_connected(id: int) -> void:
-	if multiplayer.is_server():
-		_spawn_players(id)
-	player_connect.emit(id)
-	
-func _on_peer_disconnected(id: int) -> void:
-	if players.has(id) and is_instance_valid(players[id]):	# проверяем существование key в словаре и памяти
-		players[id].queue_free()
-	players.erase(id)
-	player_disconnect.emit(id)
+#func _on_peer_connected(id: int) -> void:
+	#if multiplayer.is_server():
+		#_spawn_players(id)
+	#player_connect.emit(id)
+	#
+#func _on_peer_disconnected(id: int) -> void:
+	#if players.has(id) and is_instance_valid(players[id]):	# проверяем существование key в словаре и памяти
+		#players[id].queue_free()
+	#players.erase(id)
+	#player_disconnect.emit(id)
 
-# На будующее сделать отдельную функцию под спавн всех объектов нужных
+func clear_players() -> void:
+	for id in players:
+		if is_instance_valid(players[id]):
+			players[id].queue_free()
+	players.clear()
+
+func spawn_content() -> void:
+	if not multiplayer.is_server():
+		return
+	_spawn_hummers()
+	_spawn_items()
 
 func _spawn_players(id: int) -> void:
-	var container := get_tree().current_scene.get_node("Players")
+	if not multiplayer.is_server(): return
+	var container := get_tree().current_scene.get_node_or_null("PlayersCont")
+	if container == null: return
+	if players.has(id) and is_instance_valid(players[id]): return
+	
 	var p := PLAYER.instantiate()
 	p.name = str(id)	# Для authority, под имя отдельное поле
 	container.add_child(p, true)
@@ -68,14 +79,14 @@ func _spawn_players(id: int) -> void:
 
 func _spawn_hummers(count: int = 4) -> void:
 	# спавнит ТОЛЬКО сервер; MItemsSpawner2 реплицирует предметы всем
-	var container := get_tree().current_scene.get_node("Items")
+	var container := get_tree().current_scene.get_node_or_null("Items")
 	for n in count:
 		var i := ITEMS.instantiate()
 		i.position = Vector3(randf_range(-6.0, 6.0), 3.0, randf_range(-6.0, 6.0))  # позицию ставим ДО add_child
 		container.add_child(i, true)
 
 func _spawn_items(count: int = 5) -> void:
-	var container := get_tree().current_scene.get_node("Items")
+	var container := get_tree().current_scene.get_node_or_null("Items")
 	for n in count:
 		var i := BREAK_ITEMS.instantiate()
 		i.position = Vector3(randf_range(-10.0, 6.0), 1.5, randf_range(-10.0, 6.0))
