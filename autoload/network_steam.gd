@@ -54,7 +54,7 @@ func _on_lobby_created(result: int, new_lobby_id: int):
 func _on_group_joined_by_uuid(uuid: String) -> void:
 	uuid = uuid.strip_edges()
 	if uuid.is_empty():
-		status.emit("Введите ID группы")
+		status.emit("Введите ID группы"); return
 	status.emit("Поиск группы...")
 	Steam.addRequestLobbyListStringFilter(GROUP_KEY, uuid, Steam.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()

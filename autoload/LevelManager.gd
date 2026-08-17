@@ -43,7 +43,7 @@ func start_first_run() -> void:
 func next_level() -> void:
 	if not multiplayer.is_server():
 		return
-	if GameManager.current_quote != GameManager.quote_states.FINISHED:
+	if GameManager.current_state != GameManager.quote_states.FINISHED:
 		return
 	GameManager.on_level_end()
 	_run_index += 1
@@ -78,9 +78,9 @@ func _ack_ready(peer_id: int) -> void:
 		return
 	if not _content_spawned:
 		_content_spawned = true
-		if _run_index > 0:
+		if _run_index >= 0:
 			print(_run_index)
-			#Net.spawn_content()
+			Net.spawn_content()
 			print("Предметы заспавнены!!")
 		GameManager.on_level_start(GameManager.required_quote_next_level)
 	Net._spawn_players(peer_id)

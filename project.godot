@@ -19,13 +19,11 @@ config/features=PackedStringArray("4.7")
 Net="*uid://cht5x8ekvvbrk"
 Events="*uid://w0oukeejjxqh"
 GameManager="*uid://bolgnd8v275bh"
-NetworkSteam="*uid://dws2bxcv6w6wh"
 LevelManager="*uid://dds2woae27xet"
+NetworkSteam="*uid://dws2bxcv6w6wh"
 
 [display]
 
-window/size/viewport_width=3600
-window/size/viewport_height=1600
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
