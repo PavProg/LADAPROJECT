@@ -2,7 +2,7 @@ extends Node
 
 const HUB := "res://levels/hub/TestHub.tscn"
 const RUNS := [
-	"res://levels/run_XX/run_0_test.tscn"
+	"res://levels/run_XX/run_test.tscn"
 ]
 
 var current_scene_path: String = ""
@@ -21,9 +21,8 @@ func _on_connected_peer(peer_id: int) -> void:
 		change_scene.rpc_id(peer_id, current_scene_path)
 
 func _on_disconnected_peer(peer_id: int ) -> void:
-	if Net.players.has(peer_id) and is_instance_id_valid(Net.players[peer_id]):
-		Net.players[peer_id].queue_free()
-	Net.players.erase(peer_id)
+	if not multiplayer.is_server(): return
+	Net.server_dispawn_player(peer_id)
 
 # СМЕНА УРОВНЕЙ И ХАБ
 # СЕРВАК
@@ -33,7 +32,14 @@ func go_to_hub() -> void:
 		return
 	_run_index = -1
 	_load(HUB)
-	
+
+# Функция заглушка, чтобы релоуднуть хаб и клиент двигался
+func reload_hub() -> void:
+	if not multiplayer.is_server():
+		return
+	_run_index = -1
+	_load(HUB)
+
 func start_first_run() -> void:
 	if not multiplayer.is_server():
 		return
@@ -56,7 +62,7 @@ func next_level() -> void:
 func _load(path: String) -> void:
 	current_scene_path = path
 	_content_spawned = false
-	Net.clear_players()
+	Net.clear_spawned()
 	change_scene.rpc(path)
 	
 @rpc("authority","call_local", "reliable")
@@ -67,21 +73,27 @@ func change_scene(path: String) -> void:
 	while get_tree().current_scene == null or get_tree().current_scene.scene_file_path != path:
 		await get_tree().process_frame
 		print("ЗАГРУЗКА...")	# Можно вывести как экран загрузки
-	
 	await get_tree().process_frame
+	
 	_ack_ready.rpc_id(1, multiplayer.get_unique_id())
+	
 
 # СПАВНЫ СУЩНОСТЕЙ
 @rpc("any_peer", "call_local", "reliable")
 func _ack_ready(peer_id: int) -> void:
 	if not multiplayer.is_server():
 		return
+		
+	print("Сервер получил готовность от peer_id: ", peer_id)
+		
 	if not _content_spawned:
 		_content_spawned = true
 		if _run_index >= 0:
-			print(_run_index)
 			Net.spawn_content()
 			print("Предметы заспавнены!!")
 		GameManager.on_level_start(GameManager.required_quote_next_level)
-	Net._spawn_players(peer_id)
-	print("Игрок заспавнился!!!")
+	
+	Net.server_spawn_player(peer_id) # Спавним вручную, без PlayerSpawner.
+	if _run_index >= 0 and peer_id != 1:
+		Net.send_items_to(peer_id)   # догнать клиента уже заспавненными предметами уровня
+	print("Игрок с пиром ", peer_id, " заспавнен!")

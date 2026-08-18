@@ -49,6 +49,8 @@ func _physics_process(delta: float) -> void:
 	global_transform.basis = Basis(cur.slerp(tgt, rotate_speed * delta))
 	
 func _hold_point_of(peer_id: int) -> Node3D:
-	var p: Node = Net.players.get(peer_id)
+	var players := get_tree().current_scene.get_node_or_null("PlayersCont")
+	if players == null: return null
+	var p := players.get_node_or_null(str(peer_id))	# игроки названы своим id
 	if p == null: return null
 	return p.get_node_or_null("CameraController/HoldPoint")
