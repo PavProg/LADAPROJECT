@@ -1,13 +1,13 @@
 extends Node
 # Работает с multiplayer напрямую
-const PORT: int = 7777
+#const PORT: int = 7777
 const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
 const ITEMS := preload("res://items/hummer.tscn")
 const BREAK_ITEMS := preload("res://items/break_item.tscn")
 var peer: SteamMultiplayerPeer
 
-var players: Dictionary = {}	# id ПИРА -> узел игрока
+#var players: Dictionary = {}	# id ПИРА -> узел игрока
 var spawned_ids: Array[int] = []	# кого сервер уже создал
 
 #func _ready() -> void:

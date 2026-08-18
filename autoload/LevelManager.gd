@@ -86,7 +86,7 @@ func _ack_ready(peer_id: int) -> void:
 		
 	print("Сервер получил готовность от peer_id: ", peer_id)
 		
-	if not _content_spawned:
+	if peer_id == 1 and not _content_spawned:
 		_content_spawned = true
 		if _run_index >= 0:
 			Net.spawn_content()
