@@ -93,6 +93,7 @@ func _break_fx(fragments_scene_path: String, xform: Transform3D, fx_seed: int) -
 	# Осколки чисто визуальные, по сети не реплицируются (их физика может слегка
 	# разойтись между машинами со временем, не критично).
 	get_tree().current_scene.add_child(fragments)
+	get_tree().create_timer(5.0).timeout.connect(fragments.queue_free)
 
 	var rng := RandomNumberGenerator.new()
 	rng.seed = fx_seed

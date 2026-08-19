@@ -58,9 +58,9 @@ func _destroy() -> void:
 	# Просим GameManager разослать осколки всем пирам
 	GameManager.broadcast_break_fx(fragments_path, item.global_transform)
 
-	# Предмет теперь спавнится вручную (без MultiplayerSpawner), поэтому удаляем его
-	# у ВСЕХ пиров через Net.despawn_item по сетевому имени (item.name = "item_N").
-	Net.despawn_item(item.name)
+	# Сервер удаляет сам предмет. тк предмет заспавнен MultiplayerSpawner,
+	# удаление на сервере автоматически деспавнит его у всех клиентов.
+	item.queue_free()
 
 # вызывается когда объект сталкивается с другим разрушаемым объектом
 func _on_hurt_area_area_entered(area: Area3D) -> void:

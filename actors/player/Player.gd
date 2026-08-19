@@ -37,6 +37,8 @@ var is_ragdoll: bool = false
 
 func _ready() -> void:
 	data = export_data
+	if is_multiplayer_authority():
+		Events.local_player_spawned.emit(self)
 	set_unseen_meshes_visibiliy(false)
 	pass
 

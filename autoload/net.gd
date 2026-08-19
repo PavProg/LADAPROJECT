@@ -1,14 +1,18 @@
 extends Node
 # Работает с multiplayer напрямую
-#const PORT: int = 7777
+const PORT: int = 7777
 const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
 const ITEMS := preload("res://items/hummer.tscn")
 const BREAK_ITEMS := preload("res://items/break_item.tscn")
 var peer: SteamMultiplayerPeer
 
-#var players: Dictionary = {}	# id ПИРА -> узел игрока
-var spawned_ids: Array[int] = []	# кого сервер уже создал
+var spawned_ids: Array[int] = []
+
+enum ItemType { HUMMER, BREAK }
+
+var spawned_items: Dictionary = {}
+var _item_counter: int = 0
 
 #func _ready() -> void:
 	## Коннектим пиры
@@ -94,11 +98,6 @@ func clear_spawned() -> void:
 #######
 
 ####### СПАВН ПРЕДМЕТОВ как у игроков
-
-enum ItemType { HUMMER, BREAK }
-
-var spawned_items: Dictionary = {}
-var _item_counter: int = 0
 
 # Зовёт сервер из ack_ready
 func spawn_content() -> void:

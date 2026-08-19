@@ -1,28 +1,28 @@
-extends CanvasLayer
+extends Control
 
-@export var player : CharacterBody3D
+var player
+@onready var healthValue: Label = $Stats/VBoxContainer/HealthRow/Value
+@onready var staminaValue: Label = $Stats/VBoxContainer/StaminaRow/Value
+@onready var quotaValue: Label = $Quota/HBoxContainer/Value
 
-@onready var health: Label = $PlayerStats/Health
-@onready var stamina: Label = $PlayerStats/Stamina
+@onready var healthSuffix: Label = $Stats/VBoxContainer/HealthRow/Suffix
+@onready var staminaSuffix: Label = $Stats/VBoxContainer/StaminaRow/Suffix
+@onready var quotaSuffix: Label = $Quota/HBoxContainer/Suffix
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var prevStamina : int = -1
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	update_stamina()
-	update_health()
-
-func update_stamina() -> void:
-	stamina.text = "Stamina: %d / %d" % [
-		player.data.endurance,
-		player.data.max_endurance
-	]
-
-func update_health() -> void:
-	health.text = "HP: %d / %d" % [
-		player.data.health,
-		player.data.max_health
-	]
+func _process(_delta: float) -> void:
+	if not player:
+		return
+	# пока что никак не обновляется, будет работать от сигнала изменения
+	healthValue.text = "%d " % player.data.health
+	healthSuffix.text = "/ %d" % player.data.max_health
+	quotaValue.text = "%d " % GameManager.current_quote
+	quotaSuffix.text = "/ %d" % GameManager.required_quote
+	if prevStamina != int(player.data.endurance):
+		staminaValue.text = "%d " % player.data.endurance
+		staminaSuffix.text = "/ %d" % player.data.max_endurance
+		prevStamina = int(player.data.endurance)
+func set_player(new_player):
+	player = new_player
+	

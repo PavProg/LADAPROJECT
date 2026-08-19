@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://cikpbqcqce4x7"]
+
+[ext_resource type="FontFile" uid="uid://djf7shsj7ye48" path="res://models/fonts/RubikSprayPaint-Regular.ttf" id="1_ode5j"]
+
+[resource]
+default_font = ExtResource("1_ode5j")
+default_font_size = 100

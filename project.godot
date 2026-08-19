@@ -21,6 +21,7 @@ Events="*uid://w0oukeejjxqh"
 GameManager="*uid://bolgnd8v275bh"
 NetworkSteam="*uid://dws2bxcv6w6wh"
 LevelManager="*uid://dds2woae27xet"
+UiManager="*uid://chajrqh2vftcf"
 
 [display]
 
