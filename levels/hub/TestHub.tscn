@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cs3denirr1c0u"]
 
 [ext_resource type="Script" uid="uid://c8abpiggj57lk" path="res://levels/hub/button.gd" id="1_vbhfl"]
+[ext_resource type="Script" uid="uid://d1qj11k4fndsv" path="res://levels/hub/button_reload.gd" id="2_6jbkf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g2w55"]
 vertex_color_is_srgb = true
@@ -250,21 +251,14 @@ light_energy = 0.339
 light_indirect_energy = 1.005
 shadow_enabled = true
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1430585510]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.948263, 6.153885, 28.00599)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=292481981]
 environment = SubResource("Environment_l3h4r")
 
 [node name="PlayersCont" type="Node3D" parent="." unique_id=1025894973]
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=2085037385]
-_spawnable_scenes = PackedStringArray("uid://x2n4k5cm17qp")
-spawn_path = NodePath("../PlayersCont")
-spawn_limit = 4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9855237, 0)
 
 [node name="button" type="Sprite3D" parent="." unique_id=893708978]
-transform = Transform3D(1, 0, 0, 0, 0.89822745, 0.4395309, 0, -0.4395309, 0.89822745, 18.472012, 1.0262549, -29.393003)
+transform = Transform3D(1, 0, 0, 0, 0.89822745, 0.4395309, 0, -0.4395309, 0.89822745, 18.472012, 2.0418656, -29.393003)
 texture = SubResource("ViewportTexture_f67l4")
 
 [node name="SubViewport" type="SubViewport" parent="button" unique_id=443307015]
@@ -295,4 +289,37 @@ wind_source_path = NodePath("..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="button/Area3D" unique_id=377186154]
 shape = SubResource("BoxShape3D_f67l4")
 
+[node name="button2" type="Sprite3D" parent="." unique_id=641019595]
+transform = Transform3D(1, 0, 0, 0, 0.89822745, 0.4395309, 0, -0.4395309, 0.89822745, 18.472012, 2.0418656, -29.393003)
+texture = SubResource("ViewportTexture_f67l4")
+
+[node name="SubViewport" type="SubViewport" parent="button2" unique_id=142643927]
+size = Vector2i(126, 74)
+
+[node name="Control" type="Control" parent="button2/SubViewport" unique_id=423081075]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="button2/SubViewport/Control" unique_id=1498104881]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+shortcut = SubResource("Shortcut_gprl0")
+text = "CLICK ME!"
+script = ExtResource("2_6jbkf")
+
+[node name="Area3D" type="Area3D" parent="button2" unique_id=828022880]
+wind_source_path = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="button2/Area3D" unique_id=1794769582]
+shape = SubResource("BoxShape3D_f67l4")
+
 [connection signal="pressed" from="button/SubViewport/Control/Button" to="button/SubViewport/Control/Button" method="_on_pressed"]
+[connection signal="pressed" from="button2/SubViewport/Control/Button" to="button2/SubViewport/Control/Button" method="_on_pressed"]

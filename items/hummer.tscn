@@ -21,6 +21,8 @@ properties/1/replication_mode = 1
 collision_layer = 8
 collision_mask = 15
 can_sleep = false
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_g6kdb")
 export_item_data = ExtResource("2_1hvvi")
 
@@ -45,10 +47,12 @@ script = ExtResource("3_1hvvi")
 [node name="HitArea" type="Area3D" parent="." unique_id=1574176634]
 transform = Transform3D(0.34, 0, 0, 0, 0.735, 0, 0, 0, 0.335, 0, 0, -0.312)
 collision_layer = 1024
-collision_mask = 1024
+collision_mask = 512
 
 [node name="HitBox" type="CollisionShape3D" parent="HitArea" unique_id=1465053062]
 transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
 shape = SubResource("BoxShape3D_7m3sa")
 
 [connection signal="area_entered" from="HitArea" to="AttackComponent" method="_on_hit_area_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

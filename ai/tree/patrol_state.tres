@@ -1,0 +1,23 @@
+[gd_resource type="BehaviorTree" format=3 uid="uid://cxc0afde0cqfi"]
+
+[ext_resource type="Script" uid="uid://bts6wfs0ul3mh" path="res://ai/tasks/BTCondition_HasTarget.gd" id="1_0avid"]
+[ext_resource type="Script" uid="uid://tl464w3oldu0" path="res://ai/tasks/patrol_state.gd" id="1_ngijj"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_80ux1"]
+
+[sub_resource type="BTCondition" id="BTCondition_1rcg0"]
+script = ExtResource("1_0avid")
+
+[sub_resource type="BTSequence" id="BTSequence_0avid"]
+custom_name = "sequence \"CHASE\""
+children = [SubResource("BTCondition_1rcg0")]
+
+[sub_resource type="BTAction" id="BTAction_1rcg0"]
+script = ExtResource("1_ngijj")
+
+[sub_resource type="BTDynamicSelector" id="BTDynamicSelector_g0yjd"]
+children = [SubResource("BTSequence_0avid"), SubResource("BTAction_1rcg0")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_80ux1")
+root_task = SubResource("BTDynamicSelector_g0yjd")

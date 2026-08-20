@@ -8,9 +8,8 @@ extends Node3D
 # поэтому их локальные удары надо игнорировать — иначе снова рассинхрон.
 
 # Множитель перевода скорости удара в урон
-@export var speed_damage_scale: float = 0.2
+@export var speed_damage_scale: float = 0.2 # (20%)
 # Верхняя граница урона за удар
-@export var max_hit_damage: int = 100
 @onready var item: RigidBody3D = get_parent()
 
 
@@ -30,11 +29,17 @@ func _on_hit_area_area_entered(area: Area3D) -> void:
 	if break_comp == null:
 		return
 
+	var overall_velocity_length: float = item.linear_velocity.length()
+	var velocity_threshold = break_comp.get_parent().item_data.velocity_length_threshold
+	
+	if overall_velocity_length <= velocity_threshold: return # если не ударили а "погладили", то выход из функции
+
 	# Базовый урон оружия из его ItemData, усиленный текущей скоростью удара.
-	var base: int = item.item_data.damage
-	var damage: int = clampi(
-		int(base * item.linear_velocity.length() * speed_damage_scale),
-		base,
-		max_hit_damage
+	var base_damage: int = item.item_data.damage
+	var actual_damage: int = clampi(
+		int(base_damage * overall_velocity_length * speed_damage_scale),
+		base_damage,
+		INF
 	)
-	break_comp.take_damage(damage)
+	
+	break_comp.take_damage(actual_damage)

@@ -24,7 +24,15 @@ func _init() -> void:
 func _ready() -> void:
 	if not Steam.steamInit():
 		push_error("Ошибка инициализации стима")
+		return
 	steam_id = Steam.getSteamID()
+	###### ЛОГИ
+	multiplayer.connected_to_server.connect(func(): print("[NET] connected_to_server - Клиент подключился к серверу"))
+	multiplayer.connection_failed.connect(func() : push_error("[NET] connection_failed - Клиент не подключился к серверу"))
+	multiplayer.server_disconnected.connect(func() : push_error("[NET] disconnected_server - Хост отключился"))
+	multiplayer.peer_connected.connect(func(id) : print("[NET] peer_connected: ", id))
+	multiplayer.peer_disconnected.connect(func(id) : print("[NET] peer_disconnected: ", id))
+	########
 	
 	# Callbacks
 	Steam.lobby_created.connect(_on_lobby_created)
@@ -50,6 +58,7 @@ func _on_lobby_created(result: int, new_lobby_id: int):
 	DisplayServer.clipboard_set(str(uuid))
 	Net.host_game()
 	LevelManager.go_to_hub()
+	
 
 func _on_group_joined_by_uuid(uuid: String) -> void:
 	uuid = uuid.strip_edges()
@@ -66,6 +75,7 @@ func _on_lobby_joined(this_lobby_id: int, _permission: int, _locked: bool, respo
 	lobby_id = this_lobby_id
 	var host_id := Steam.getLobbyOwner(lobby_id)	# Steam id хоста!
 	if host_id == steam_id: return
+	print("SteamID Клиента: ", host_id)
 	Net.join_game(host_id)
 
 func _on_join_request(lobby_steam_id: int):
