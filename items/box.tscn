@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://b74ne3agklkt0"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_8pjg8"]
+[ext_resource type="Resource" uid="uid://cbsincrxi8w15" path="res://core/data/treska/box.tres" id="2_0ibdl"]
+[ext_resource type="ArrayMesh" uid="uid://dhfdfko7dm2q" path="res://models/meshes/box/Box_Cube_001.res" id="3_0ibdl"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="3_p4g7c"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0lckc"]
+size = Vector3(1, 0.5888672, 0.6035156)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7m3sa"]
+size = Vector3(1, 0.60595703, 0.6640625)
+
+[node name="Box" type="RigidBody3D" unique_id=1572425250]
+collision_layer = 8
+collision_mask = 15
+can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_8pjg8")
+filename = "break_item"
+export_item_data = ExtResource("2_0ibdl")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2896421, -0.001953125)
+shape = SubResource("BoxShape3D_0lckc")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=292004030]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = ExtResource("3_0ibdl")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("3_p4g7c")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+collision_layer = 512
+collision_mask = 515
+
+[node name="HurtBox" type="CollisionShape3D" parent="HurtArea" unique_id=442209875]
+transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0.2959741, 0.016066633)
+shape = SubResource("BoxShape3D_7m3sa")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[node name="DurabilityLabel" type="Label3D" parent="." unique_id=650398698]
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "123"
+font_size = 12
+outline_size = 4
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
+[connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

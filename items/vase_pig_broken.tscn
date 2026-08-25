@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://bjucun2eolves"]
+
+[ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_svjnd"]
+[ext_resource type="ArrayMesh" uid="uid://g38qua4xx65i" path="res://models/meshes/vase_pig/broken/Vase_Pig_Broken_Cylinder_003.res" id="2_uv45a"]
+[ext_resource type="ArrayMesh" uid="uid://bxq5q5p6jy1ja" path="res://models/meshes/vase_pig/broken/Vase_Pig_Broken_Cylinder_005.res" id="3_qoutj"]
+[ext_resource type="ArrayMesh" uid="uid://lfl0cfmanv1y" path="res://models/meshes/vase_pig/broken/Vase_Pig_Broken_Cylinder_005_cell_002.res" id="4_nr822"]
+[ext_resource type="ArrayMesh" uid="uid://40o4lsgnmvb2" path="res://models/meshes/vase_pig/broken/Vase_Pig_Broken_Cylinder_005_cell_003.res" id="5_imthb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6dbq7"]
+size = Vector3(0.95181274, 0.31448364, 1.4079132)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_uv45a"]
+points = PackedVector3Array(1.4497203, 1.540029, 0.016425394, 1.3696067, 1.0574267, -0.26727623, 1.3695501, 1.0650725, -0.27594182, 1.2162628, 1.5517913, 0.04124725, 1.3777443, 1.106312, 0.23655197, 1.5718577, 1.188174, 0.20295723, 1.5525093, 1.2224938, -0.21332137, 1.4879087, 1.4581147, -0.08555308)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_qoutj"]
+points = PackedVector3Array(0.16308604, 1.089998, 1.409548, -1.2592112, 1.0053595, -0.71830946, 1.2224641, 0.6495291, 0.41564435, 0.6554301, 2.0888562, 0.6336237, -1.2016824, 0.8423222, 0.7012924, -0.8730168, 2.04299, 0.4535381, -0.746106, 0.306368, 0.4119026, -0.4783648, 0.3441249, -0.6311356, -0.871053, 2.0888562, -0.19474137, 0.41034588, 0.3040786, 0.74311686, -0.7030219, 0.926028, 1.2347713, -0.045163322, 2.032708, 0.98481643)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nr822"]
+points = PackedVector3Array(0.8825065, 2.0346487, 0.42851853, -0.108097754, 1.0024194, -1.4216284, -0.108716846, 1.083939, -1.4247825, -1.2881411, 1.2522392, -0.5726514, 0.7024359, 0.25731528, 0.11962342, 1.2522047, 1.001035, -0.7286664, 0.13604641, 1.9996557, -0.95357347, -0.98502684, 1.9879348, -0.14030373, 1.2650138, 1.1659484, 0.72568804, -0.35237402, 0.30878675, -0.765656, 0.58482826, 0.5148244, -1.0087751, 0.6156769, 2.0747595, 0.72568804, -0.5127603, 2.0193791, -0.8452504, 0.8649313, 2.0152204, -0.47893077, 0.7065137, 1.3282526, -1.2112204, -1.1582738, 0.733249, -0.70250696)
+
+[node name="Vase_02_broken" type="Node3D" unique_id=326480734]
+script = ExtResource("1_svjnd")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=411397787]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=833198247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0008392334, 0.16249079, 0.00045013428)
+shape = SubResource("BoxShape3D_6dbq7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1684085406]
+mesh = ExtResource("2_uv45a")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1876025268]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=902968138]
+shape = SubResource("ConvexPolygonShape3D_uv45a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2" unique_id=1505829949]
+mesh = ExtResource("3_qoutj")
+
+[node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=178018466]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3" unique_id=2124319744]
+shape = SubResource("ConvexPolygonShape3D_qoutj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D3" unique_id=465821498]
+mesh = ExtResource("4_nr822")
+
+[node name="RigidBody3D4" type="RigidBody3D" parent="." unique_id=420929107]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4" unique_id=949237134]
+mesh = ExtResource("5_imthb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D4" unique_id=1116424524]
+shape = SubResource("ConvexPolygonShape3D_nr822")
+
+[node name="DisappearTimer" type="Timer" parent="." unique_id=3514605]
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

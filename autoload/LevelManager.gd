@@ -83,9 +83,7 @@ func change_scene(path: String) -> void:
 func _ack_ready(peer_id: int) -> void:
 	if not multiplayer.is_server():
 		return
-		
-	print("Сервер получил готовность от peer_id: ", peer_id)
-		
+	
 	if peer_id == 1 and not _content_spawned:
 		_content_spawned = true
 		if _run_index >= 0:
@@ -93,7 +91,12 @@ func _ack_ready(peer_id: int) -> void:
 			print("Предметы заспавнены!!")
 		GameManager.on_level_start(GameManager.required_quote_next_level)
 	
-	Net.server_spawn_player(peer_id) # Спавним вручную, без PlayerSpawner.
+	# Респавн на хабе. Чинит проблему репликации игроков на хабе.
+	if _run_index == -1 and peer_id != 1:
+		Net.respawn_all_players()
+	else:
+		Net.server_spawn_player(peer_id) # Спавним вручную, без PlayerSpawner.
+	
 	if _run_index >= 0 and peer_id != 1:
 		Net.send_items_to(peer_id)   # догнать клиента уже заспавненными предметами уровня
 	print("Игрок с пиром ", peer_id, " заспавнен!")

@@ -16,7 +16,7 @@ var can_be_hitted: bool = true                       # можно ли удар�
 
 # Вызывается AttackComponent оружия. На всякий продублировал чтобы прям точно
 func take_damage(dmg: int) -> void:
-	print("BREAK_COMPONENT -- take_damage -- ")
+	#print("BREAK_COMPONENT -- take_damage -- ")
 	if not multiplayer.is_server():
 		return
 	if not can_be_hitted:
@@ -25,8 +25,9 @@ func take_damage(dmg: int) -> void:
 	# Урон не может превысить остаток прочности
 	var final_damage: int = clampi(dmg, 0, item.item_data.durability)
 	item.item_data.durability -= final_damage
-	print("BREAK_COMPONENT -- %s HP: %d, income DMG: %d"
-		% [item.name, item.item_data.durability, final_damage])
+	#print("BREAK_COMPONENT -- %s HP: %d, income DMG: %d"
+		#% [item.name, item.item_data.durability, final_damage])
+	#print("BREAK_COMPONENT -- %s HP: %d, income DMG: %d" % [item.name, item.item_data.durability, final_damage])
 
 	# Начисляем квоту. GameManager на сервере сам разошлёт новое значение всем.
 	GameManager.on_quote_earned(final_damage)
@@ -60,15 +61,18 @@ func _destroy() -> void:
 
 	# Сервер удаляет сам предмет. тк предмет заспавнен MultiplayerSpawner,
 	# удаление на сервере автоматически деспавнит его у всех клиентов.
-	item.queue_free()
+	if item.item_data.id != null:
+		Net.despawn_item(item.name)
+	else:
+		print("Не вышло найти id предмета")
 
 # вызывается когда объект сталкивается с другим разрушаемым объектом
 func _on_hurt_area_area_entered(area: Area3D) -> void:
-	print("BREAK_COMPONENT -- Damage area entered")
+	#print("BREAK_COMPONENT -- Damage area entered")
 	var other_body := area.get_parent()
 	if other_body == null: return
 	if other_body is not RigidBody3D: return
-	print("BREAK_COMPONENT -- RigidBody3D")
+	#print("BREAK_COMPONENT -- RigidBody3D")
 	
 	# velocity объекта с которым столкнулись
 	var other_velocity = other_body.linear_velocity
@@ -86,7 +90,7 @@ func _on_hurt_area_area_entered(area: Area3D) -> void:
 		base_damage,
 		max_damage_allowed
 	)
-	print("BREAK_COMPONENT -- Actual damage: %d" % actual_damage)
+	#print("BREAK_COMPONENT -- Actual damage: %d" % actual_damage)
 
 	take_damage(actual_damage)
 	pass
@@ -95,7 +99,7 @@ func _on_hurt_area_area_entered(area: Area3D) -> void:
 
 # вызывается когда объект сталкивается с объектом уровня(статичное). Нужен так как _on_hurt_area_area_entered отслеживает только Area3D, но никак не StaticBody3D
 func _on_hurt_area_body_entered(body: Node3D) -> void:
-	print("BREAK_COMPONENT -- Damage area entered")
+	#print("BREAK_COMPONENT -- Damage area entered")
 	var other_body := body
 	if other_body == null: return
 
@@ -107,7 +111,7 @@ func _on_hurt_area_body_entered(body: Node3D) -> void:
 	if other_body is CharacterBody3D:
 		other_velocity_length = other_body.velocity.length()
 		
-	print("BREAK_COMPONENT -- StaticBody3D")
+	#print("BREAK_COMPONENT -- StaticBody3D")
 	
 	# только велосити нашего объекта тк другой объект статичен
 	var self_velocity = item.linear_velocity
@@ -124,7 +128,7 @@ func _on_hurt_area_body_entered(body: Node3D) -> void:
 		base_damage,
 		max_damage_allowed
 	)
-	print("BREAK_COMPONENT -- Actual damage: %d" % actual_damage)
+	#print("BREAK_COMPONENT -- Actual damage: %d" % actual_damage)
 
 	take_damage(actual_damage)
 	pass

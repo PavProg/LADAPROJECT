@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cpauxdnrlj3ai"]
+
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="1_e8ih5"]
+[ext_resource type="PackedScene" uid="uid://drwvj3aj7jn02" path="res://items/vase_01_broken.tscn" id="1_rmp4j"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_e8ih5")
+distructed_scene = ExtResource("1_rmp4j")
+max_durability = 20
+durability = 20
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"

@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://fahm6qrtst0w"]
+
+[ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_ermlx"]
+[ext_resource type="ArrayMesh" uid="uid://41ta5lcavja7" path="res://models/meshes/bust/broken/bust_broken_Base_cell_002.res" id="2_ermlx"]
+[ext_resource type="Script" uid="uid://bl2duo15kvf5b" path="res://items/fragment_piece.gd" id="2_yf5fm"]
+[ext_resource type="ArrayMesh" uid="uid://km5c328k216w" path="res://models/meshes/bust/broken/bust_broken_Base_cell_003.res" id="3_yf5fm"]
+[ext_resource type="ArrayMesh" uid="uid://cdij2hqulk8sm" path="res://models/meshes/bust/broken/bust_broken_Icosphere_002.res" id="4_mab4h"]
+[ext_resource type="ArrayMesh" uid="uid://ctuqyms7qy0ub" path="res://models/meshes/bust/broken/bust_broken_Sphere.res" id="5_peeso"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ermlx"]
+points = PackedVector3Array(-0.037987232, 1.0698217, -0.41437444, -0.3454221, 1.8191652, -0.0013889613, -0.54240674, 0.99761236, 0.2497471, 0.290262, 1.8121068, -0.18150075, 0.17513533, 1.8239, 0.30805388, 0.55181366, 0.99500585, 0.25141504, 0.43428987, 1.0066999, -0.3420919, -0.097484976, 1.8074696, -0.35719827, -0.25494447, 1.0066999, 0.41634324, -0.18952593, 1.8132293, 0.29866403)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_yf5fm"]
+points = PackedVector3Array(0.71463484, 0.018128369, 0.56782615, 0.11299859, 0.04865593, -0.5590129, 0.113, 0.975, -0.559, -0.9736043, 0.008096714, 0.5152094, -0.87, 0.905, 0.441, 0.951, 0.874, -0.417, 0.88480633, 0.8733491, 0.51277137, 0.98594177, 0.0077730427, -0.5126656)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yf5fm"]
+properties/0/path = NodePath("RigidBody3D:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("RigidBody3D:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("RigidBody3D2:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("RigidBody3D2:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("RigidBody3D3:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("RigidBody3D3:position")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("RigidBody3D4:rotation")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("RigidBody3D4:position")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_mab4h"]
+points = PackedVector3Array(-0.59643275, 0.9917341, -0.036449503, -0.005, 0.992, -0.426, -0.259, 1.838, -0.225, -0.48206252, 1.0306778, 0.06364444, -0.21919078, 1.0066999, -0.50067073, -0.14, 1.838, -0.369)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_peeso"]
+points = PackedVector3Array(-0.925, 0.886, 0.344, -0.962, 0.021, -0.507, 0.1811508, -0.007620573, -0.5709108, 0.09450734, 1.0306778, -0.51308644, -0.982, -0.008, 0.415, -0.88664466, 0.8629081, -0.51122254)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ermlx"]
+radius = 0.089221954
+height = 0.72894436
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ermlx"]
+radius = 0.8306273
+
+[node name="Bust_broken" type="Node3D" unique_id=326480734]
+script = ExtResource("1_ermlx")
+time_to_disappear_fragments = 30.0
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=944942329]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("2_yf5fm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=53974852]
+mesh = ExtResource("2_ermlx")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="RigidBody3D" unique_id=226443891]
+shape = SubResource("ConvexPolygonShape3D_ermlx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1945574093]
+shape = SubResource("ConvexPolygonShape3D_yf5fm")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="RigidBody3D" unique_id=1405176413]
+root_path = NodePath("../..")
+replication_config = SubResource("SceneReplicationConfig_yf5fm")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1099495513]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("2_yf5fm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2" unique_id=1618707500]
+mesh = ExtResource("3_yf5fm")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="RigidBody3D2" unique_id=940695744]
+shape = SubResource("ConvexPolygonShape3D_mab4h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=2109893300]
+shape = SubResource("ConvexPolygonShape3D_peeso")
+
+[node name="MultiplayerSynchronizer2" type="MultiplayerSynchronizer" parent="RigidBody3D2" unique_id=349733929]
+root_path = NodePath("../..")
+replication_config = SubResource("SceneReplicationConfig_yf5fm")
+
+[node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=838319713]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("2_yf5fm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D3" unique_id=1975520716]
+mesh = ExtResource("4_mab4h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3" unique_id=1778689492]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -2.9802322e-08, 2.2868464, 0.64794236)
+shape = SubResource("CapsuleShape3D_ermlx")
+
+[node name="MultiplayerSynchronizer3" type="MultiplayerSynchronizer" parent="RigidBody3D3" unique_id=1796545499]
+root_path = NodePath("../..")
+replication_config = SubResource("SceneReplicationConfig_yf5fm")
+
+[node name="RigidBody3D4" type="RigidBody3D" parent="." unique_id=936961570]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("2_yf5fm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4" unique_id=470489259]
+mesh = ExtResource("5_peeso")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D4" unique_id=2116057728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1309915, 0.038986325)
+shape = SubResource("SphereShape3D_ermlx")
+
+[node name="MultiplayerSynchronizer4" type="MultiplayerSynchronizer" parent="RigidBody3D4" unique_id=735941064]
+root_path = NodePath("../..")
+replication_config = SubResource("SceneReplicationConfig_yf5fm")
+
+[node name="DisappearTimer" type="Timer" parent="." unique_id=1629233622]
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

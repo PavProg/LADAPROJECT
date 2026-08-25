@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cbsincrxi8w15"]
+
+[ext_resource type="PackedScene" uid="uid://dipkqsvr4spp4" path="res://items/box_broken.tscn" id="1_af0db"]
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="2_hokou"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("2_hokou")
+distructed_scene = ExtResource("1_af0db")
+max_durability = 20
+durability = 20
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"

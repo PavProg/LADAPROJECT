@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://b21m2k6ujvjpw"]
+
+[ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_j5ui0"]
+[ext_resource type="ArrayMesh" uid="uid://dfd5wbpshg8cq" path="res://models/meshes/vase_03/broken/vase_03_broken_Vase_cell_001.res" id="2_j5ui0"]
+[ext_resource type="ArrayMesh" uid="uid://bgm8o010gs1a1" path="res://models/meshes/vase_03/broken/vase_03_broken_Vase_cell_003.res" id="3_hjvmd"]
+[ext_resource type="ArrayMesh" uid="uid://cv51mr5ke5wqy" path="res://models/meshes/vase_03/broken/vase_03_broken_Vase_cell_004.res" id="4_vtj12"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_j5ui0"]
+points = PackedVector3Array(-0.4750057, 0.6865415, -0.7099886, -0.00833535, 1.4782084, 0.8958211, -0.0078008343, 2.3227382, 0.7223889, -0.8742151, 1.3341901, 0.3111067, -0.21131396, 2.3253284, -0.6482671, 0.28604448, 1.2665707, 0.76054084, -0.79946345, 0.53673923, 0.25893942, -0.6548297, 2.3698387, -0.21400987, -0.20592172, 0.6514901, -0.6844643, -0.8456277, 1.4201062, -0.35012627)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hjvmd"]
+points = PackedVector3Array(-0.656348, 0.2620929, 0.24040322, 0.8530019, 1.1520175, 0.29987332, 0.617874, 1.2435429, 0.6097304, 0.3296544, 0.0198031, 0.48177072, 0.062433604, 0.6612857, -0.8375323, 0.3301321, 0.018782573, -0.4811155, -0.47137785, 0.8592494, 0.6753632, -0.5005195, 0.50059134, -0.642665, 0.23283716, 1.3100452, 0.78796697, 0.78793865, 0.52707237, -0.26799163)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vtj12"]
+points = PackedVector3Array(0.63824415, 2.370839, 0.22911811, -0.049981084, 0.6642733, -0.8456195, 0.09130017, 0.6771147, -0.8336045, 0.30866823, 1.3003379, 0.8318015, -0.20484105, 2.4039047, -0.53020096, 0.8721164, 1.331832, -0.31356663, 0.36211824, 2.32182, -0.60705423, 0.853744, 1.1652507, 0.3090334, -0.262, 0.664, -0.791, 0.20229293, 2.317062, 0.61940897)
+
+[node name="Vase_02_broken" type="Node3D" unique_id=326480734]
+script = ExtResource("1_j5ui0")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=411397787]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D" unique_id=821519586]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("2_j5ui0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1681879776]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_j5ui0")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1876025268]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D2" unique_id=1672029592]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("3_hjvmd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=905376369]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_hjvmd")
+
+[node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=178018466]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D3" unique_id=1610051592]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("4_vtj12")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3" unique_id=1612933660]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_vtj12")
+
+[node name="DisappearTimer" type="Timer" parent="." unique_id=3514605]
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

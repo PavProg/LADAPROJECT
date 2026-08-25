@@ -1,0 +1,37 @@
+[gd_resource type="BehaviorTree" format=3 uid="uid://bc25mj887ab5l"]
+
+[ext_resource type="Script" uid="uid://cugnywyispp7q" path="res://ai/tasks/BTCondition_HasTargetAttack.gd" id="1_gllec"]
+[ext_resource type="Script" uid="uid://bpjrluek8dlbb" path="res://ai/tasks/FaceTarget.gd" id="2_2l5kd"]
+[ext_resource type="Script" uid="uid://dtd5k5hjx13ex" path="res://ai/tasks/BTAction_CHASE.gd" id="3_2l5kd"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_xqwxb"]
+
+[sub_resource type="BTCondition" id="BTCondition_6fqur"]
+script = ExtResource("1_gllec")
+
+[sub_resource type="BBNode" id="BBNode_oojan"]
+saved_value = NodePath("")
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_83d0n"]
+animation_player = SubResource("BBNode_oojan")
+custom_name = "PlayAnimationAttack"
+
+[sub_resource type="BTAction" id="BTAction_ayd0d"]
+script = ExtResource("2_2l5kd")
+
+[sub_resource type="BTComment" id="BTComment_2l5kd"]
+custom_name = "Нужно разделение по id. Крыса, кот и охранник атакуют по-разному с разными анимациями"
+
+[sub_resource type="BTSequence" id="BTSequence_17vfp"]
+custom_name = "sequence \"melee_ATTACK\""
+children = [SubResource("BTCondition_6fqur"), SubResource("BTPlayAnimation_83d0n"), SubResource("BTAction_ayd0d"), SubResource("BTComment_2l5kd")]
+
+[sub_resource type="BTAction" id="BTAction_6fqur"]
+script = ExtResource("3_2l5kd")
+
+[sub_resource type="BTSelector" id="BTSelector_ye4c2"]
+children = [SubResource("BTSequence_17vfp"), SubResource("BTAction_6fqur")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_xqwxb")
+root_task = SubResource("BTSelector_ye4c2")

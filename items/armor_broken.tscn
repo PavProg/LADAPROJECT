@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://buaotc2bb6f7s"]
+
+[ext_resource type="ArrayMesh" uid="uid://weo1328akygu" path="res://models/meshes/armor/broken/Armor_Broken_Cube_004.res" id="1_2uji6"]
+[ext_resource type="ArrayMesh" uid="uid://birtqgta5qtu6" path="res://models/meshes/armor/broken/Armor_Broken_Cube.res" id="1_6uhuu"]
+[ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_qwa67"]
+[ext_resource type="ArrayMesh" uid="uid://bpqbdvvggt68h" path="res://models/meshes/armor/broken/Armor_Broken_Cube_001.res" id="2_2uji6"]
+[ext_resource type="ArrayMesh" uid="uid://dnn8kalnnggdy" path="res://models/meshes/armor/broken/Armor_Broken_Cube_002.res" id="3_qwa67"]
+[ext_resource type="ArrayMesh" uid="uid://dxjrp7ubdt5qy" path="res://models/meshes/armor/broken/Armor_Broken_Cube_003.res" id="4_uw15q"]
+[ext_resource type="ArrayMesh" uid="uid://7ow7eq0i56xo" path="res://models/meshes/armor/broken/Armor_Broken_Sphere.res" id="5_11p8x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jw8xu"]
+size = Vector3(0.42993164, 4.0012207, 0.107421875)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2uji6"]
+size = Vector3(2.3417969, 2.1803436, 0.43737793)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6uhuu"]
+size = Vector3(1.1845703, 4.381836, 0.5629883)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lfp4g"]
+size = Vector3(1.6962891, 3.2784576, 1.3720703)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gxyol"]
+radius = 0.4033203
+height = 1.6633301
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qwa67"]
+size = Vector3(2.1884766, 0.6529541, 0.6464844)
+
+[node name="Armor_broken" type="Node3D" unique_id=326480734]
+script = ExtResource("1_qwa67")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=233455839]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Collision" type="CollisionShape3D" parent="RigidBody3D" unique_id=666064807]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2312887, 0.618816)
+shape = SubResource("BoxShape3D_jw8xu")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D" unique_id=417119690]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("1_2uji6")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=342959303]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Collision" type="CollisionShape3D" parent="RigidBody3D2" unique_id=113614404]
+transform = Transform3D(0.5, 0, 0, 0, 0.45129314, 0.21525447, 0, -0.21525447, 0.45129314, 0, 2.3294945, 0.23029095)
+shape = SubResource("BoxShape3D_2uji6")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D2" unique_id=830100405]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("2_2uji6")
+
+[node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=767894294]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Collision" type="CollisionShape3D" parent="RigidBody3D3" unique_id=1608860996]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.0990267, 0.006713867)
+shape = SubResource("BoxShape3D_6uhuu")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D3" unique_id=928529388]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("3_qwa67")
+
+[node name="RigidBody3D4" type="RigidBody3D" parent="." unique_id=697820983]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Collision" type="CollisionShape3D" parent="RigidBody3D4" unique_id=1591975718]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.3723574, 0)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D4" unique_id=1451163062]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("4_uw15q")
+
+[node name="RigidBody3D5" type="RigidBody3D" parent="." unique_id=681046976]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Collision" type="CollisionShape3D" parent="RigidBody3D5" unique_id=1022952454]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 3.5309954, 0)
+shape = SubResource("CapsuleShape3D_gxyol")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D5" unique_id=1537151979]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("5_11p8x")
+
+[node name="RigidBody3D6" type="RigidBody3D" parent="." unique_id=266236775]
+collision_layer = 8
+collision_mask = 15
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Collision" type="CollisionShape3D" parent="RigidBody3D6" unique_id=338558543]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 3.0098414, 0)
+shape = SubResource("BoxShape3D_qwa67")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D6" unique_id=354723132]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("1_6uhuu")
+
+[node name="DisappearTimer" type="Timer" parent="." unique_id=779194965]
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

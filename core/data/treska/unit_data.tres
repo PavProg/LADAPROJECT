@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://y10cabd0wv3u"]
+
+[ext_resource type="Script" uid="uid://dys246mjb4a3n" path="res://core/data/unit_data.gd" id="1_8otbp"]
+
+[resource]
+script = ExtResource("1_8otbp")
+id = "Rat"
+radius_detection = 6.0
+metadata/_custom_type_script = "uid://dys246mjb4a3n"

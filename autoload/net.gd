@@ -4,7 +4,7 @@ const PORT: int = 7777
 const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
 const ITEMS := preload("res://items/hummer.tscn")
-const BREAK_ITEMS := preload("res://items/break_item.tscn")
+const BREAK_ITEMS := preload("res://items/bust.tscn")
 var peer: SteamMultiplayerPeer
 
 var spawned_ids: Array[int] = []
@@ -77,6 +77,7 @@ func create_player(id: int) -> void:
 	if cont.has_node(str(id)): return
 	var p := PLAYER.instantiate()
 	p.name = str(id)
+	p.add_to_group("player") # Добавляем в группу игроков
 	p.set_multiplayer_authority(id)
 	cont.add_child(p)
 
@@ -154,3 +155,18 @@ func _remove_item(item_name: String) -> void:
 	var cont := get_tree().current_scene.get_node_or_null("Items")
 	if cont and cont.has_node(item_name):
 		cont.get_node(item_name).queue_free()
+
+# Респавн игроков
+func respawn_all_players() -> void:
+	if not multiplayer.is_server(): return
+	clear_spawned_players_nodes()
+	server_spawn_player(1)
+	await get_tree().process_frame	# Заглушка/хотфикс зависания камеры хоста
+	for pid in multiplayer.get_peers():
+		server_spawn_player(pid)
+	
+func clear_spawned_players_nodes() -> void:
+	if not multiplayer.is_server(): return
+	for id in spawned_ids.duplicate():
+		_remove_player.rpc(id)
+	spawned_ids.clear()

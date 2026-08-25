@@ -1,0 +1,54 @@
+[gd_resource type="BehaviorTree" format=3 uid="uid://ui6thpe5yy1h"]
+
+[ext_resource type="Script" uid="uid://cugnywyispp7q" path="res://ai/tasks/BTCondition_HasTargetAttack.gd" id="1_6hncf"]
+[ext_resource type="Script" uid="uid://bc4ldti6r8n2g" path="res://ai/tasks/StartAttack.gd" id="2_t8u8k"]
+[ext_resource type="Script" uid="uid://bts6wfs0ul3mh" path="res://ai/tasks/BTCondition_HasTarget.gd" id="3_a6ckk"]
+[ext_resource type="Script" uid="uid://dtd5k5hjx13ex" path="res://ai/tasks/BTAction_CHASE.gd" id="4_dj4r6"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_c4rax"]
+
+[sub_resource type="BTCondition" id="BTCondition_2l2hn"]
+script = ExtResource("1_6hncf")
+
+[sub_resource type="BTAction" id="BTAction_2l2hn"]
+script = ExtResource("2_t8u8k")
+
+[sub_resource type="BTSequence" id="BTSequence_cgqh6"]
+custom_name = "sequence \"ATTACK\""
+children = [SubResource("BTCondition_2l2hn"), SubResource("BTAction_2l2hn")]
+
+[sub_resource type="BTCondition" id="BTCondition_cgqh6"]
+script = ExtResource("3_a6ckk")
+
+[sub_resource type="BTAction" id="BTAction_lm846"]
+script = ExtResource("4_dj4r6")
+
+[sub_resource type="BTSequence" id="BTSequence_1usao"]
+custom_name = "sequence \"CHASE\""
+children = [SubResource("BTCondition_cgqh6"), SubResource("BTAction_lm846")]
+
+[sub_resource type="BBNode" id="BBNode_6hncf"]
+saved_value = NodePath("")
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_a6ckk"]
+animation_player = SubResource("BBNode_6hncf")
+custom_name = "PlayAnimationSearch"
+
+[sub_resource type="BTDelay" id="BTDelay_ji35t"]
+seconds = 3.0
+custom_name = "Delay 3.0 sec for search player"
+children = [SubResource("BTPlayAnimation_a6ckk")]
+
+[sub_resource type="BTCondition" id="BTCondition_dj4r6"]
+script = ExtResource("3_a6ckk")
+
+[sub_resource type="BTSequence" id="BTSequence_lm846"]
+custom_name = "sequence \"SEARCH\""
+children = [SubResource("BTDelay_ji35t"), SubResource("BTCondition_dj4r6")]
+
+[sub_resource type="BTSelector" id="BTSelector_1q0dk"]
+children = [SubResource("BTSequence_cgqh6"), SubResource("BTSequence_1usao"), SubResource("BTSequence_lm846")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_c4rax")
+root_task = SubResource("BTSelector_1q0dk")

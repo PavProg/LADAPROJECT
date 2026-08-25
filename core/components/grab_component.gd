@@ -43,6 +43,8 @@ func _request_grab(item_path: NodePath) -> void:
 		item.grab_by(who)                    # помечаем предмет занятым (физика внутри предмета)
 		_held_item = item
 		Events.item_grabbed.emit(item, who)
+		
+		pass
 
 @rpc("any_peer", "call_local", "reliable")
 func _request_release() -> void:

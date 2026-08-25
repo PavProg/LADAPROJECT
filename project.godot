@@ -22,9 +22,12 @@ GameManager="*uid://bolgnd8v275bh"
 NetworkSteam="*uid://dws2bxcv6w6wh"
 LevelManager="*uid://dds2woae27xet"
 UiManager="*uid://chajrqh2vftcf"
+ThreadsRegistry="*uid://c6bsmchkphduy"
 
 [display]
 
+window/size/viewport_width=3400
+window/size/viewport_height=1600
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -115,6 +118,7 @@ reloadHUB={
 3d_physics/layer_11="attack_item_hitbox"
 3d_physics/layer_12="paint_item_hitbox"
 3d_physics/layer_13="ragdoll"
+3d_physics/layer_14="player_rigid"
 
 [physics]
 

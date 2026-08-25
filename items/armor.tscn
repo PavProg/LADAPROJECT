@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://dwxonkdcuxtws"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_o0hp3"]
+[ext_resource type="Resource" uid="uid://4ua4q24ha78l" path="res://core/data/treska/armor.tres" id="2_vo1o4"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="3_ov24w"]
+[ext_resource type="ArrayMesh" uid="uid://3b8mdnlreqn4" path="res://models/meshes/armor/Armor_Cube_003.res" id="3_vo1o4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p3ng6"]
+radius = 0.36914063
+height = 1.5275879
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vo1o4"]
+size = Vector3(2.540039, 1.9659424, 1.819458)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ov24w"]
+size = Vector3(1.8798828, 1.2548828, 1.6297607)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kfnj3"]
+size = Vector3(1.1298828, 2.9990234, 0.58862305)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Armor" type="RigidBody3D" unique_id=1572425250]
+collision_layer = 8
+collision_mask = 15
+can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_o0hp3")
+filename = "break_item"
+export_item_data = ExtResource("2_vo1o4")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
+transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, 0, 3.5802631, -0.07192993)
+shape = SubResource("CapsuleShape3D_p3ng6")
+
+[node name="Collision2" type="CollisionShape3D" parent="." unique_id=1773223054]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.7133713, -0.09679352)
+shape = SubResource("BoxShape3D_vo1o4")
+
+[node name="Collision3" type="CollisionShape3D" parent="." unique_id=329596222]
+transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, 0, 1.8797294, -0.12373168)
+shape = SubResource("BoxShape3D_ov24w")
+
+[node name="Collision4" type="CollisionShape3D" parent="." unique_id=1136682705]
+transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, 0, 0.7843796, -0.093713075)
+shape = SubResource("BoxShape3D_kfnj3")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1009657675]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("3_vo1o4")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("3_ov24w")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+collision_layer = 512
+collision_mask = 515
+
+[node name="Collision" type="CollisionShape3D" parent="HurtArea" unique_id=239942882]
+transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 3.5802631, -0.07192993)
+shape = SubResource("CapsuleShape3D_p3ng6")
+
+[node name="Collision2" type="CollisionShape3D" parent="HurtArea" unique_id=633349291]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.7133713, -0.09679352)
+shape = SubResource("BoxShape3D_vo1o4")
+
+[node name="Collision3" type="CollisionShape3D" parent="HurtArea" unique_id=1653805985]
+transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 1.8797294, -0.12373168)
+shape = SubResource("BoxShape3D_ov24w")
+
+[node name="Collision4" type="CollisionShape3D" parent="HurtArea" unique_id=1545653331]
+transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 0.7843796, -0.093713075)
+shape = SubResource("BoxShape3D_kfnj3")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[node name="DurabilityLabel" type="Label3D" parent="." unique_id=548319953]
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "123"
+font_size = 12
+outline_size = 4
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
+[connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

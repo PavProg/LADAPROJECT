@@ -43,7 +43,7 @@ _subresources={
 "animations": {
 "Death_A": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Death_A.res",
+"save_to_file/fallback_path": "res://models/animations/player/Death_A.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://btygfykwx2unh",
 "settings/loop_mode": 0,
@@ -2099,7 +2099,7 @@ _subresources={
 },
 "Death_A_Pose": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Death_A_Pose.res",
+"save_to_file/fallback_path": "res://models/animations/player/Death_A_Pose.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dtk5xleawav8y",
 "settings/loop_mode": 0,
@@ -4155,7 +4155,7 @@ _subresources={
 },
 "Death_B": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Death_B.res",
+"save_to_file/fallback_path": "res://models/animations/player/Death_B.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bd2i4eue7q7w1",
 "settings/loop_mode": 0,
@@ -6211,7 +6211,7 @@ _subresources={
 },
 "Death_B_Pose": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Death_B_Pose.res",
+"save_to_file/fallback_path": "res://models/animations/player/Death_B_Pose.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://c3jqorij4xr4y",
 "settings/loop_mode": 0,
@@ -8267,7 +8267,7 @@ _subresources={
 },
 "Hit_A": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Hit_A.res",
+"save_to_file/fallback_path": "res://models/animations/player/Hit_A.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dg6kgpalintju",
 "settings/loop_mode": 0,
@@ -10323,7 +10323,7 @@ _subresources={
 },
 "Hit_B": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Hit_B.res",
+"save_to_file/fallback_path": "res://models/animations/player/Hit_B.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://j8n4cg3qo6ra",
 "settings/loop_mode": 0,
@@ -16491,7 +16491,7 @@ _subresources={
 },
 "Interact": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Interact.res",
+"save_to_file/fallback_path": "res://models/animations/player/Interact.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dobvnmatw1o72",
 "settings/loop_mode": 0,
@@ -18547,7 +18547,7 @@ _subresources={
 },
 "PickUp": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/PickUp.res",
+"save_to_file/fallback_path": "res://models/animations/player/PickUp.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://wfkf21bmo6gc",
 "settings/loop_mode": 0,
@@ -20603,7 +20603,7 @@ _subresources={
 },
 "Spawn_Air": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Spawn_Air.res",
+"save_to_file/fallback_path": "res://models/animations/player/Spawn_Air.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dei1aiv2kxo5i",
 "settings/loop_mode": 0,
@@ -22659,7 +22659,7 @@ _subresources={
 },
 "Spawn_Ground": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Spawn_Ground.res",
+"save_to_file/fallback_path": "res://models/animations/player/Spawn_Ground.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bvxug4wyj37fu",
 "settings/loop_mode": 0,
@@ -24715,7 +24715,7 @@ _subresources={
 },
 "T-Pose": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/T-Pose.res",
+"save_to_file/fallback_path": "res://models/animations/player/T-Pose.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://d4b41aukix28u",
 "settings/loop_mode": 0,
@@ -26771,7 +26771,7 @@ _subresources={
 },
 "Throw": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Throw.res",
+"save_to_file/fallback_path": "res://models/animations/player/Throw.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://nhhl2bcjijj4",
 "settings/loop_mode": 0,
@@ -28827,7 +28827,7 @@ _subresources={
 },
 "Use_Item": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/animations/Use_Item.res",
+"save_to_file/fallback_path": "res://models/animations/player/Use_Item.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://cr0ywqrtbp51y",
 "settings/loop_mode": 0,
@@ -30885,7 +30885,7 @@ _subresources={
 "materials": {
 "Character_Material": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://models/materials/Character_Material.tres",
+"use_external/fallback_path": "res://models/materials/player/Character_Material.tres",
 "use_external/path": "uid://t442qb5o1ck8"
 }
 },
@@ -30896,7 +30896,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/meshes/Mannequin_ArmLeft.res",
+"save_to_file/fallback_path": "res://models/meshes/player/Mannequin_ArmLeft.res",
 "save_to_file/path": "uid://cyejb2riluvj"
 },
 "Mannequin_ArmRight": {
@@ -30905,7 +30905,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/meshes/Mannequin_ArmRight.res",
+"save_to_file/fallback_path": "res://models/meshes/player/Mannequin_ArmRight.res",
 "save_to_file/path": "uid://cu2d8f2qpjjpx"
 },
 "Mannequin_Body": {
@@ -30914,7 +30914,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/meshes/Mannequin_Body.res",
+"save_to_file/fallback_path": "res://models/meshes/player/Mannequin_Body.res",
 "save_to_file/path": "uid://bqt4wrebmcdlo"
 },
 "Mannequin_Head": {
@@ -30932,7 +30932,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/meshes/Mannequin_LegLeft.res",
+"save_to_file/fallback_path": "res://models/meshes/player/Mannequin_LegLeft.res",
 "save_to_file/path": "uid://djw8v2b7wol5q"
 },
 "Mannequin_LegRight": {
@@ -30941,7 +30941,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/meshes/Mannequin_LegRight.res",
+"save_to_file/fallback_path": "res://models/meshes/player/Mannequin_LegRight.res",
 "save_to_file/path": "uid://xy22vs83y3ds"
 }
 }
