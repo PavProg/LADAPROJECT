@@ -5,13 +5,14 @@ class_name Enemy
 
 @export var data: UnitData
 @onready var agent: NavigationAgent3D = $NavigationAgent3D
+@onready var priority: PriorityComponent = $Priority
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 ############ Navigation
 
 func _ready() -> void:
 	if not multiplayer.is_server():
-		$BTPlayer.active(false)
+		$BTPlayer.active = false
 		set_physics_process(false)
 		return
 	call_deferred("_setup_nav")

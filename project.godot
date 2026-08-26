@@ -26,7 +26,7 @@ ThreadsRegistry="*uid://c6bsmchkphduy"
 
 [display]
 
-window/size/viewport_width=3400
+window/size/viewport_width=3600
 window/size/viewport_height=1600
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
@@ -34,6 +34,10 @@ window/stretch/aspect="expand"
 [dotnet]
 
 project/assembly_name="LADA"
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 

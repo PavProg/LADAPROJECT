@@ -80,18 +80,30 @@ func create_player(id: int) -> void:
 	p.add_to_group("player") # Добавляем в группу игроков
 	p.set_multiplayer_authority(id)
 	cont.add_child(p)
+	#if id == multiplayer.get_unique_id():                       # ТОЛЬКО свой игрок
+		#p.get_node("CameraController/Camera3D").call_deferred("make_current")
 
 func server_dispawn_player(id: int) -> void:
 	if not multiplayer.is_server(): return
 	spawned_ids.erase(id)
 	_remove_player.rpc(id)
 
+#@rpc("authority", "call_local", "reliable")
+#func _remove_player(id: int) -> void:
+	#var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
+	#if cont and cont.has_node(str(id)):
+		#cont.get_node(str(id)).queue_free()
+
+# Попытка фикса спавна игроков. Если не работает - ставим камеру вручную в create_player.
+# Если и это не сработает - process_frame.
 @rpc("authority", "call_local", "reliable")
 func _remove_player(id: int) -> void:
-	var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
+	var cont = get_tree().current_scene.get_node_or_null("PlayersCont")
 	if cont and cont.has_node(str(id)):
-		cont.get_node(str(id)).queue_free()
-	
+		var node = cont.get_node(str(id))
+		node.name = "_dead_" + str(id)   # имя освобождаем сразу
+		node.queue_free()
+
 func clear_spawned() -> void:
 	spawned_ids.clear()	# Чистим реестр игроков
 	spawned_items.clear()	# и реестр предметов (сами узлы умрут вместе со сценой)
@@ -157,13 +169,21 @@ func _remove_item(item_name: String) -> void:
 		cont.get_node(item_name).queue_free()
 
 # Респавн игроков
-func respawn_all_players() -> void:
+func respawn_all_players(ready_peers: Array) -> void:
 	if not multiplayer.is_server(): return
+	
 	clear_spawned_players_nodes()
 	server_spawn_player(1)
-	await get_tree().process_frame	# Заглушка/хотфикс зависания камеры хоста
-	for pid in multiplayer.get_peers():
+	for pid in ready_peers:
 		server_spawn_player(pid)
+
+#func respawn_all_players() -> void:
+	#if not multiplayer.is_server(): return
+	#clear_spawned_players_nodes()
+	## await get_tree().process_frame
+	#server_spawn_player(1)
+	#for pid in multiplayer.get_peers():
+		#server_spawn_player(pid)
 	
 func clear_spawned_players_nodes() -> void:
 	if not multiplayer.is_server(): return

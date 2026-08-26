@@ -43,17 +43,17 @@ _subresources={
 "materials": {
 "Material.001": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://models/materials/hummer/Material.001.tres",
+"use_external/fallback_path": "res://models/materials/Material.001.tres",
 "use_external/path": "uid://c57o1mvxf1118"
 },
 "Material.003": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://models/materials/hummer/Material.003.tres",
+"use_external/fallback_path": "res://models/materials/Material.003.tres",
 "use_external/path": "uid://bc67yv6g2g6xl"
 },
 "Material.004": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://models/materials/hummer/Material.004.tres",
+"use_external/fallback_path": "res://models/materials/Material.004.tres",
 "use_external/path": "uid://dgcx51ysgm3u0"
 }
 },
@@ -64,7 +64,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://models/meshes/hummer/Cube_001.res",
+"save_to_file/fallback_path": "res://models/meshes/Cube_001.res",
 "save_to_file/path": "uid://dsjqymsc8gpjs"
 }
 }

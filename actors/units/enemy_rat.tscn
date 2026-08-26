@@ -1,8 +1,15 @@
 [gd_scene format=3 uid="uid://csxy3jda7v5tf"]
 
 [ext_resource type="Script" uid="uid://ddfxdgkt6mlpi" path="res://core/components/get_priority.gd" id="1_devae"]
+[ext_resource type="Script" uid="uid://c66r23od44qs3" path="res://actors/units/enemy.gd" id="1_vsiok"]
+[ext_resource type="Script" uid="uid://dys246mjb4a3n" path="res://core/data/unit_data.gd" id="2_rq516"]
 [ext_resource type="PackedScene" uid="uid://do66xlu1cde2n" path="res://models/Rat by Quaternius - iltq5bVNaV.glb" id="3_devae"]
 [ext_resource type="BehaviorTree" uid="uid://2s7g8pgn8cfo" path="res://ai/tree/root_tree.tres" id="4_vsiok"]
+
+[sub_resource type="Resource" id="Resource_8hdqg"]
+script = ExtResource("2_rq516")
+id = "Rat"
+metadata/_custom_type_script = "uid://dys246mjb4a3n"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mtgiw"]
 radius = 1.3823242
@@ -18,8 +25,6 @@ radius = 0.7153955
 [sub_resource type="SphereShape3D" id="SphereShape3D_6fqur"]
 radius = 6.0
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_07ba6"]
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vsiok"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -28,11 +33,12 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Rat" type="CharacterBody3D" unique_id=1053980717 node_paths=PackedStringArray("fov_area", "eye")]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_jma5w"]
+
+[node name="Rat" type="CharacterBody3D" unique_id=1053980717]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9861336, 2.2473187, 0)
-script = ExtResource("1_devae")
-fov_area = NodePath("FOV")
-eye = NodePath("Eye")
+script = ExtResource("1_vsiok")
+data = SubResource("Resource_8hdqg")
 
 [node name="Rat_body" parent="." unique_id=1536035134 instance=ExtResource("3_devae")]
 
@@ -58,17 +64,19 @@ shape = SubResource("SphereShape3D_2l5kd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0009701252, 1.2034369, 7.464654)
 shape = SubResource("SphereShape3D_6fqur")
 
-[node name="FOVRayCast3D" type="RayCast3D" parent="." unique_id=694541765]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019217014, 1.4598987, 1.9808146)
-
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1922618632]
-
-[node name="BTPlayer" type="BTPlayer" parent="." unique_id=1835505931]
-behavior_tree = ExtResource("4_vsiok")
-blackboard_plan = SubResource("BlackboardPlan_07ba6")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1233565699]
 replication_config = SubResource("SceneReplicationConfig_vsiok")
 
 [node name="Eye" type="Marker3D" parent="." unique_id=259720061]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.499598, 1.664108)
+
+[node name="BTPlayer" type="BTPlayer" parent="." unique_id=1854812510]
+behavior_tree = ExtResource("4_vsiok")
+blackboard_plan = SubResource("BlackboardPlan_jma5w")
+
+[node name="Priority" type="Node" parent="." unique_id=934185303 node_paths=PackedStringArray("fov_area", "eye")]
+script = ExtResource("1_devae")
+fov_area = NodePath("../FOV")
+eye = NodePath("../Eye")

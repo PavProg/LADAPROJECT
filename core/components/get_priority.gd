@@ -7,7 +7,7 @@ class_name PriorityComponent
 @export var fov_degrees: float = 140.0
 @export var scan_interval: float = 0.15 # интервал сканирования
 ## Порог срабатывания для смены состояний (гистерезис)
-@export var lose_multiplayer: float = 1.4
+@export var lose_multiplier: float = 1.4
 
 ## Два поля ниже для расчета приоритета. Враг оценивает у кого value предмета больше и до кого меньше топать
 @export var value_weight: float = 1.0
@@ -30,7 +30,7 @@ func _ready() -> void:
 	if not multiplayer.is_server():
 		set_process(false)
 		return
-	_cos_half_fov = cos(deg_to_rad(fov_degrees * 0.5))	# Расчет половины от радиуса обзора
+	_cos_half_fov = cos(deg_to_rad(fov_degrees * 0.5))	# Расчет половины от угла обзора
 	if fov_area:
 		fov_area.body_entered.connect(_on_body_entered)
 		fov_area.body_exited.connect(_on_body_exited)
@@ -46,7 +46,7 @@ func _on_body_exited(body: Node3D) -> void:
 
 func _process(delta: float) -> void:
 	_timer -= delta
-	if _timer >= 0.0: return
+	if _timer > 0.0: return
 	_timer = scan_interval
 	_rescan()
 	
@@ -55,10 +55,10 @@ func _rescan() -> void:
 	var best: Node3D = null
 	var best_score := -INF
 	var detect: float = _enemy.data.radius_detection
-	var lose: float = detect * lose_multiplayer
+	var lose: float = detect * lose_multiplier
 	
 	for p in _candidates:
-		if not is_instance_valid(p): return
+		if not is_instance_valid(p): continue
 		
 		var to: Vector3 = p.global_position - _enemy.global_position
 		var dist_sq: float = to.length_squared()	# вычисляем произведение  векторов (кратчайший путь)
@@ -69,7 +69,7 @@ func _rescan() -> void:
 		if not _has_los(p): continue
 		
 		var score: float = _score(p, sqrt(dist_sq))
-		if score >= best_score:
+		if score > best_score:
 			best_score = score
 			best = p
 	
@@ -78,9 +78,10 @@ func _rescan() -> void:
 		last_known_position = current_target.global_position
 		has_last_known = true
 	current_target = best
-	print("[PRIORITY] Приоритетный игрок найден: ", current_target)
+	if current_target != null:
+		print("[PRIORITY] Приоритетный игрок найден: ", current_target)
 
-## Нагло скомуниздил алгоритм вычисления нахождения игрока в поле зрения
+## Алгоритм вычисления нахождения игрока в поле зрения
 func _in_fov(to: Vector3) -> bool:
 	var forward : Vector3 = -_enemy.global_transform.basis.z
 	var flat: Vector3 = Vector3(to.x, 0.0, to.z).normalized()

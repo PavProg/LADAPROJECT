@@ -1,19 +1,23 @@
 [gd_resource type="BehaviorTree" format=3 uid="uid://2s7g8pgn8cfo"]
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_7w5p4"]
+[ext_resource type="Script" uid="uid://tl464w3oldu0" path="res://ai/tasks/patrol_state.gd" id="1_8hdqg"]
 
-[sub_resource type="BTSequence" id="BTSequence_8hdqg"]
-
-[sub_resource type="BTSequence" id="BTSequence_ow216"]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_ow216"]
 
 [sub_resource type="BTSequence" id="BTSequence_5304o"]
 
 [sub_resource type="BTSequence" id="BTSequence_2n1ri"]
 
-[sub_resource type="BTDynamicSelector" id="BTDynamicSelector_wx20v"]
-custom_name = "Root"
-children = [SubResource("BTSequence_8hdqg"), SubResource("BTSequence_ow216"), SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri")]
+[sub_resource type="BTSequence" id="BTSequence_wx20v"]
+
+[sub_resource type="BTSequence" id="BTSequence_kg88c"]
+
+[sub_resource type="BTAction" id="BTAction_18xl4"]
+script = ExtResource("1_8hdqg")
+
+[sub_resource type="BTDynamicSelector" id="BTDynamicSelector_bxycf"]
+children = [SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTSequence_wx20v"), SubResource("BTSequence_kg88c"), SubResource("BTAction_18xl4")]
 
 [resource]
-blackboard_plan = SubResource("BlackboardPlan_7w5p4")
-root_task = SubResource("BTDynamicSelector_wx20v")
+blackboard_plan = SubResource("BlackboardPlan_ow216")
+root_task = SubResource("BTDynamicSelector_bxycf")
