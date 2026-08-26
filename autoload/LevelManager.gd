@@ -87,36 +87,37 @@ func change_scene(path: String) -> void:
 # СПАВНЫ СУЩНОСТЕЙ
 @rpc("any_peer", "call_local", "reliable")
 func _ack_ready(peer_id: int) -> void:
-	if not multiplayer.is_server():
-		return
+	if not multiplayer.is_server(): return
 	
 	if peer_id == 1:
 		_on_server_ready()
 		return
-	
+		
 	if not _ready_peers.has(peer_id):
 		_ready_peers.append(peer_id)
-	
+		
 	if not _server_ready:
 		return
-	
+		
 	_handle_peer_ack(peer_id)
 
 func _on_server_ready() -> void:
 	if _server_ready:
 		return
+	
 	_server_ready = true
 	
 	if not _content_spawned:
 		_content_spawned = true
 		if _run_index >= 0:
 			Net.spawn_content()
+			print("[LEVELMANAGER] Контент заспавнен.")
 		GameManager.on_level_start(GameManager.required_quote_next_level)
-		
-	Net.server_spawn_player(1)
 	
+	Net.server_spawn_player(1)
 	for pid in _ready_peers:
 		_handle_peer_ack(pid)
+		
 
 func _handle_peer_ack(peer_id: int) -> void:
 	if _run_index == -1:
@@ -124,9 +125,7 @@ func _handle_peer_ack(peer_id: int) -> void:
 	else:
 		Net.server_spawn_player(peer_id)
 		Net.send_items_to(peer_id)
-		
 
-#@rpc("any_peer", "call_local", "reliable")
 #func _ack_ready(peer_id: int) -> void:
 	#if not multiplayer.is_server():
 		#return

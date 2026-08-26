@@ -1,23 +1,129 @@
 [gd_resource type="BehaviorTree" format=3 uid="uid://2s7g8pgn8cfo"]
 
-[ext_resource type="Script" uid="uid://tl464w3oldu0" path="res://ai/tasks/patrol_state.gd" id="1_8hdqg"]
+[ext_resource type="Script" uid="uid://bcqrx5v2i1am5" path="res://ai/tasks/should_ragdoll.gd" id="1_whw32"]
+[ext_resource type="Script" uid="uid://dkda1hapriqxu" path="res://ai/tasks/start_ragdoll.gd" id="2_b2d7f"]
+[ext_resource type="Script" uid="uid://bts6wfs0ul3mh" path="res://ai/tasks/BTCondition_HasTarget.gd" id="3_d08ox"]
+[ext_resource type="Script" uid="uid://cugnywyispp7q" path="res://ai/tasks/BTCondition_HasTargetAttack.gd" id="4_loxjt"]
+[ext_resource type="Script" uid="uid://bpjrluek8dlbb" path="res://ai/tasks/FaceTarget.gd" id="5_i2ttw"]
+[ext_resource type="Script" uid="uid://bc4ldti6r8n2g" path="res://ai/tasks/StartAttack.gd" id="6_mcktk"]
+[ext_resource type="Script" uid="uid://dtd5k5hjx13ex" path="res://ai/tasks/BTAction_CHASE.gd" id="7_6jgld"]
+[ext_resource type="Script" uid="uid://hm2gfa758qp3" path="res://ai/tasks/HasLastKnown.gd" id="8_2uq0f"]
+[ext_resource type="Script" uid="uid://bq08m74unhino" path="res://ai/tasks/MoveToLastKnown.gd" id="9_2mf5u"]
+[ext_resource type="Script" uid="uid://d1en80u4yda8d" path="res://ai/tasks/LookAround.gd" id="10_gkv0r"]
+[ext_resource type="Script" uid="uid://0eihdaqivq8y" path="res://ai/tasks/ClearTarget.gd" id="11_lb85p"]
+[ext_resource type="Script" uid="uid://tl464w3oldu0" path="res://ai/tasks/patrol_state.gd" id="12_11yfm"]
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_ow216"]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_7w5p4"]
+
+[sub_resource type="BTCondition" id="BTCondition_837yp"]
+script = ExtResource("1_whw32")
+
+[sub_resource type="BTAction" id="BTAction_yqqh8"]
+script = ExtResource("2_b2d7f")
+
+[sub_resource type="BTSequence" id="BTSequence_8hdqg"]
+custom_name = "sequence \"RAGDOLL\""
+children = [SubResource("BTCondition_837yp"), SubResource("BTAction_yqqh8")]
+
+[sub_resource type="BTCondition" id="BTCondition_kp1si"]
+script = ExtResource("3_d08ox")
+
+[sub_resource type="BTCondition" id="BTCondition_mucpi"]
+script = ExtResource("4_loxjt")
+
+[sub_resource type="BBNode" id="BBNode_whw32"]
+saved_value = NodePath("Root Scene")
+resource_name = "Root Scene"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_b2d7f"]
+animation_player = SubResource("BBNode_whw32")
+blend = 0.1
+custom_name = "PlayAnimation Walk"
+
+[sub_resource type="BTAction" id="BTAction_n6oi4"]
+script = ExtResource("5_i2ttw")
+
+[sub_resource type="BTWait" id="BTWait_b2d7f"]
+duration = 0.1
+
+[sub_resource type="BBNode" id="BBNode_d08ox"]
+saved_value = NodePath("Root Scene")
+resource_name = "Root Scene"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_loxjt"]
+animation_player = SubResource("BBNode_d08ox")
+blend = 0.1
+custom_name = "PlayAnimation Attack"
+
+[sub_resource type="BTAction" id="BTAction_p1l0d"]
+script = ExtResource("6_mcktk")
+
+[sub_resource type="BTWait" id="BTWait_whw32"]
+duration = 0.3
+
+[sub_resource type="BTSequence" id="BTSequence_ow216"]
+custom_name = "sequence \"ATTACK\""
+children = [SubResource("BTCondition_kp1si"), SubResource("BTCondition_mucpi"), SubResource("BTPlayAnimation_b2d7f"), SubResource("BTAction_n6oi4"), SubResource("BTWait_b2d7f"), SubResource("BTPlayAnimation_loxjt"), SubResource("BTAction_p1l0d"), SubResource("BTWait_whw32")]
+
+[sub_resource type="BTCooldown" id="BTCooldown_whw32"]
+duration = 1.5
+children = [SubResource("BTSequence_ow216")]
+
+[sub_resource type="BTCondition" id="BTCondition_2oxhx"]
+script = ExtResource("3_d08ox")
+
+[sub_resource type="BTAction" id="BTAction_w3d6i"]
+script = ExtResource("7_6jgld")
 
 [sub_resource type="BTSequence" id="BTSequence_5304o"]
+custom_name = "sequence \"CHASE\""
+children = [SubResource("BTCondition_2oxhx"), SubResource("BTAction_w3d6i")]
+
+[sub_resource type="BTCondition" id="BTCondition_83l3e"]
+script = ExtResource("8_2uq0f")
+
+[sub_resource type="BBNode" id="BBNode_b2d7f"]
+saved_value = NodePath("Root Scene")
+resource_name = "Root Scene"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_d08ox"]
+animation_player = SubResource("BBNode_b2d7f")
+blend = 0.1
+custom_name = "PlayAnimation Walk"
+
+[sub_resource type="BTAction" id="BTAction_vx7g2"]
+script = ExtResource("9_2mf5u")
+
+[sub_resource type="BBNode" id="BBNode_loxjt"]
+saved_value = NodePath("Root Scene")
+resource_name = "Root Scene"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_i2ttw"]
+animation_player = SubResource("BBNode_loxjt")
+blend = 0.1
+custom_name = "PlayAnimation Idle"
+
+[sub_resource type="BTComment" id="BTComment_whw32"]
+custom_name = "Search time внутри action"
+
+[sub_resource type="BTAction" id="BTAction_wtehg"]
+children = [SubResource("BTComment_whw32")]
+script = ExtResource("10_gkv0r")
+
+[sub_resource type="BTAction" id="BTAction_rlion"]
+script = ExtResource("11_lb85p")
 
 [sub_resource type="BTSequence" id="BTSequence_2n1ri"]
+custom_name = "sequence \"SEARCH\""
+children = [SubResource("BTCondition_83l3e"), SubResource("BTPlayAnimation_d08ox"), SubResource("BTAction_vx7g2"), SubResource("BTPlayAnimation_i2ttw"), SubResource("BTAction_wtehg"), SubResource("BTAction_rlion")]
 
-[sub_resource type="BTSequence" id="BTSequence_wx20v"]
+[sub_resource type="BTAction" id="BTAction_r41sq"]
+script = ExtResource("12_11yfm")
 
-[sub_resource type="BTSequence" id="BTSequence_kg88c"]
-
-[sub_resource type="BTAction" id="BTAction_18xl4"]
-script = ExtResource("1_8hdqg")
-
-[sub_resource type="BTDynamicSelector" id="BTDynamicSelector_bxycf"]
-children = [SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTSequence_wx20v"), SubResource("BTSequence_kg88c"), SubResource("BTAction_18xl4")]
+[sub_resource type="BTDynamicSelector" id="BTDynamicSelector_wx20v"]
+custom_name = "Root"
+children = [SubResource("BTSequence_8hdqg"), SubResource("BTCooldown_whw32"), SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq")]
 
 [resource]
-blackboard_plan = SubResource("BlackboardPlan_ow216")
-root_task = SubResource("BTDynamicSelector_bxycf")
+blackboard_plan = SubResource("BlackboardPlan_7w5p4")
+root_task = SubResource("BTDynamicSelector_wx20v")

@@ -5,7 +5,7 @@ class_name Enemy
 
 @export var data: UnitData
 @onready var agent: NavigationAgent3D = $NavigationAgent3D
-@onready var priority: PriorityComponent = $Priority
+@onready var priority: PriorityComponent = $PriorityComponent
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 ############ Navigation

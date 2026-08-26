@@ -1,13 +1,14 @@
 @tool
 extends BTCondition
 
-@export var data: UnitData
-
-var _min_detection_range_squared: float
-var _max_detection_range_squared: float
-
+func _generate_name() -> String:
+	return "Has Target?"
 
 func _tick(_delta: float) -> Status:
-	
-	
+	var e := agent as Enemy
+	if e == null:
+		return FAILURE
+	var t := e.priority.current_target
+	if t == null or not is_instance_valid(t):
+		return FAILURE
 	return SUCCESS

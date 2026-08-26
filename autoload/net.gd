@@ -80,6 +80,7 @@ func create_player(id: int) -> void:
 	p.add_to_group("player") # Добавляем в группу игроков
 	p.set_multiplayer_authority(id)
 	cont.add_child(p)
+	print("[NET/create_player] Создали ноду игрока, добавили в контейнер: ", cont)
 	#if id == multiplayer.get_unique_id():                       # ТОЛЬКО свой игрок
 		#p.get_node("CameraController/Camera3D").call_deferred("make_current")
 
@@ -98,11 +99,13 @@ func server_dispawn_player(id: int) -> void:
 # Если и это не сработает - process_frame.
 @rpc("authority", "call_local", "reliable")
 func _remove_player(id: int) -> void:
-	var cont = get_tree().current_scene.get_node_or_null("PlayersCont")
+	var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
 	if cont and cont.has_node(str(id)):
 		var node = cont.get_node(str(id))
-		node.name = "_dead_" + str(id)   # имя освобождаем сразу
+		node.name = "_dead" + str(id)
 		node.queue_free()
+		print("[NET/remove_player] Нода игрока была удалена.")
+	
 
 func clear_spawned() -> void:
 	spawned_ids.clear()	# Чистим реестр игроков
@@ -174,13 +177,16 @@ func respawn_all_players(ready_peers: Array) -> void:
 	
 	clear_spawned_players_nodes()
 	server_spawn_player(1)
+	print("[NET/respawn] Зареспавнили хоста.")
 	for pid in ready_peers:
 		server_spawn_player(pid)
-
+		print("[NET/respawn] Респавн клиентов: ", pid)
+	
+# Для бэкапа
 #func respawn_all_players() -> void:
 	#if not multiplayer.is_server(): return
 	#clear_spawned_players_nodes()
-	## await get_tree().process_frame
+	##await get_tree().process_frame	# Заглушка/хотфикс зависания камеры хоста
 	#server_spawn_player(1)
 	#for pid in multiplayer.get_peers():
 		#server_spawn_player(pid)

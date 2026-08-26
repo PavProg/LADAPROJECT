@@ -7,7 +7,7 @@ class_name PriorityComponent
 @export var fov_degrees: float = 140.0
 @export var scan_interval: float = 0.15 # интервал сканирования
 ## Порог срабатывания для смены состояний (гистерезис)
-@export var lose_multiplier: float = 1.4
+@export var lose_multiplayer: float = 1.4
 
 ## Два поля ниже для расчета приоритета. Враг оценивает у кого value предмета больше и до кого меньше топать
 @export var value_weight: float = 1.0
@@ -55,7 +55,7 @@ func _rescan() -> void:
 	var best: Node3D = null
 	var best_score := -INF
 	var detect: float = _enemy.data.radius_detection
-	var lose: float = detect * lose_multiplier
+	var lose: float = detect * lose_multiplayer
 	
 	for p in _candidates:
 		if not is_instance_valid(p): continue
@@ -81,7 +81,7 @@ func _rescan() -> void:
 	if current_target != null:
 		print("[PRIORITY] Приоритетный игрок найден: ", current_target)
 
-## Алгоритм вычисления нахождения игрока в поле зрения
+## Нагло скомуниздил алгоритм вычисления нахождения игрока в поле зрения
 func _in_fov(to: Vector3) -> bool:
 	var forward : Vector3 = -_enemy.global_transform.basis.z
 	var flat: Vector3 = Vector3(to.x, 0.0, to.z).normalized()

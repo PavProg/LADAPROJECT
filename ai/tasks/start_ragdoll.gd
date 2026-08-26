@@ -5,7 +5,8 @@ extends BTAction
 # ИМПЛЕМЕНТАЦИЯ КЛАССА РЭГДОЛА ИЗ КОМПОНЕНТОВ
 
 # ВАЖНО для активации ноды
-@export var target_var: StringName = &"target"
+func _generate_name() -> String:
+	return "Action start ragdoll"
 
 func _tick(delta: float) -> Status:
 	# Запуск рэгдолла
