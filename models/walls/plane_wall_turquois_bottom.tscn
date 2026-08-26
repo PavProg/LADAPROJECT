@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://i84hwyn8jisv"]
+
+[ext_resource type="PackedScene" uid="uid://ucln7beetse" path="res://models/blend/plane_wall_turquois_bottom.blend" id="1_3quo3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8tgt4"]
+size = Vector3(3, 1, 1)
+
+[node name="plane_wall_turquois_bottom" unique_id=487485232 instance=ExtResource("1_3quo3")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_bottom" parent_id_path=PackedInt32Array(1745345439) index="0" unique_id=200589525]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49999997, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_bottom/StaticBody3D" index="0" unique_id=1145784139]
+shape = SubResource("BoxShape3D_8tgt4")

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://be4k0f781j2wf"]
+
+[ext_resource type="PackedScene" uid="uid://bq1egf86eryvh" path="res://models/blend/plane_wall_turquois_top_1x1.blend" id="1_colrf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ropix"]
+
+[node name="plane_wall_turquois_top_1x1" unique_id=1768227145 instance=ExtResource("1_colrf")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouise_top_1x1" parent_id_path=PackedInt32Array(95405552) index="0" unique_id=1931808564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouise_top_1x1/StaticBody3D" index="0" unique_id=185959352]
+shape = SubResource("BoxShape3D_ropix")

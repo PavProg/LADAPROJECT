@@ -26,3 +26,6 @@ obj/
 bin/
 # Godot logs
 *.log
+
+*.blend1
+*.blend2

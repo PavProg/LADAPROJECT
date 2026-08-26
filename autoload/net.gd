@@ -9,8 +9,6 @@ var peer: SteamMultiplayerPeer
 
 var spawned_ids: Array[int] = []
 
-enum ItemType { HUMMER, BREAK }
-
 var spawned_items: Dictionary = {}
 var _item_counter: int = 0
 
@@ -115,39 +113,55 @@ func clear_spawned() -> void:
 
 ####### СПАВН ПРЕДМЕТОВ как у игроков
 
-# Зовёт сервер из ack_ready
+# Зовёт сервер из ack_ready. Предметы берутся с марок ItemMarks в сцене уровня.
 func spawn_content() -> void:
 	if not multiplayer.is_server(): return
-	for n in 4:
-		_server_spawn_item(ItemType.HUMMER, Vector3(randf_range(-6.0, 6.0), 3.0, randf_range(-6.0, 6.0)))
-	for n in 5:
-		_server_spawn_item(ItemType.BREAK, Vector3(randf_range(-10.0, 6.0), 1.5, randf_range(-10.0, 6.0)))
+	var marks := get_tree().current_scene.get_node_or_null("ItemMarks")
+	if marks == null:
+		push_warning("ItemMarks не найден в %s" % get_tree().current_scene.scene_file_path)
+		return
+	for m in marks.get_children():
+		if m is ItemMark:
+			var scene: PackedScene = m.forced_item if m.forced_item else BREAK_ITEMS
+			_server_spawn_item(scene.resource_path, m.global_position, m.global_rotation.y)
 
 # сервак создаёт предмет локально + регистрирует + рассылает готовым клиентам
-func _server_spawn_item(type: int, pos: Vector3) -> void:
-	if not multiplayer.is_server(): return
+func _server_spawn_item(scene_path: String, pos: Vector3, yaw: float = 0.0) -> Node:
+	if not multiplayer.is_server(): return null
 	_item_counter += 1
-	var item_name := "item_%d" % _item_counter			# сетевое имя, по нему удалять
-	var node := _instantiate_item(type, item_name, pos)	# создаём локально у сервера
-	if node == null: return
-	spawned_items[item_name] = {"type": type, "node": node}
-	_create_item.rpc(type, item_name, pos)
+	var item_name := "item_%d" % _item_counter				# сетевое имя, по нему удалять
+	var node := _instantiate_item(scene_path, item_name, pos, yaw)	# создаём локально у сервера
+	if node == null: return null
+	spawned_items[item_name] = {"scene": scene_path, "node": node}
+	_create_item.rpc(scene_path, item_name, pos, yaw)
+	return node
+
+# Выдать молоток игроку при спавне на боевом уровне
+func give_hammer_to(peer_id: int) -> void:
+	if not multiplayer.is_server(): return
+	var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
+	if cont == null: return
+	var p := cont.get_node_or_null(str(peer_id))
+	if p == null: return
+	_server_spawn_item(ITEMS.resource_path, p.global_position + Vector3.UP * 0.6)
 
 # Выполняется у КЛИЕНТОВ
 @rpc("authority", "reliable")
-func _create_item(type: int, item_name: String, pos: Vector3) -> void:
-	_instantiate_item(type, item_name, pos)
+func _create_item(scene_path: String, item_name: String, pos: Vector3, yaw: float) -> void:
+	_instantiate_item(scene_path, item_name, pos, yaw)
 
 # Локальное создание узла (одинаково на сервере и клиенте)
-func _instantiate_item(type: int, item_name: String, pos: Vector3) -> Node:
+func _instantiate_item(scene_path: String, item_name: String, pos: Vector3, yaw: float) -> Node:
 	var cont := get_tree().current_scene.get_node_or_null("Items")
 	if cont == null: return null
 	if cont.has_node(item_name): return cont.get_node(item_name)
-	var scene: PackedScene = ITEMS if type == ItemType.HUMMER else BREAK_ITEMS
+	var scene: PackedScene = load(scene_path)
+	if scene == null: return null
 	var i := scene.instantiate()
 	i.name = item_name
 	i.set_multiplayer_authority(1)		# предметы всегда серверо-авторитетны (freeze считается по этому)
 	i.position = pos
+	i.rotation.y = yaw
 	cont.add_child(i)
 	return i
 
@@ -157,7 +171,7 @@ func send_items_to(peer_id: int) -> void:
 	for item_name in spawned_items:
 		var d = spawned_items[item_name]
 		if is_instance_valid(d.node):
-			_create_item.rpc_id(peer_id, d.type, item_name, d.node.global_position)
+			_create_item.rpc_id(peer_id, d.scene, item_name, d.node.global_position, d.node.rotation.y)
 
 # зовётся из break_component при разрушении (сервер)
 func despawn_item(item_name: String) -> void:

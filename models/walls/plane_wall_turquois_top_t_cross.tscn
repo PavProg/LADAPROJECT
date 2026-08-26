@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://5vkp60hsb3kj"]
+
+[ext_resource type="PackedScene" uid="uid://qbd5oq6pwcjt" path="res://models/blend/plane_wall_turquois_top_T-cross.blend" id="1_356u6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_356u6"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ucfey"]
+
+[node name="plane_wall_turquois_top_T-cross" unique_id=1605752393 instance=ExtResource("1_356u6")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouise_top_T-cross" parent_id_path=PackedInt32Array(789463821) index="0" unique_id=1457277091]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouise_top_T-cross/StaticBody3D" index="0" unique_id=225248102]
+shape = SubResource("BoxShape3D_356u6")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouise_top_T-cross/StaticBody3D" index="1" unique_id=688496606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+shape = SubResource("BoxShape3D_ucfey")

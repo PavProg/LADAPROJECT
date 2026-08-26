@@ -23,11 +23,12 @@ extends CharacterBody3D
 @export var export_data: Resource
 var data: Resource
 
-var air_speed_reduction = 0.1   # насколько каждый кадр снижается скорость в воздухе после прыжка
+var air_speed_reduction = 0.05   # насколько каждый кадр снижается скорость в воздухе после прыжка
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity_scale: float = 2.0
 
 var _intent = {"move": Vector2.ZERO, "jump": false }
-var ragdoll_root_offset: Vector3 = Vector3(0, 1, 0)
+var ragdoll_root_offset: Vector3 = Vector3(0, 0.5, 0)
 var input_movement_vector = Vector3.ZERO
 var camera_main_transform: Transform3D
 var need_jump: bool = false
@@ -168,7 +169,7 @@ func movement(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, air_speed_reduction)
 		velocity.z = move_toward(velocity.z, 0, air_speed_reduction)
 		# падение
-		velocity.y -= gravity * delta
+		velocity.y -= gravity * gravity_scale * delta
 		
 	move_and_slide()
 	

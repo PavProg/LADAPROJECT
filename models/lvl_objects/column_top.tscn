@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ssghdnmq37qj"]
+
+[ext_resource type="PackedScene" uid="uid://duf4pgktx5f6l" path="res://models/blend/column_top.blend" id="1_pqjoq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqjoq"]
+size = Vector3(0.99999994, 1, 1)
+
+[node name="column_top" unique_id=2052097445 instance=ExtResource("1_pqjoq")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="column_top" parent_id_path=PackedInt32Array(1517110677) index="0" unique_id=1469377357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49999997, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="column_top/StaticBody3D" index="0" unique_id=1065324032]
+shape = SubResource("BoxShape3D_pqjoq")

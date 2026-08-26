@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c8f7ifgjgn8nu"]
+
+[ext_resource type="PackedScene" uid="uid://dc32qyfbq2viv" path="res://Assets/models/gltf/floor_tile_extralarge_grates.gltf" id="1_bgxq1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bgxq1"]
+size = Vector3(8, 1.13, 8)
+
+[node name="floor_tile_extralarge_grates2" unique_id=1154813727 instance=ExtResource("1_bgxq1")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_tile_extralarge_grates" parent_id_path=PackedInt32Array(882272463) index="0" unique_id=784089953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.41499996, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_tile_extralarge_grates/StaticBody3D" index="0" unique_id=662662839]
+shape = SubResource("BoxShape3D_bgxq1")

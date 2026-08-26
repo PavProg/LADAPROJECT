@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://chb58u85272e3"]
+
+[ext_resource type="PackedScene" uid="uid://molbnsohsmen" path="res://Assets/models/gltf/floor_dirt_small_A.gltf" id="1_25ima"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4bga2"]
+size = Vector3(2, 0.12396434, 2)
+
+[node name="floor_dirt_small_A2" unique_id=422175612 instance=ExtResource("1_25ima")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_dirt_small_A" parent_id_path=PackedInt32Array(387095445) index="0" unique_id=1402417068]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2397766e-05, -0.0067973733, -3.5762787e-07)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_dirt_small_A/StaticBody3D" index="0" unique_id=894094410]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.031220451, 0)
+shape = SubResource("BoxShape3D_4bga2")

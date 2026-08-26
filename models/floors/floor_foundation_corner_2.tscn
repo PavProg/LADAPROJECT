@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bxww4onmsqbf7"]
+
+[ext_resource type="PackedScene" uid="uid://dttvppr6lcy1i" path="res://Assets/models/gltf/floor_foundation_corner.gltf" id="1_ethvi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_atcko"]
+size = Vector3(2.1, 2, 2.1)
+
+[node name="floor_foundation_corner2" unique_id=155192646 instance=ExtResource("1_ethvi")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_foundation_corner" parent_id_path=PackedInt32Array(1298135843) index="0" unique_id=1624970865]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05000007, 1, 0.049999952)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_foundation_corner/StaticBody3D" index="0" unique_id=2051358766]
+shape = SubResource("BoxShape3D_atcko")

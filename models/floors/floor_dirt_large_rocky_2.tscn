@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://djs3lkkwqdqal"]
+
+[ext_resource type="PackedScene" uid="uid://dqdtsyj0ac602" path="res://Assets/models/gltf/floor_dirt_large_rocky.gltf" id="1_sdf88"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uk2e4"]
+size = Vector3(4, 0.12334464, 4)
+
+[node name="floor_dirt_large_rocky2" unique_id=1382624558 instance=ExtResource("1_sdf88")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_dirt_large_rocky" parent_id_path=PackedInt32Array(47250769) index="0" unique_id=776976102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3841858e-07, 0.09639631, 1.2278557e-05)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_dirt_large_rocky/StaticBody3D" index="0" unique_id=1797135997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13472398, 0)
+shape = SubResource("BoxShape3D_uk2e4")

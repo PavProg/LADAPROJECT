@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ct8s1hap8ugvw"]
+
+[ext_resource type="PackedScene" uid="uid://cb5s6he1ccf6b" path="res://models/blend/plane_wall_turquois_bottom_corner.blend" id="1_g4omf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g4omf"]
+size = Vector3(1, 1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_72cro"]
+
+[node name="plane_wall_turquois_bottom_corner" unique_id=1796052567 instance=ExtResource("1_g4omf")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_bottom_corner" parent_id_path=PackedInt32Array(1675011653) index="0" unique_id=2049186323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.49999997, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_bottom_corner/StaticBody3D" index="0" unique_id=1206419822]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+shape = SubResource("BoxShape3D_g4omf")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouis_bottom_corner/StaticBody3D" index="1" unique_id=682670218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
+shape = SubResource("BoxShape3D_72cro")

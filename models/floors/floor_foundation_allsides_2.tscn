@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cp7qnrltjvwex"]
+
+[ext_resource type="PackedScene" uid="uid://cppjprkbjb1sl" path="res://Assets/models/gltf/floor_foundation_allsides.gltf" id="1_rumst"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_356up"]
+size = Vector3(2.2, 2, 2.2)
+
+[node name="floor_foundation_allsides2" unique_id=1604512288 instance=ExtResource("1_rumst")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_foundation_allsides" parent_id_path=PackedInt32Array(1870230966) index="0" unique_id=401489497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_foundation_allsides/StaticBody3D" index="0" unique_id=1243641879]
+shape = SubResource("BoxShape3D_356up")

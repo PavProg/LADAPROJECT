@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://ech82kxs32i4"]
+
+[ext_resource type="PackedScene" uid="uid://bnk11ax216a7g" path="res://models/walls/plane_wall_turquois_body.tscn" id="1_rpdca"]
+[ext_resource type="PackedScene" uid="uid://b4tph26jf7o13" path="res://models/walls/plane_wall_turquois_body_1x1.tscn" id="2_oi6op"]
+[ext_resource type="PackedScene" uid="uid://i84hwyn8jisv" path="res://models/walls/plane_wall_turquois_bottom.tscn" id="3_h827e"]
+[ext_resource type="PackedScene" uid="uid://fsvlqs1s6ecf" path="res://models/walls/plane_wall_turquois_body_corner.tscn" id="3_iwmi2"]
+[ext_resource type="PackedScene" uid="uid://c6vsvb88l7myo" path="res://models/walls/plane_wall_turquois_body_cross.tscn" id="4_jhc7c"]
+[ext_resource type="PackedScene" uid="uid://7oo4b6gc8yc5" path="res://models/walls/plane_wall_turquois_bottom_1x1.tscn" id="4_kisw4"]
+[ext_resource type="PackedScene" uid="uid://cu270hwi6xekb" path="res://models/walls/plane_wall_turquois_bottom_cross.tscn" id="5_2eikm"]
+[ext_resource type="PackedScene" uid="uid://bnc0kp3ido5ps" path="res://models/walls/plane_wall_turquois_body_t_cross.tscn" id="5_42l37"]
+[ext_resource type="PackedScene" uid="uid://1sbjn4kija3x" path="res://models/walls/plane_wall_turquois_top.tscn" id="6_7uec4"]
+[ext_resource type="PackedScene" uid="uid://be4k0f781j2wf" path="res://models/walls/plane_wall_turquois_top_1x1.tscn" id="7_285ee"]
+[ext_resource type="PackedScene" uid="uid://cama3fxv0ycbf" path="res://models/walls/plane_wall_turquois_top_cross.tscn" id="8_iwmi2"]
+[ext_resource type="PackedScene" uid="uid://ct8s1hap8ugvw" path="res://models/walls/plane_wall_turquois_bottom_corner.tscn" id="8_s28r3"]
+[ext_resource type="PackedScene" uid="uid://ble5jqfirw6ek" path="res://models/walls/plane_wall_turquois_bottom_t_cross.tscn" id="10_vsop3"]
+[ext_resource type="PackedScene" uid="uid://k8h53rcvhvay" path="res://models/walls/plane_wall_turquois_top_corner.tscn" id="13_d0pvw"]
+[ext_resource type="PackedScene" uid="uid://5vkp60hsb3kj" path="res://models/walls/plane_wall_turquois_top_t_cross.tscn" id="15_p2yqo"]
+
+[node name="WallTiles" type="Node3D" unique_id=1448416471]
+
+[node name="plane_wall_turquois_body" parent="." unique_id=626169929 instance=ExtResource("1_rpdca")]
+
+[node name="plane_wall_turquois_body_1x1" parent="." unique_id=1092900510 instance=ExtResource("2_oi6op")]
+
+[node name="plane_wall_turquois_body_cross" parent="." unique_id=1035730940 instance=ExtResource("4_jhc7c")]
+
+[node name="plane_wall_turquois_body_T-cross" parent="." unique_id=680147732 instance=ExtResource("5_42l37")]
+
+[node name="plane_wall_turquois_bottom" parent="." unique_id=487485232 instance=ExtResource("3_h827e")]
+
+[node name="plane_wall_turquois_bottom_1x1" parent="." unique_id=389876214 instance=ExtResource("4_kisw4")]
+
+[node name="plane_wall_turquois_bottom_cross" parent="." unique_id=567368212 instance=ExtResource("5_2eikm")]
+
+[node name="plane_wall_turquois_bottom_T-cross" parent="." unique_id=1787323634 instance=ExtResource("10_vsop3")]
+
+[node name="plane_wall_turquois_top" parent="." unique_id=987633693 instance=ExtResource("6_7uec4")]
+
+[node name="plane_wall_turquois_top_1x1" parent="." unique_id=1768227145 instance=ExtResource("7_285ee")]
+
+[node name="plane_wall_turquois_top_cross" parent="." unique_id=1634087963 instance=ExtResource("8_iwmi2")]
+
+[node name="plane_wall_turquois_top_T-cross" parent="." unique_id=1605752393 instance=ExtResource("15_p2yqo")]
+
+[node name="plane_wall_turquois_body_corner" parent="." unique_id=1476748340 instance=ExtResource("3_iwmi2")]
+
+[node name="plane_wall_turquois_bottom_corner" parent="." unique_id=1796052567 instance=ExtResource("8_s28r3")]
+
+[node name="plane_wall_turquois_top_corner" parent="." unique_id=1372355040 instance=ExtResource("13_d0pvw")]

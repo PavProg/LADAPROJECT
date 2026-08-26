@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cw8p7qk2qgkqw"]
+
+[ext_resource type="PackedScene" uid="uid://ca0whibvvq26t" path="res://Assets/models/gltf/floor_tile_small.gltf" id="1_hpjbe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hpjbe"]
+size = Vector3(2, 0.15, 2)
+
+[node name="floor_tile_small2" unique_id=1814341184 instance=ExtResource("1_hpjbe")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_tile_small" parent_id_path=PackedInt32Array(960194204) index="0" unique_id=454215427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025000006, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_tile_small/StaticBody3D" index="0" unique_id=1390245573]
+shape = SubResource("BoxShape3D_hpjbe")

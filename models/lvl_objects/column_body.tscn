@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d0romjxunuu5e"]
+
+[ext_resource type="PackedScene" uid="uid://8asug4fu8mxf" path="res://models/blend/column_body.blend" id="1_53cuo"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_53cuo"]
+height = 4.0
+
+[node name="column_body" unique_id=564624032 instance=ExtResource("1_53cuo")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="column_body" parent_id_path=PackedInt32Array(489059851) index="0" unique_id=1000312953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9999999, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="column_body/StaticBody3D" index="0" unique_id=1958608748]
+shape = SubResource("CylinderShape3D_53cuo")

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bv24c8ji6k18e"]
+
+[ext_resource type="PackedScene" uid="uid://d0romjxunuu5e" path="res://models/lvl_objects/column_body.tscn" id="1_ibmip"]
+[ext_resource type="PackedScene" uid="uid://22n2o862efq2" path="res://models/lvl_objects/column_bottom.tscn" id="2_lhryq"]
+[ext_resource type="PackedScene" uid="uid://ssghdnmq37qj" path="res://models/lvl_objects/column_top.tscn" id="3_fnm2n"]
+
+[node name="LvlObjects" type="Node3D" unique_id=339975859]
+
+[node name="column_body" parent="." unique_id=564624032 instance=ExtResource("1_ibmip")]
+
+[node name="column_bottom" parent="." unique_id=966051831 instance=ExtResource("2_lhryq")]
+
+[node name="column_top" parent="." unique_id=2052097445 instance=ExtResource("3_fnm2n")]

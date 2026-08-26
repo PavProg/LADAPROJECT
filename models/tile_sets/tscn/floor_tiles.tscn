@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://di8po4yfkud63"]
+
+[ext_resource type="PackedScene" uid="uid://dedj7p6unxmm0" path="res://Assets/models/floors/floor_dirt_large_2.tscn" id="1_3ntop"]
+[ext_resource type="PackedScene" uid="uid://c8f7ifgjgn8nu" path="res://Assets/models/floors/floor_tile_extralarge_grates_2.tscn" id="1_27cij"]
+[ext_resource type="PackedScene" uid="uid://djs3lkkwqdqal" path="res://Assets/models/floors/floor_dirt_large_rocky_2.tscn" id="2_cfu35"]
+[ext_resource type="PackedScene" uid="uid://cik8eue18wp3w" path="res://Assets/models/floors/floor_tile_large_2.tscn" id="2_w74fa"]
+[ext_resource type="PackedScene" uid="uid://cw8p7qk2qgkqw" path="res://Assets/models/floors/floor_tile_small_2.tscn" id="3_8owa6"]
+[ext_resource type="PackedScene" uid="uid://chb58u85272e3" path="res://Assets/models/floors/floor_dirt_small_a_2.tscn" id="3_r3k0e"]
+[ext_resource type="PackedScene" uid="uid://t1gnyenngnvj" path="res://Assets/models/floors/floor_wood_large_2.tscn" id="4_uwhs2"]
+[ext_resource type="PackedScene" uid="uid://cp7qnrltjvwex" path="res://Assets/models/floors/floor_foundation_allsides_2.tscn" id="4_yqi0e"]
+[ext_resource type="PackedScene" uid="uid://bxww4onmsqbf7" path="res://Assets/models/floors/floor_foundation_corner_2.tscn" id="5_kpy38"]
+[ext_resource type="PackedScene" uid="uid://7e3cngleiwvx" path="res://Assets/models/floors/floor_wood_small_2.tscn" id="5_u1tkr"]
+[ext_resource type="PackedScene" uid="uid://bvscwrv0rgfbd" path="res://Assets/models/floors/floor_foundation_diagonal_corner_2.tscn" id="6_sbihv"]
+[ext_resource type="PackedScene" uid="uid://dxj1tqp2k1bpv" path="res://Assets/models/floors/floor_tile_big_grate_2.tscn" id="7_xmvno"]
+[ext_resource type="PackedScene" uid="uid://hfyjrsdyxdda" path="res://Assets/models/floors/floor_tile_grate_2.tscn" id="9_bg7ml"]
+[ext_resource type="PackedScene" uid="uid://bb1kd5ogssdol" path="res://Assets/models/floors/floor_wood_large_dark_2.tscn" id="13_y5kdp"]
+[ext_resource type="PackedScene" uid="uid://bac3if1jc13eb" path="res://Assets/models/floors/floor_wood_small_dark_2.tscn" id="15_6miqk"]
+[ext_resource type="PackedScene" uid="uid://bbxww23a54yxy" path="res://Assets/models/floors/floor_wood_small_both_sides_2.tscn" id="16_cfu35"]
+
+[node name="floor_tiles" type="Node3D" unique_id=1163507944]
+
+[node name="floor_dirt_large2" parent="." unique_id=1974126016 instance=ExtResource("1_3ntop")]
+
+[node name="floor_dirt_large_rocky2" parent="." unique_id=1382624558 instance=ExtResource("2_cfu35")]
+
+[node name="floor_dirt_small_A2" parent="." unique_id=422175612 instance=ExtResource("3_r3k0e")]
+
+[node name="floor_foundation_allsides2" parent="." unique_id=1604512288 instance=ExtResource("4_yqi0e")]
+
+[node name="floor_foundation_corner2" parent="." unique_id=155192646 instance=ExtResource("5_kpy38")]
+
+[node name="floor_foundation_diagonal_corner2" parent="." unique_id=2093540163 instance=ExtResource("6_sbihv")]
+
+[node name="floor_tile_big_grate2" parent="." unique_id=1127486067 instance=ExtResource("7_xmvno")]
+
+[node name="floor_tile_extralarge_grates2" parent="." unique_id=1154813727 instance=ExtResource("1_27cij")]
+
+[node name="floor_tile_grate2" parent="." unique_id=2042542187 instance=ExtResource("9_bg7ml")]
+
+[node name="floor_tile_large2" parent="." unique_id=1085043469 instance=ExtResource("2_w74fa")]
+
+[node name="floor_tile_small2" parent="." unique_id=1814341184 instance=ExtResource("3_8owa6")]
+
+[node name="floor_wood_large2" parent="." unique_id=989341281 instance=ExtResource("4_uwhs2")]
+
+[node name="floor_wood_large_dark2" parent="." unique_id=1459004114 instance=ExtResource("13_y5kdp")]
+
+[node name="floor_wood_small2" parent="." unique_id=1693217382 instance=ExtResource("5_u1tkr")]
+
+[node name="floor_wood_small_dark2" parent="." unique_id=784505818 instance=ExtResource("15_6miqk")]
+
+[node name="floor_wood_small_both-sides2" parent="." unique_id=1604328046 instance=ExtResource("16_cfu35")]

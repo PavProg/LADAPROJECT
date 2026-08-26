@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bvscwrv0rgfbd"]
+
+[ext_resource type="PackedScene" uid="uid://jjxyc0fudwv4" path="res://Assets/models/gltf/floor_foundation_diagonal_corner.gltf" id="1_dxmlu"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xyb83"]
+points = PackedVector3Array(-1.1, 0, -1, -1.1, 2, -1, 0.9999999, 0, -1, 0.9999999, 0, 1.0999999, 0.9999999, 2, 1.0999999, 0.9999999, 2, -1)
+
+[node name="floor_foundation_diagonal_corner2" unique_id=2093540163 instance=ExtResource("1_dxmlu")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_foundation_diagonal_corner" parent_id_path=PackedInt32Array(1195028857) index="0" unique_id=534583039]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_foundation_diagonal_corner/StaticBody3D" index="0" unique_id=1486196211]
+shape = SubResource("ConvexPolygonShape3D_xyb83")

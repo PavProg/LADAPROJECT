@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://rgj5w7dcipg2"]
+
+[ext_resource type="PackedScene" uid="uid://cb4p04fckjobu" path="res://models/gltf/roof.gltf" id="1_mqln6"]
+[ext_resource type="Texture2D" uid="uid://c2pfk3ta0qp3v" path="res://models/gltf/gray-abstract-texture-background.jpg.jpg" id="2_cj72c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tcymi"]
+albedo_texture = ExtResource("2_cj72c")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cj72c"]
+size = Vector3(1, 0.060017906, 1)
+
+[node name="roof" unique_id=1929277530 instance=ExtResource("1_mqln6")]
+
+[node name="roof" parent="." index="0" unique_id=1179384131]
+surface_material_override/0 = SubResource("StandardMaterial3D_tcymi")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="roof" index="0" unique_id=1472975839]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roof/StaticBody3D" index="0" unique_id=645036932]
+shape = SubResource("BoxShape3D_cj72c")

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://btyera0dhefps"]
+
+[ext_resource type="PackedScene" uid="uid://rgj5w7dcipg2" path="res://models/roof/roof.tscn" id="1_uw8ym"]
+
+[node name="RoofTiles" type="Node3D" unique_id=646443061]
+
+[node name="roof" parent="." unique_id=1929277530 instance=ExtResource("1_uw8ym")]

@@ -1,8 +1,8 @@
 extends Node
 
-const HUB := "res://levels/hub/TestHub.tscn"
+const HUB := "res://levels/hub/hub.tscn"
 const RUNS := [
-	"res://levels/run_XX/run_test.tscn"
+	"res://levels/run_XX/run_level_1.tscn"
 ]
 
 var current_scene_path: String = ""
@@ -115,15 +115,18 @@ func _on_server_ready() -> void:
 		GameManager.on_level_start(GameManager.required_quote_next_level)
 	
 	Net.server_spawn_player(1)
+	if _run_index >= 0:
+		Net.give_hammer_to(1)
 	for pid in _ready_peers:
 		_handle_peer_ack(pid)
-		
+
 
 func _handle_peer_ack(peer_id: int) -> void:
 	if _run_index == -1:
 		Net.respawn_all_players(_ready_peers)
 	else:
 		Net.server_spawn_player(peer_id)
+		Net.give_hammer_to(peer_id)
 		Net.send_items_to(peer_id)
 
 #func _ack_ready(peer_id: int) -> void:

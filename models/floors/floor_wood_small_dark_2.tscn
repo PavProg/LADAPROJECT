@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bac3if1jc13eb"]
+
+[ext_resource type="PackedScene" uid="uid://cbrdctrxhou62" path="res://Assets/models/gltf/floor_wood_small_dark.gltf" id="1_wtbfl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x2lpg"]
+size = Vector3(2, 0.15, 2)
+
+[node name="floor_wood_small_dark2" unique_id=784505818 instance=ExtResource("1_wtbfl")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_wood_small_dark" parent_id_path=PackedInt32Array(870912707) index="0" unique_id=1707745016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.024999999, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_wood_small_dark/StaticBody3D" index="0" unique_id=866022870]
+shape = SubResource("BoxShape3D_x2lpg")

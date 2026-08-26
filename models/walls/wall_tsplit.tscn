@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cf422c0spy1l5"]
+
+[ext_resource type="PackedScene" uid="uid://dj7n6sm6qq4ff" path="res://Assets/models/gltf/wall_Tsplit.gltf" id="1_jscmx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x6mvu"]
+size = Vector3(4, 4, 1.0215153)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tw1cs"]
+size = Vector3(1.046875, 4, 1.5236549)
+
+[node name="wall_Tsplit" unique_id=1887209120 instance=ExtResource("1_jscmx")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="wall_Tsplit" parent_id_path=PackedInt32Array(137067043) index="0" unique_id=86020417]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0.7500302)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="wall_Tsplit/StaticBody3D" index="0" unique_id=32715768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.73927325)
+shape = SubResource("BoxShape3D_x6mvu")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="wall_Tsplit/StaticBody3D" index="1" unique_id=1428965681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5027996)
+shape = SubResource("BoxShape3D_tw1cs")
