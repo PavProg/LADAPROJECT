@@ -15,6 +15,42 @@
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_7w5p4"]
 
+[sub_resource type="BTCondition" id="BTCondition_2oxhx"]
+script = ExtResource("3_d08ox")
+
+[sub_resource type="BTAction" id="BTAction_w3d6i"]
+script = ExtResource("7_6jgld")
+
+[sub_resource type="BTSequence" id="BTSequence_5304o"]
+custom_name = "sequence \"CHASE\""
+children = [SubResource("BTCondition_2oxhx"), SubResource("BTAction_w3d6i")]
+
+[sub_resource type="BTCondition" id="BTCondition_83l3e"]
+script = ExtResource("8_2uq0f")
+
+[sub_resource type="BTAction" id="BTAction_vx7g2"]
+script = ExtResource("9_2mf5u")
+
+[sub_resource type="BTComment" id="BTComment_whw32"]
+custom_name = "Search time внутри action"
+
+[sub_resource type="BTAction" id="BTAction_wtehg"]
+children = [SubResource("BTComment_whw32")]
+script = ExtResource("10_gkv0r")
+
+[sub_resource type="BTAction" id="BTAction_rlion"]
+script = ExtResource("11_lb85p")
+
+[sub_resource type="BTComment" id="BTComment_b2d7f"]
+custom_name = "Логика следующая. Цель пропала из виду -> идем к последней известной точке -> осматриваемся -> если никого, уходим в патруль"
+
+[sub_resource type="BTSequence" id="BTSequence_2n1ri"]
+custom_name = "sequence \"SEARCH\""
+children = [SubResource("BTCondition_83l3e"), SubResource("BTAction_vx7g2"), SubResource("BTAction_wtehg"), SubResource("BTAction_rlion"), SubResource("BTComment_b2d7f")]
+
+[sub_resource type="BTAction" id="BTAction_r41sq"]
+script = ExtResource("12_11yfm")
+
 [sub_resource type="BTCondition" id="BTCondition_837yp"]
 script = ExtResource("1_whw32")
 
@@ -24,6 +60,9 @@ script = ExtResource("2_b2d7f")
 [sub_resource type="BTSequence" id="BTSequence_8hdqg"]
 custom_name = "sequence \"RAGDOLL\""
 children = [SubResource("BTCondition_837yp"), SubResource("BTAction_yqqh8")]
+
+[sub_resource type="BTComment" id="BTComment_d08ox"]
+children = [SubResource("BTSequence_8hdqg")]
 
 [sub_resource type="BTCondition" id="BTCondition_kp1si"]
 script = ExtResource("3_d08ox")
@@ -69,60 +108,12 @@ children = [SubResource("BTCondition_kp1si"), SubResource("BTCondition_mucpi"), 
 duration = 1.5
 children = [SubResource("BTSequence_ow216")]
 
-[sub_resource type="BTCondition" id="BTCondition_2oxhx"]
-script = ExtResource("3_d08ox")
-
-[sub_resource type="BTAction" id="BTAction_w3d6i"]
-script = ExtResource("7_6jgld")
-
-[sub_resource type="BTSequence" id="BTSequence_5304o"]
-custom_name = "sequence \"CHASE\""
-children = [SubResource("BTCondition_2oxhx"), SubResource("BTAction_w3d6i")]
-
-[sub_resource type="BTCondition" id="BTCondition_83l3e"]
-script = ExtResource("8_2uq0f")
-
-[sub_resource type="BBNode" id="BBNode_b2d7f"]
-saved_value = NodePath("Root Scene")
-resource_name = "Root Scene"
-
-[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_d08ox"]
-animation_player = SubResource("BBNode_b2d7f")
-blend = 0.1
-custom_name = "PlayAnimation Walk"
-
-[sub_resource type="BTAction" id="BTAction_vx7g2"]
-script = ExtResource("9_2mf5u")
-
-[sub_resource type="BBNode" id="BBNode_loxjt"]
-saved_value = NodePath("Root Scene")
-resource_name = "Root Scene"
-
-[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_i2ttw"]
-animation_player = SubResource("BBNode_loxjt")
-blend = 0.1
-custom_name = "PlayAnimation Idle"
-
-[sub_resource type="BTComment" id="BTComment_whw32"]
-custom_name = "Search time внутри action"
-
-[sub_resource type="BTAction" id="BTAction_wtehg"]
-children = [SubResource("BTComment_whw32")]
-script = ExtResource("10_gkv0r")
-
-[sub_resource type="BTAction" id="BTAction_rlion"]
-script = ExtResource("11_lb85p")
-
-[sub_resource type="BTSequence" id="BTSequence_2n1ri"]
-custom_name = "sequence \"SEARCH\""
-children = [SubResource("BTCondition_83l3e"), SubResource("BTPlayAnimation_d08ox"), SubResource("BTAction_vx7g2"), SubResource("BTPlayAnimation_i2ttw"), SubResource("BTAction_wtehg"), SubResource("BTAction_rlion")]
-
-[sub_resource type="BTAction" id="BTAction_r41sq"]
-script = ExtResource("12_11yfm")
+[sub_resource type="BTComment" id="BTComment_loxjt"]
+children = [SubResource("BTCooldown_whw32")]
 
 [sub_resource type="BTDynamicSelector" id="BTDynamicSelector_wx20v"]
 custom_name = "Root"
-children = [SubResource("BTSequence_8hdqg"), SubResource("BTCooldown_whw32"), SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq")]
+children = [SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq"), SubResource("BTComment_d08ox"), SubResource("BTComment_loxjt")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_7w5p4")

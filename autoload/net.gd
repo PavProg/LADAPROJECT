@@ -5,12 +5,16 @@ const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
 const ITEMS := preload("res://items/hummer.tscn")
 const BREAK_ITEMS := preload("res://items/bust.tscn")
+const ENEMY_RAT := preload("res://actors/units/enemy_rat.tscn")
 var peer: SteamMultiplayerPeer
 
 var spawned_ids: Array[int] = []
 
 var spawned_items: Dictionary = {}
 var _item_counter: int = 0
+
+var spawned_enemy: Dictionary = {}
+var _enemy_counter: int = 0
 
 #func _ready() -> void:
 	## Коннектим пиры
@@ -103,11 +107,6 @@ func _remove_player(id: int) -> void:
 		node.name = "_dead" + str(id)
 		node.queue_free()
 		print("[NET/remove_player] Нода игрока была удалена.")
-	
-
-func clear_spawned() -> void:
-	spawned_ids.clear()	# Чистим реестр игроков
-	spawned_items.clear()	# и реестр предметов (сами узлы умрут вместе со сценой)
 
 #######
 
@@ -185,6 +184,84 @@ func _remove_item(item_name: String) -> void:
 	if cont and cont.has_node(item_name):
 		cont.get_node(item_name).queue_free()
 
+########### СПАВН ВРАГОВ
+
+func spawn_enemies() -> void:
+	if not multiplayer.is_server(): return
+	
+	var marks := get_tree().current_scene.get_node_or_null("EnemyMarkCont")
+	if marks == null:
+		push_warning("EnemyMarksCont не найден в корневой сцене уровня.")
+		return
+	
+	for m in marks.get_children():
+		if m is EnemyMark:
+			var scene: PackedScene = m.forced_enemy if m.forced_enemy else ENEMY_RAT
+			_server_spawn_enemies(scene.resource_path, m.global_position, m.global_position.y)
+
+## сервер спавнит врагов
+func _server_spawn_enemies(scene_path: String, pos: Vector3, yaw: float = 0.0) -> Node:
+	if not multiplayer.is_server(): return
+	
+	_enemy_counter += 1
+	var enemy_name := "enemy_%d" % _enemy_counter
+	
+	var node := _instantiate_enemy(scene_path, enemy_name, pos, yaw)
+	if node == null: return null
+	
+	spawned_enemy[enemy_name] = {"scene": scene_path, "node": node}
+	_create_enemy.rpc(scene_path, enemy_name, pos, yaw)
+	return node
+
+## rpc - создаем сцены врагов
+@rpc("authority", "reliable")
+func _create_enemy(scene_path: String, enemy_name: String, pos: Vector3, yaw: float) -> void:
+	_instantiate_enemy(scene_path, enemy_name, pos, yaw)
+
+## Инстанцируем врагов
+func _instantiate_enemy(scene_path: String, enemy_name: String, pos: Vector3, yaw: float) -> Node:
+	var cont := get_tree().current_scene.get_node_or_null("EnemiesCont")
+	if cont == null: return null
+	
+	if cont.has_node(enemy_name):
+		return cont.get_node(enemy_name)
+	
+	var scene: PackedScene = load(scene_path)
+	if scene == null: return null
+	
+	var e := scene.instantiate()
+	e.name = enemy_name
+	e.set_multiplayer_authority(1)
+	e.position = pos
+	e.rotation.y = yaw
+	cont.add_child(e)
+	return e
+
+## Предохранитель от гонки
+func send_enemies_to(peer_id: int) -> void:
+	if not multiplayer.is_server(): return
+	
+	for enemy_name in spawned_enemy:
+		var d = spawned_enemy[enemy_name]
+		if is_instance_valid(d.node):
+			_create_enemy.rpc_id(peer_id, d.scene, enemy_name, d.node.global_position, d.node.rotation.y)
+
+## функция деспавна врагов
+func despawn_enemy(enemy_name: String) -> void:
+	if not multiplayer.is_server(): return
+	
+	spawned_enemy.erase(enemy_name)
+	_remove_enemy.rpc(enemy_name)
+
+## Сервер удаляет врагов
+@rpc("authority", "call_local", "reliable")
+func _remove_enemy(enemy_name: String) -> void:
+	var cont := get_tree().current_scene.get_node_or_null("EnemiesCont")
+	if cont and cont.has_node(enemy_name):
+		cont.get_node(enemy_name).queue_free()
+
+###########
+########### Трубочистим
 # Респавн игроков
 func respawn_all_players(ready_peers: Array) -> void:
 	if not multiplayer.is_server(): return
@@ -210,3 +287,8 @@ func clear_spawned_players_nodes() -> void:
 	for id in spawned_ids.duplicate():
 		_remove_player.rpc(id)
 	spawned_ids.clear()
+
+func clear_spawned() -> void:
+	spawned_ids.clear()	# Чистим реестр игроков
+	spawned_items.clear()	# и реестр предметов (сами узлы умрут вместе со сценой)
+	spawned_enemy.clear()

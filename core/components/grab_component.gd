@@ -15,6 +15,7 @@ func _physics_process(_delta: float) -> void:
 		var item := _aim_item()
 		if item:
 			_request_grab.rpc_id(1, item.get_path())   # просим ХОСТА (id 1)
+			
 	elif Input.is_action_just_released("grab"):
 		_request_release.rpc_id(1)
 

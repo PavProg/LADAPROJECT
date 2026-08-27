@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 	_rescan()
 	
 func _rescan() -> void:
-	print("[PRIORITY] Поиск игроков")
+	#print("[PRIORITY] Поиск игроков")
 	var best: Node3D = null
 	var best_score := -INF
 	var detect: float = _enemy.data.radius_detection

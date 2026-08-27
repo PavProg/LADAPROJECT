@@ -43,4 +43,9 @@ func _physics_process(delta: float) -> void:
 		look_at(global_position + dir, Vector3.UP)
 	move_and_slide()
 
+func stop_moving() -> void:
+	velocity.x = 0.0
+	velocity.z = 0.0
+	agent.target_position = global_position
+
 ############ States

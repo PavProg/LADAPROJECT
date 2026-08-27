@@ -24,10 +24,11 @@ func take_damage(dmg: int) -> void:
 
 	# Урон не может превысить остаток прочности
 	var final_damage: int = clampi(dmg, 0, item.item_data.durability)
+	
+	if final_damage == 0: return
 	item.item_data.durability -= final_damage
-	#print("BREAK_COMPONENT -- %s HP: %d, income DMG: %d"
-		#% [item.name, item.item_data.durability, final_damage])
-	#print("BREAK_COMPONENT -- %s HP: %d, income DMG: %d" % [item.name, item.item_data.durability, final_damage])
+	# вклчюаение метки + ее задание урона
+	item.toggle_damage_label(final_damage)
 
 	# Начисляем квоту. GameManager на сервере сам разошлёт новое значение всем.
 	GameManager.on_quote_earned(final_damage)

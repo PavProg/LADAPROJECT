@@ -8,10 +8,9 @@ extends CharacterBody3D
 @onready var collision: CollisionShape3D = $Collision
 @onready var camera_controller: Node3D = $CameraController
 @onready var bone_attachment_3d: BoneAttachment3D = $PlayerBody/Rig_Medium/Skeleton3D/BoneAttachment3D
-@onready var third_person_camera_pos: Marker3D = $ThirdPersonCameraPos
+@onready var third_person_camera_pos: Node3D = $ThirdPersonCameraPos
 
-@onready var ui_button: Button = get_parent().get_parent().get_node("button/SubViewport/Control/Button")
-@onready var reload_button: Button = get_parent().get_parent().get_node("button2/SubViewport/Control/Button")
+#@onready var reload_button: Button = get_parent().get_parent().get_node("button2/SubViewport/Control/Button")
 
 @onready var meshes_to_unsee: Array[MeshInstance3D] = [
 	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_Head,
@@ -25,16 +24,17 @@ var data: Resource
 
 var air_speed_reduction = 0.05   # насколько каждый кадр снижается скорость в воздухе после прыжка
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var gravity_scale: float = 2.0
+var gravity_scale: float = 1.5
 
 var _intent = {"move": Vector2.ZERO, "jump": false }
 var ragdoll_root_offset: Vector3 = Vector3(0, 0.5, 0)
 var input_movement_vector = Vector3.ZERO
-var camera_main_transform: Transform3D
+var camera_main_global_transform: Transform3D
 var need_jump: bool = false
 var running: bool = false
 var endurance_recovering: bool = false
 var is_ragdoll: bool = false
+var is_ragdoll_on_floor: bool = false
 
 func _ready() -> void:
 	data = export_data
@@ -80,39 +80,64 @@ func _physics_process(delta: float) -> void:
 		movement(delta)
 		synchronize_player_and_ragdoll()
 
-# Нажатие кнопки перехода
+##### Нажатие кнопки перехода
 func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority(): 
+		return
+ 
 	if event.is_action_pressed("interact"):
-		if is_instance_valid(ui_button) and ui_button.is_visible_in_tree():
-			ui_button.pressed.emit()
-	elif event.is_action_pressed("reloadHUB"):
-		if is_instance_valid(reload_button) and reload_button.is_visible_in_tree():
-			reload_button.pressed.emit()
+		_request_start.rpc_id(1)
+
+@rpc("any_peer", "call_local", "reliable")
+func _request_start() -> void:
+	if not multiplayer.is_server():
+		return
+ 
+	# ID хоста. Не доверяем игроку (хоть где-то)
+	var who := multiplayer.get_remote_sender_id()
+ 
+	var zone := get_tree().current_scene.get_node_or_null("StartZone")
+	if zone == null:
+		return
+ 
+	if not zone.has_peer(who):
+		return
+ 
+	LevelManager.start_first_run()
+
 
 func synchronize_player_and_ragdoll() -> void:
 	if is_ragdoll:
-		position = physical_bone_hips.position
+		global_position = physical_bone_hips.position
 	pass
 		
 func start_ragdoll() -> void:
-	
 	is_ragdoll = true
+	camera_main_global_transform = camera_controller.transform
 	physical_bone_controller.physical_bones_start_simulation()
-	camera_main_transform = camera_controller.transform
 	set_unseen_meshes_visibiliy(true)
 	# отключить обычную коллизию CharacterBody
 	collision.set_deferred("disabled", true)
 	anim_player.stop()
 
 func stop_ragdoll() -> void:
-
 	is_ragdoll = false
+	if is_on_floor() or is_on_wall():
+		print("floor")
+		global_position += Vector3(0.0, 0.3, 0.0)
+	camera_controller.transform = camera_main_global_transform
 	physical_bone_controller.physical_bones_stop_simulation()
-	camera_controller.transform = camera_main_transform
 	set_unseen_meshes_visibiliy(false)
 	# вернуть коллизию
 	collision.set_deferred("disabled", false)
 	anim_player.play("Idle_A")
+
+func ragdoll_process(delta: float) -> void:
+	camera_controller.global_position = third_person_camera_pos.global_position
+	var target_transform = camera_controller.global_transform.looking_at(bone_attachment_3d.global_position, Vector3.UP)
+	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 5 * delta)
+	pass
+	
 
 func _process(delta: float) -> void:
 	if is_ragdoll:
@@ -121,14 +146,9 @@ func _process(delta: float) -> void:
 	if endurance_recovering:
 		data.endurance = clamp(data.endurance + data.endurance_recovery_speed, 0, data.max_endurance)
 		if data.endurance == data.max_endurance: endurance_recovering = false
+		
 	pass
 
-func ragdoll_process(delta: float) -> void:
-	camera_controller.global_position = third_person_camera_pos.global_position
-	var target_transform = camera_controller.global_transform.looking_at(bone_attachment_3d.global_position, Vector3.UP)
-	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 5 * delta)
-	
-	pass
 
 func movement(delta: float) -> void:
 	
@@ -166,8 +186,14 @@ func movement(delta: float) -> void:
 	# перемещение в воздухе 
 	else:
 		# в воздухе игрок не управляет персонажем, просто летит туда куда прыгнул
-		velocity.x = move_toward(velocity.x, 0, air_speed_reduction)
-		velocity.z = move_toward(velocity.z, 0, air_speed_reduction)
+		var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
+		var speed_h = horizontal_velocity.length()
+		if speed_h > 0.0:
+			speed_h = move_toward(speed_h, 0, air_speed_reduction)
+			horizontal_velocity = horizontal_velocity.normalized() * speed_h
+			pass
+		velocity.x = horizontal_velocity.x
+		velocity.z = horizontal_velocity.z
 		# падение
 		velocity.y -= gravity * gravity_scale * delta
 		

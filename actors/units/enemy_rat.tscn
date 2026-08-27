@@ -9,6 +9,8 @@
 [sub_resource type="Resource" id="Resource_7w5p4"]
 script = ExtResource("2_rq516")
 id = "Rat"
+speed_walk = 5.0
+speed_sprint = 6.0
 radius_detection = 6.0
 cooldown_attack = 1.5
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
@@ -25,7 +27,7 @@ height = 4.2385254
 radius = 0.7153955
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6fqur"]
-radius = 6.0
+radius = 12.0
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_07ba6"]
 
@@ -38,7 +40,8 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [node name="Rat" type="CharacterBody3D" unique_id=1053980717]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9861336, 2.2473187, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.9861336, 2.2473187, 0)
+collision_mask = 3
 script = ExtResource("1_vsiok")
 data = SubResource("Resource_7w5p4")
 
@@ -59,10 +62,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0143966675, 1.1613705, 1.78
 shape = SubResource("SphereShape3D_2l5kd")
 
 [node name="FOV" type="Area3D" parent="." unique_id=356454422]
-collision_mask = 2
+collision_mask = 18
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FOV" unique_id=321095408]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0009701252, 1.2034369, 7.464654)
 shape = SubResource("SphereShape3D_6fqur")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1922618632]

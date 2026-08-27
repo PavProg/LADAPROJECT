@@ -62,6 +62,7 @@ func _sync_quote(value: int, state: int) -> void:
 func on_level_start(new_req_quote: int) -> void:
 	current_state = quote_states.PROCESS
 	current_quote = 0
+	print("required_quote = new_req_quote: ", new_req_quote)
 	required_quote = new_req_quote
 
 # Итоги уровня. Считает сервер 

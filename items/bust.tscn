@@ -73,13 +73,26 @@ shape = SubResource("SphereShape3D_151m5")
 
 [node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
 
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=187637371]
+
 [node name="DurabilityLabel" type="Label3D" parent="." unique_id=985597377]
 visible = false
 billboard = 1
 no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
-text = "123"
+text = "0"
+font_size = 12
+outline_size = 4
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=1903395745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570856, 0)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
 font_size = 12
 outline_size = 4
 
@@ -88,3 +101,4 @@ outline_size = 4
 [connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
 [connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
 [connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]
+[connection signal="timeout" from="DamageLabelTimer" to="." method="_on_damage_label_timer_timeout"]

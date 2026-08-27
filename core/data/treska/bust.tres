@@ -7,6 +7,6 @@
 resource_local_to_scene = true
 script = ExtResource("2_ijast")
 distructed_scene = ExtResource("1_pfawm")
-max_durability = 20
-durability = 20
+max_durability = 2000
+durability = 2000
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

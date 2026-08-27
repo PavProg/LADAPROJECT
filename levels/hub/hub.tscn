@@ -1,22 +1,15 @@
 [gd_scene format=3 uid="uid://n0h60x7a3824"]
 
 [ext_resource type="MeshLibrary" uid="uid://d1moryexvlgrd" path="res://models/tile_sets/tres/floor_tiles.tres" id="1_f6udf"]
-[ext_resource type="Script" uid="uid://c8abpiggj57lk" path="res://levels/hub/button.gd" id="3_r15y2"]
 [ext_resource type="MeshLibrary" uid="uid://clj8c52ak5r5n" path="res://models/tile_sets/tres/wall_tiles2.tres" id="3_r34rm"]
+[ext_resource type="Script" uid="uid://6x3swx76gysu" path="res://levels/hub/start_zone.gd" id="4_lksvk"]
 
 [sub_resource type="Environment" id="Environment_tw1cs"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lksvk"]
-viewport_path = NodePath("button/SubViewport")
+[sub_resource type="BoxShape3D" id="BoxShape3D_vjyq5"]
+size = Vector3(3.8692932, 3.7845154, 2.6019897)
 
-[sub_resource type="InputEventAction" id="InputEventAction_jy8i0"]
-action = &"interact"
-
-[sub_resource type="Shortcut" id="Shortcut_vjyq5"]
-events = [SubResource("InputEventAction_jy8i0")]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_omfrw"]
-size = Vector3(1.2626953, 0.70288086, 0.115234375)
+[sub_resource type="PrismMesh" id="PrismMesh_vo01p"]
 
 [node name="Hub" type="Node3D" unique_id=366666532]
 
@@ -175,44 +168,29 @@ spot_attenuation = 0.96
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=714159769]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.786113, 2.509967, -17.487791)
-visible = false
 light_color = Color(0, 0.9726582, 0.97617656, 1)
 light_energy = 16.14
 shadow_enabled = true
 omni_range = 14.055235
 
 [node name="PlayersCont" type="Node3D" parent="." unique_id=1299326983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.891161, 1.8875536, 4.1792874)
 
-[node name="button" type="Sprite3D" parent="." unique_id=1667973615]
-transform = Transform3D(1, 0, 0, 0, 0.89822745, 0.4395309, 0, -0.4395309, 0.89822745, 18.472012, 2.0418656, -29.393003)
-texture = SubResource("ViewportTexture_lksvk")
+[node name="StartZone" type="Area3D" parent="." unique_id=1284133141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3706977, 2.132411, -18.860563)
+collision_mask = 2
+script = ExtResource("4_lksvk")
 
-[node name="SubViewport" type="SubViewport" parent="button" unique_id=1354576608]
-size = Vector2i(126, 74)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartZone" unique_id=300171911]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.583477, 0.8041158, 0.33342743)
+shape = SubResource("BoxShape3D_vjyq5")
 
-[node name="Control" type="Control" parent="button/SubViewport" unique_id=822949786]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StartZone" unique_id=735179065]
+transform = Transform3D(-0.010477424, 0, 0.9999451, 0, 1, 0, -0.9999451, 0, -0.010477424, 0.4535613, -0.5826335, -0.7924957)
+mesh = SubResource("PrismMesh_vo01p")
 
-[node name="Button" type="Button" parent="button/SubViewport/Control" unique_id=1762348409]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-shortcut = SubResource("Shortcut_vjyq5")
-text = "CLICK ME!"
-script = ExtResource("3_r15y2")
-
-[node name="Area3D" type="Area3D" parent="button" unique_id=1962378583]
-wind_source_path = NodePath("..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="button/Area3D" unique_id=515969154]
-shape = SubResource("BoxShape3D_omfrw")
-
-[connection signal="pressed" from="button/SubViewport/Control/Button" to="button/SubViewport/Control/Button" method="_on_pressed"]
+[node name="Label3D" type="Label3D" parent="StartZone/MeshInstance3D" unique_id=181122658]
+transform = Transform3D(-0.010477424, 0.37319446, -0.9276942, 0, 0.9277449, 0.37321487, 0.9999451, 0.0039103306, -0.009720378, -0.2655201, 0.013928771, 0.016578197)
+text = "Click Me
+Pick Me
+Fuck Me"

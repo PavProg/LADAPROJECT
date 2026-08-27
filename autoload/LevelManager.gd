@@ -111,6 +111,7 @@ func _on_server_ready() -> void:
 		_content_spawned = true
 		if _run_index >= 0:
 			Net.spawn_content()
+			Net.spawn_enemies()
 			print("[LEVELMANAGER] Контент заспавнен.")
 		GameManager.on_level_start(GameManager.required_quote_next_level)
 	
@@ -128,6 +129,7 @@ func _handle_peer_ack(peer_id: int) -> void:
 		Net.server_spawn_player(peer_id)
 		Net.give_hammer_to(peer_id)
 		Net.send_items_to(peer_id)
+		Net.send_enemies_to(peer_id)
 
 #func _ack_ready(peer_id: int) -> void:
 	#if not multiplayer.is_server():
