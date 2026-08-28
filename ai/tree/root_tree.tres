@@ -37,6 +37,7 @@ custom_name = "Search time внутри action"
 [sub_resource type="BTAction" id="BTAction_wtehg"]
 children = [SubResource("BTComment_whw32")]
 script = ExtResource("10_gkv0r")
+turn_speed = 2.0
 
 [sub_resource type="BTAction" id="BTAction_rlion"]
 script = ExtResource("11_lb85p")
@@ -71,7 +72,7 @@ script = ExtResource("3_d08ox")
 script = ExtResource("4_loxjt")
 
 [sub_resource type="BBNode" id="BBNode_whw32"]
-saved_value = NodePath("Root Scene")
+saved_value = NodePath("Root Scene/AnimationPlayer")
 resource_name = "Root Scene"
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_b2d7f"]
@@ -86,7 +87,7 @@ script = ExtResource("5_i2ttw")
 duration = 0.1
 
 [sub_resource type="BBNode" id="BBNode_d08ox"]
-saved_value = NodePath("Root Scene")
+saved_value = NodePath("Root Scene/AnimationPlayer")
 resource_name = "Root Scene"
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_loxjt"]

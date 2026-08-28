@@ -9,10 +9,11 @@
 [sub_resource type="Resource" id="Resource_7w5p4"]
 script = ExtResource("2_rq516")
 id = "Rat"
-speed_walk = 5.0
-speed_sprint = 6.0
+speed_walk = 4.0
+speed_sprint = 5.0
 radius_detection = 6.0
 cooldown_attack = 1.5
+range_attack = 3.0
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mtgiw"]
@@ -29,7 +30,7 @@ radius = 0.7153955
 [sub_resource type="SphereShape3D" id="SphereShape3D_6fqur"]
 radius = 12.0
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_07ba6"]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_rq516"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vsiok"]
 properties/0/path = NodePath(".:position")
@@ -71,7 +72,7 @@ shape = SubResource("SphereShape3D_6fqur")
 
 [node name="BTPlayer" type="BTPlayer" parent="." unique_id=1835505931]
 behavior_tree = ExtResource("4_vsiok")
-blackboard_plan = SubResource("BlackboardPlan_07ba6")
+blackboard_plan = SubResource("BlackboardPlan_rq516")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1233565699]
 replication_config = SubResource("SceneReplicationConfig_vsiok")
@@ -79,7 +80,9 @@ replication_config = SubResource("SceneReplicationConfig_vsiok")
 [node name="Eye" type="Marker3D" parent="." unique_id=259720061]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.499598, 1.664108)
 
-[node name="PriorityComponent" type="Node" parent="." unique_id=2145638191]
+[node name="PriorityComponent" type="Node" parent="." unique_id=2145638191 node_paths=PackedStringArray("fov_area", "eye")]
 script = ExtResource("1_devae")
+fov_area = NodePath("../FOV")
+eye = NodePath("../Eye")
 
 [node name="Root Scene" parent="." unique_id=622377030 instance=ExtResource("5_rq516")]

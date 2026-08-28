@@ -78,8 +78,8 @@ func _rescan() -> void:
 		last_known_position = current_target.global_position
 		has_last_known = true
 	current_target = best
-	if current_target != null:
-		print("[PRIORITY] Приоритетный игрок найден: ", current_target)
+	#if current_target != null:
+		#print("[PRIORITY] Приоритетный игрок найден: ", current_target)
 
 ## Нагло скомуниздил алгоритм вычисления нахождения игрока в поле зрения
 func _in_fov(to: Vector3) -> bool:
