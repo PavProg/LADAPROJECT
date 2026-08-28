@@ -191,6 +191,4 @@ mesh = SubResource("PrismMesh_vo01p")
 
 [node name="Label3D" type="Label3D" parent="StartZone/MeshInstance3D" unique_id=181122658]
 transform = Transform3D(-0.010477424, 0.37319446, -0.9276942, 0, 0.9277449, 0.37321487, 0.9999451, 0.0039103306, -0.009720378, -0.2655201, 0.013928771, 0.016578197)
-text = "Click Me
-Pick Me
-Fuck Me"
+text = "Click E"

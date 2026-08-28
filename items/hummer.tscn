@@ -2,10 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_g6kdb"]
 [ext_resource type="Resource" uid="uid://q03funlekuwj" path="res://core/data/treska/hummer_data.tres" id="2_1hvvi"]
-[ext_resource type="Script" uid="uid://dfb0yfagf2t7" path="res://core/components/attack_component.gd" id="3_1hvvi"]
 [ext_resource type="ArrayMesh" uid="uid://dsjqymsc8gpjs" path="res://models/meshes/hummer/Cube_001.res" id="3_lahvl"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_587ir"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1hvvi"]
+height = 0.9741211
+radius = 0.060546875
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lahvl"]
+size = Vector3(0.40625, 1, 0.40979004)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jjdla"]
 properties/0/path = NodePath(".:position")
@@ -16,6 +20,7 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7m3sa"]
+size = Vector3(0.3317871, 0.7636719, 0.35351563)
 
 [node name="Hummer" type="RigidBody3D" unique_id=1336073646]
 collision_layer = 8
@@ -27,12 +32,12 @@ script = ExtResource("1_g6kdb")
 export_item_data = ExtResource("2_1hvvi")
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=1289574582]
-transform = Transform3D(0.095, 0, 0, 0, 0.12, 0, 0, 0, 1.03, 0, 0, 0.006643027)
-shape = SubResource("BoxShape3D_587ir")
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.0022583008, 0.0010986325, 0.029836386)
+shape = SubResource("CylinderShape3D_1hvvi")
 
 [node name="Collision1" type="CollisionShape3D" parent="." unique_id=608711824]
-transform = Transform3D(0.34, 0, 0, 0, 0.735, 0, 0, 0, 0.335, 0, 0, -0.31163672)
-shape = SubResource("BoxShape3D_587ir")
+transform = Transform3D(0.735, 0, 0, 0, 0.735, 0, 0, 0, 0.735, 0, 0, -0.31428352)
+shape = SubResource("BoxShape3D_lahvl")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=297047954]
 transform = Transform3D(15, 0, 0, 0, 35, 0, 0, 0, 15, 0, 0, -0.225847)
@@ -41,18 +46,13 @@ mesh = ExtResource("3_lahvl")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=340319306]
 replication_config = SubResource("SceneReplicationConfig_jjdla")
 
-[node name="AttackComponent" type="Node3D" parent="." unique_id=1266149267]
-script = ExtResource("3_1hvvi")
-
 [node name="HitArea" type="Area3D" parent="." unique_id=1574176634]
-transform = Transform3D(0.34, 0, 0, 0, 0.735, 0, 0, 0, 0.335, 0, 0, -0.312)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.312)
 collision_layer = 1024
 collision_mask = 512
 
 [node name="HitBox" type="CollisionShape3D" parent="HitArea" unique_id=1465053062]
-transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
 shape = SubResource("BoxShape3D_7m3sa")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
-[connection signal="area_entered" from="HitArea" to="AttackComponent" method="_on_hit_area_area_entered"]

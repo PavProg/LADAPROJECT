@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://blukjekcxxbnj"]
+
+[ext_resource type="PackedScene" uid="uid://bf0x0jr50h2kd" path="res://models/blend/InfoSignHanging.blend" id="1_i682t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hx1w0"]
+size = Vector3(0.6, 0.49999994, 0.099999994)
+
+[node name="InfoSignHanging" unique_id=515032734 instance=ExtResource("1_i682t")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="HangSign" parent_id_path=PackedInt32Array(1061507903) index="0" unique_id=437217245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0019961745, 0.049999993)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HangSign/StaticBody3D" index="0" unique_id=1033374612]
+shape = SubResource("BoxShape3D_hx1w0")

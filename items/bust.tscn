@@ -10,8 +10,10 @@ size = Vector3(2.019287, 1, 1)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_151m5"]
 height = 0.63513184
+radius = 0.56640625
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_151m5"]
+radius = 0.5260042
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
 properties/0/path = NodePath(".:position")
@@ -57,7 +59,7 @@ script = ExtResource("3_p2aoi")
 
 [node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
 collision_layer = 512
-collision_mask = 515
+collision_mask = 523
 
 [node name="HurtBox" type="CollisionShape3D" parent="HurtArea" unique_id=442209875]
 transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, -0.0003201887, 0.49529117, 0.0010372959)
@@ -72,8 +74,6 @@ transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, -0.008178711, 2.1278
 shape = SubResource("SphereShape3D_151m5")
 
 [node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
-
-[node name="DamageLabelTimer" type="Timer" parent="." unique_id=187637371]
 
 [node name="DurabilityLabel" type="Label3D" parent="." unique_id=985597377]
 visible = false
@@ -101,4 +101,3 @@ outline_size = 4
 [connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
 [connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
 [connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]
-[connection signal="timeout" from="DamageLabelTimer" to="." method="_on_damage_label_timer_timeout"]

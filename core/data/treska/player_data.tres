@@ -14,4 +14,5 @@ run_speed = 7.0
 jump_velocity = 4.5
 endurance_recovery_time = 3.0
 endurance_recovery_speed = 0.1
+interaction_range = 10.0
 metadata/_custom_type_script = "uid://lvyabd1v4xvg"

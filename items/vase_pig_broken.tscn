@@ -71,5 +71,6 @@ mesh = ExtResource("5_imthb")
 shape = SubResource("ConvexPolygonShape3D_nr822")
 
 [node name="DisappearTimer" type="Timer" parent="." unique_id=3514605]
+wait_time = 10.0
 
 [connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

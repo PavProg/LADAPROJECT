@@ -79,5 +79,6 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = ExtResource("2_41drb")
 
 [node name="DisappearTimer" type="Timer" parent="." unique_id=921716153]
+wait_time = 10.0
 
 [connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

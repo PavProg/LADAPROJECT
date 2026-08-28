@@ -1,14 +1,10 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://q03funlekuwj"]
 
-[ext_resource type="PackedScene" uid="uid://bcw70ue3kdj3p" path="res://items/distructed_cube.tscn" id="1_0m433"]
 [ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="1_ydl3x"]
 
 [resource]
 resource_local_to_scene = true
 script = ExtResource("1_ydl3x")
 display_name = "hummer"
-distructed_scene = ExtResource("1_0m433")
-damage = 7.0
-max_durability = 20.0
-durability = 20.0
+damage = 8
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

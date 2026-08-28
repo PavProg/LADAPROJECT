@@ -15,15 +15,27 @@
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_7w5p4"]
 
+[sub_resource type="BTCondition" id="BTCondition_whw32"]
+script = ExtResource("1_whw32")
+
+[sub_resource type="BTAction" id="BTAction_yqqh8"]
+script = ExtResource("2_b2d7f")
+
+[sub_resource type="BTSequence" id="BTSequence_b2d7f"]
+custom_name = "sequence \"RAGDOLL\""
+children = [SubResource("BTCondition_whw32"), SubResource("BTAction_yqqh8")]
+
 [sub_resource type="BTCondition" id="BTCondition_2oxhx"]
 script = ExtResource("3_d08ox")
 
 [sub_resource type="BTAction" id="BTAction_w3d6i"]
 script = ExtResource("7_6jgld")
 
+[sub_resource type="BTWait" id="BTWait_d08ox"]
+
 [sub_resource type="BTSequence" id="BTSequence_5304o"]
 custom_name = "sequence \"CHASE\""
-children = [SubResource("BTCondition_2oxhx"), SubResource("BTAction_w3d6i")]
+children = [SubResource("BTCondition_2oxhx"), SubResource("BTAction_w3d6i"), SubResource("BTWait_d08ox")]
 
 [sub_resource type="BTCondition" id="BTCondition_83l3e"]
 script = ExtResource("8_2uq0f")
@@ -37,6 +49,7 @@ custom_name = "Search time внутри action"
 [sub_resource type="BTAction" id="BTAction_wtehg"]
 children = [SubResource("BTComment_whw32")]
 script = ExtResource("10_gkv0r")
+turn_speed = 2.0
 
 [sub_resource type="BTAction" id="BTAction_rlion"]
 script = ExtResource("11_lb85p")
@@ -51,58 +64,21 @@ children = [SubResource("BTCondition_83l3e"), SubResource("BTAction_vx7g2"), Sub
 [sub_resource type="BTAction" id="BTAction_r41sq"]
 script = ExtResource("12_11yfm")
 
-[sub_resource type="BTCondition" id="BTCondition_837yp"]
-script = ExtResource("1_whw32")
-
-[sub_resource type="BTAction" id="BTAction_yqqh8"]
-script = ExtResource("2_b2d7f")
-
-[sub_resource type="BTSequence" id="BTSequence_8hdqg"]
-custom_name = "sequence \"RAGDOLL\""
-children = [SubResource("BTCondition_837yp"), SubResource("BTAction_yqqh8")]
-
-[sub_resource type="BTComment" id="BTComment_d08ox"]
-children = [SubResource("BTSequence_8hdqg")]
-
 [sub_resource type="BTCondition" id="BTCondition_kp1si"]
 script = ExtResource("3_d08ox")
 
 [sub_resource type="BTCondition" id="BTCondition_mucpi"]
 script = ExtResource("4_loxjt")
 
-[sub_resource type="BBNode" id="BBNode_whw32"]
-saved_value = NodePath("Root Scene")
-resource_name = "Root Scene"
-
-[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_b2d7f"]
-animation_player = SubResource("BBNode_whw32")
-blend = 0.1
-custom_name = "PlayAnimation Walk"
-
 [sub_resource type="BTAction" id="BTAction_n6oi4"]
 script = ExtResource("5_i2ttw")
-
-[sub_resource type="BTWait" id="BTWait_b2d7f"]
-duration = 0.1
-
-[sub_resource type="BBNode" id="BBNode_d08ox"]
-saved_value = NodePath("Root Scene")
-resource_name = "Root Scene"
-
-[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_loxjt"]
-animation_player = SubResource("BBNode_d08ox")
-blend = 0.1
-custom_name = "PlayAnimation Attack"
 
 [sub_resource type="BTAction" id="BTAction_p1l0d"]
 script = ExtResource("6_mcktk")
 
-[sub_resource type="BTWait" id="BTWait_whw32"]
-duration = 0.3
-
 [sub_resource type="BTSequence" id="BTSequence_ow216"]
 custom_name = "sequence \"ATTACK\""
-children = [SubResource("BTCondition_kp1si"), SubResource("BTCondition_mucpi"), SubResource("BTPlayAnimation_b2d7f"), SubResource("BTAction_n6oi4"), SubResource("BTWait_b2d7f"), SubResource("BTPlayAnimation_loxjt"), SubResource("BTAction_p1l0d"), SubResource("BTWait_whw32")]
+children = [SubResource("BTCondition_kp1si"), SubResource("BTCondition_mucpi"), SubResource("BTAction_n6oi4"), SubResource("BTAction_p1l0d")]
 
 [sub_resource type="BTCooldown" id="BTCooldown_whw32"]
 duration = 1.5
@@ -113,7 +89,7 @@ children = [SubResource("BTCooldown_whw32")]
 
 [sub_resource type="BTDynamicSelector" id="BTDynamicSelector_wx20v"]
 custom_name = "Root"
-children = [SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq"), SubResource("BTComment_d08ox"), SubResource("BTComment_loxjt")]
+children = [SubResource("BTSequence_b2d7f"), SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq"), SubResource("BTComment_loxjt")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_7w5p4")

@@ -4,76 +4,55 @@
 
 [node name="Root Scene" unique_id=622377030 instance=ExtResource("1_krbep")]
 
-[node name="Skeleton3D" parent="RootNode/RatArmature" parent_id_path=PackedInt32Array(1068118054) index="0" unique_id=1340692840]
-bones/1/position = Vector3(-0.011065094, 0.0075221187, 0.020056559)
-bones/1/rotation = Quaternion(0.8911639, -1.1013044e-06, -5.6066165e-07, 0.45368156)
-bones/2/position = Vector3(-0.0003684541, 0.023104073, -0.0029404918)
-bones/3/position = Vector3(-0.0038924643, 0.005121076, 0.01159961)
-bones/3/rotation = Quaternion(0.023407212, -0.023407497, 0.7067194, 0.7067192)
-bones/4/rotation = Quaternion(0.7156398, -0.6959776, -0.026793443, 0.052507754)
-bones/5/rotation = Quaternion(-0.6482134, -0.014452633, -0.012307164, 0.7612221)
-bones/6/position = Vector3(-0.005448367, 0.009231986, -0.018745508)
-bones/6/rotation = Quaternion(-0.063363, 0.06336258, 0.7042622, 0.70426214)
-bones/7/rotation = Quaternion(-0.61015505, 0.6078534, -0.34376693, 0.3742319)
-bones/8/rotation = Quaternion(-0.6242279, 0.01511656, 0.012081935, 0.7810026)
-bones/9/position = Vector3(0.0032761386, 0.0064956043, 0.01159961)
-bones/9/rotation = Quaternion(0.706506, 0.706506, -0.029143043, 0.029142797)
-bones/10/rotation = Quaternion(-0.0034668448, -0.07770416, 0.7034997, 0.70642644)
-bones/11/rotation = Quaternion(-0.11545715, 0.05193693, 0.006045201, 0.9919354)
-bones/12/position = Vector3(0.004832039, 0.009056407, -0.018745508)
-bones/12/rotation = Quaternion(0.7060299, 0.70603, 0.03900905, -0.039009053)
-bones/13/rotation = Quaternion(0.34694594, 0.37226164, 0.60047716, 0.6168282)
-bones/14/rotation = Quaternion(-0.35992056, -0.008865796, -0.0034205941, 0.93293464)
-bones/15/position = Vector3(-0.0003228268, 0.010887424, -0.040877856)
-bones/17/rotation = Quaternion(0.104757935, -4.1206147e-10, 1.2632841e-08, 0.9944977)
-bones/18/rotation = Quaternion(0.3352212, -1.12690074e-07, 4.259347e-08, 0.94213957)
-bones/19/rotation = Quaternion(0.11846222, -4.6566156e-10, 3.9108294e-09, 0.9929586)
-bones/20/rotation = Quaternion(0.083746746, 1.1734666e-07, 3.5361158e-09, 0.99648714)
-bones/21/rotation = Quaternion(0.057583272, -1.1984089e-07, 4.772405e-09, 0.9983407)
-bones/22/rotation = Quaternion(0.10752091, 1.1757949e-07, -1.5133994e-08, 0.99420285)
-bones/23/position = Vector3(-0.00070578867, 0.011639931, 0.008649996)
-bones/23/rotation = Quaternion(0.0066127116, 0.7055502, 0.708387, -0.018523796)
-bones/24/rotation = Quaternion(-0.008639312, -0.015619558, -0.026148012, 0.9994988)
-bones/25/rotation = Quaternion(-0.18502319, -0.2194218, -0.0030949903, 0.9579201)
-bones/28/position = Vector3(-0.014430112, 0.0010000347, -0.023691863)
-bones/28/rotation = Quaternion(0.7071067, -1.0996084e-06, -1.3052828e-06, 0.7071068)
-bones/29/position = Vector3(0.0105563225, 0.0010000347, 0.016827265)
-bones/29/rotation = Quaternion(0.7071068, -9.3950996e-07, -1.4825312e-06, 0.7071067)
-bones/30/position = Vector3(0.013921351, 0.0045725815, -0.04580137)
-bones/30/rotation = Quaternion(0.76922214, -1.6841949e-06, -1.3990358e-06, 0.6389816)
+[node name="Skeleton3D" parent="RootNode/RatArmature" parent_id_path=PackedInt32Array(1400866451) index="0" unique_id=1371139592]
+bones/2/position = Vector3(5.37765e-05, 0.023020823, -0.0001735416)
+bones/2/rotation = Quaternion(-2.938736e-39, 0, 0, 1)
+bones/3/rotation = Quaternion(0.0028397252, -0.0028399571, 0.70710105, 0.70710117)
+bones/4/rotation = Quaternion(0.70811045, -0.70348257, -0.027541004, 0.054161478)
+bones/5/rotation = Quaternion(-0.2900464, -0.018166432, -0.005506931, 0.9568243)
+bones/6/rotation = Quaternion(-0.00026162714, 0.00026121715, 0.7071067, 0.7071067)
+bones/7/rotation = Quaternion(-0.6068194, 0.6099897, -0.34310308, 0.37677985)
+bones/8/rotation = Quaternion(-0.45266706, 0.017254766, 0.008761326, 0.8914697)
+bones/9/rotation = Quaternion(0.68939114, 0.68939114, 0.15728912, -0.15728931)
+bones/10/rotation = Quaternion(0.00036543736, -0.07778056, 0.6678436, 0.7402264)
+bones/11/rotation = Quaternion(-0.4071398, 0.04774465, 0.021317508, 0.911868)
+bones/12/rotation = Quaternion(0.7071066, 0.7071067, -0.00045743087, 0.00045702048)
+bones/13/rotation = Quaternion(0.34923372, 0.37092027, 0.60331416, 0.61356837)
+bones/14/rotation = Quaternion(-0.4527314, -0.008472958, -0.0043025943, 0.89159644)
+bones/17/rotation = Quaternion(0.045212477, -1.1653449e-09, 1.2585725e-08, 0.9989774)
+bones/18/rotation = Quaternion(0.3125185, 0.010023162, -0.020041743, 0.9496473)
+bones/19/rotation = Quaternion(0.07474586, -0.003957762, 0.062446065, 0.99523765)
+bones/20/rotation = Quaternion(0.023093509, 0.0091220355, 0.12818311, 0.99143976)
+bones/22/rotation = Quaternion(0.05658403, 1.14087015e-07, 3.3993274e-08, 0.9983979)
+bones/23/position = Vector3(-0.0007365465, 0.010671293, 0.008460292)
+bones/23/rotation = Quaternion(0.007979193, 0.7384925, 0.6739491, -0.018914204)
+bones/24/rotation = Quaternion(-0.008566592, -0.008435149, -0.018716076, 0.9997526)
+bones/25/rotation = Quaternion(-0.17898363, -0.25454617, 0.047041524, 0.9491883)
+bones/29/position = Vector3(0.013547692, 0.0010000347, 0.009867291)
 
-[node name="FrontFoot_R" parent="RootNode/RatArmature/Skeleton3D" index="0" unique_id=657303752]
-transform = Transform3D(1, -1.4541616e-06, -1.998566e-06, 1.8095193e-13, -0.8086091, 0.5883462, -2.471609e-06, -0.5883462, -0.8086091, -0.011065094, -0.020056557, 0.007522116)
+[node name="FrontLowLeg_R" parent="RootNode/RatArmature/Skeleton3D" index="1" unique_id=978404884]
+transform = Transform3D(0.9999908, 0.00362573, 0.0024173968, 0.00047095492, -0.64141357, 0.7671951, 0.004332103, -0.76718736, -0.6414095, -0.011103085, -0.013524389, 0.009041132)
 
-[node name="FrontLowLeg_R" parent="RootNode/RatArmature/Skeleton3D" index="1" unique_id=811329520]
-transform = Transform3D(0.99966943, 0.00418422, 0.025373936, 0.0012832247, -0.9935616, 0.11328325, 0.02568481, -0.113213435, -0.9932391, -0.0111083, -0.009566495, 0.008728286)
+[node name="BackLowLeg_R" parent="RootNode/RatArmature/Skeleton3D" index="2" unique_id=739623762]
+transform = Transform3D(0.9996049, -0.016568, -0.022696162, 0.024618413, 0.12693265, 0.9916055, -0.013548087, -0.9917728, 0.12729001, -0.014048461, 0.032628946, 0.02384653)
 
-[node name="BackLowLeg_R" parent="RootNode/RatArmature/Skeleton3D" index="2" unique_id=845942005]
-transform = Transform3D(0.99981815, -0.0041342266, -0.018616028, 0.014808321, -0.44675994, 0.89453113, -0.012015175, -0.8946442, -0.44661766, -0.014329275, 0.033807702, 0.022426609)
+[node name="FrontLowLeg_L" parent="RootNode/RatArmature/Skeleton3D" index="3" unique_id=1099276819]
+transform = Transform3D(0.99415386, 0.07253369, 0.07997934, -0.035882097, -0.47669458, 0.87833613, 0.10183466, -0.8760712, -0.47130525, 0.012787443, -0.004870919, 0.010182403)
 
-[node name="FrontLowLeg_L" parent="RootNode/RatArmature/Skeleton3D" index="3" unique_id=474571197]
-transform = Transform3D(0.9999483, 0.00988231, 0.002326712, 0.001991652, -0.41566464, 0.90951556, 0.009955233, -0.90946394, -0.41566288, 0.010455388, -0.012479164, 0.010453647)
+[node name="BackLowLeg_L" parent="RootNode/RatArmature/Skeleton3D" index="4" unique_id=2020849431]
+transform = Transform3D(0.9996057, 0.016571082, 0.022688467, -0.024611263, 0.12693262, 0.9916058, 0.013552068, -0.9917728, 0.12729043, 0.013539605, 0.03262895, 0.023846531)
 
-[node name="BackLowLeg_L" parent="RootNode/RatArmature/Skeleton3D" index="4" unique_id=841851888]
-transform = Transform3D(0.99927396, 0.028192326, 0.02564594, -0.035224736, 0.4262669, 0.90391153, 0.014551459, -0.90415776, 0.42695034, 0.0132742245, 0.036138315, 0.026160799)
+[node name="Tail7" parent="RootNode/RatArmature/Skeleton3D" index="5" unique_id=980962883]
+transform = Transform3D(0.9279406, -0.36480066, 0.07645736, 0.37255472, 0.90155876, -0.21998873, 0.011321257, 0.23262128, 0.97250164, -0.011292569, 0.11790657, 0.007858943)
 
-[node name="Tail7" parent="RootNode/RatArmature/Skeleton3D" index="5" unique_id=469686008]
-transform = Transform3D(0.9988811, -0.04382709, 0.017739931, 0.04369326, 0.71227384, -0.70054066, 0.01806695, 0.7005323, 0.71339196, -0.0034239935, 0.12059556, 0.026713641)
+[node name="Head" parent="RootNode/RatArmature/Skeleton3D" index="6" unique_id=1904296406]
+transform = Transform3D(-0.86598384, -0.0018178143, 0.5000689, -0.14535552, -0.95590204, -0.25519118, 0.47848076, -0.29367924, 0.82753146, -0.00026902338, -0.033212215, 0.035738923)
 
-[node name="Head" parent="RootNode/RatArmature/Skeleton3D" index="6" unique_id=355670070]
-transform = Transform3D(-0.8985558, -0.10782901, 0.4254065, -0.06940397, -0.9222314, -0.38035762, 0.43333682, -0.37129766, 0.8211925, -0.00091191486, -0.030715398, 0.03440985)
+[node name="Torso" parent="RootNode/RatArmature/Skeleton3D" index="7" unique_id=1824307362]
+transform = Transform3D(-0.99963295, -0.027093185, -5.721832e-05, 0.027018873, -0.99704266, 0.07193899, -0.002006105, 0.071911, 0.9974088, -0.0002690506, 0.015805414, 0.035447508)
 
-[node name="Torso" parent="RootNode/RatArmature/Skeleton3D" index="7" unique_id=176807419]
-transform = Transform3D(-0.99963295, -0.027093185, -5.721832e-05, 0.027018873, -0.99704266, 0.07193899, -0.002006105, 0.071911, 0.9974088, -0.00069128117, 0.018572362, 0.03553076)
+[node name="FrontFoot_L" parent="RootNode/RatArmature/Skeleton3D" index="9" unique_id=887756909]
+transform = Transform3D(1, -4.5474735e-13, -3.4252835e-06, 5.220124e-13, -0.9999999, 2.3841856e-07, -3.425283e-06, -2.3841856e-07, -0.9999999, 0.013547692, -0.00986729, 0.0010000335)
 
-[node name="BackFoot_R" parent="RootNode/RatArmature/Skeleton3D" index="8" unique_id=1635989400]
-transform = Transform3D(1, 2.9086775e-07, -3.4010293e-06, 2.9086758e-07, -0.9999998, -5.960463e-08, -3.4010295e-06, 5.960463e-08, -0.9999998, -0.014430112, 0.023691861, 0.0010000374)
-
-[node name="FrontFoot_L" parent="RootNode/RatArmature/Skeleton3D" index="9" unique_id=1156102360]
-transform = Transform3D(1, 7.6794754e-07, -3.4252835e-06, 7.6794856e-07, -0.9999999, 2.3841856e-07, -3.425283e-06, -2.3841856e-07, -0.9999999, 0.0105563225, -0.016827263, 0.0010000326)
-
-[node name="BackFoot_L" parent="RootNode/RatArmature/Skeleton3D" index="10" unique_id=561659860]
-transform = Transform3D(1, -8.0312356e-07, -4.304677e-06, 2.9463855e-13, -0.9830373, 0.18340525, -4.3789555e-06, -0.18340525, -0.9830373, 0.013921351, 0.045801368, 0.0045725866)
-
-[node name="AnimationPlayer" parent="." index="1" unique_id=1008487436]
+[node name="AnimationPlayer" parent="." index="1" unique_id=1069969980]
 autoplay = &"RatArmature|Rat_Idle"

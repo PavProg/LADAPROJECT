@@ -50,6 +50,11 @@ func start_first_run() -> void:
 	_run_index = 0
 	_load(RUNS[0])
 	
+func return_to_hub() -> void:
+	if not multiplayer.is_server():
+		return
+	_load(HUB)
+	
 func next_level() -> void:
 	if not multiplayer.is_server():
 		return

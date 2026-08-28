@@ -45,17 +45,12 @@ func toggle_damage_label(damage: int) -> void:
 	#tween.set_ease(Tween.EASE_OUT)
 	
 	# Плавный взлет вверх
-	var target_y = damage_label.position.y + 1.5
-	tween.tween_property(damage_label, "position:y", target_y, 1.0)
+	#var target_y = damage_label.position.y + 1.5
+	#tween.tween_property(damage_label, "position:y", target_y, 1.0)
 	
 	# Пульсация размера
 	tween.parallel().tween_property(damage_label, "scale", Vector3(1.2, 1.2, 1.2), 1.0)
 	tween.tween_property(damage_label, "modulate:a", 0.0, 0.3)
 	
 	tween.tween_callback(func(): damage_label.visible = false)
-	pass
-
-# выключить damage label
-func _on_damage_label_timer_timeout() -> void:
-	damage_label.visible = false
 	pass

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c7qkiy4gq0pu5"]
+
+[ext_resource type="PackedScene" uid="uid://dypfueqqf1cdb" path="res://models/blend/Lamp.blend" id="1_dg3xc"]
+
+[node name="Lamp" unique_id=602562631 instance=ExtResource("1_dg3xc")]
+
+[node name="Lamp" parent="." index="0" unique_id=420695074]
+cast_shadow = 0
+
+[node name="LampHandle" parent="." index="1" unique_id=1227349482]
+cast_shadow = 0
+
+[node name="LampBase" parent="." index="2" unique_id=588417529]
+cast_shadow = 0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." index="3" unique_id=1806075047]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40033102, 0.5793693)
+light_color = Color(1, 0.7019608, 0.3529412, 1)
+light_energy = 0.712
+shadow_enabled = true
+omni_range = 10.0

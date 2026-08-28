@@ -4,7 +4,7 @@ extends BTAction
 ## Длительность search
 @export var duration: float = 5.0
 ## Скорость вращения рад/сек
-@export var turn_speed: float = 2.0
+@export var turn_speed: float = 1.5
 
 var _left: float = 0.0
 
@@ -31,4 +31,7 @@ func _tick(delta: float) -> Status:
 	
 	if _left > 0.0:
 		return RUNNING	# Еще осматриваемся 
+	
+	if e.priority.current_target != null:
+		return FAILURE
 	return SUCCESS

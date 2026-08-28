@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cx6bwgf4b0wud"]
+
+[ext_resource type="PackedScene" uid="uid://cotnco35b3xle" path="res://models/blend/ArrowSign.blend" id="1_vb2xo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3nlyr"]
+size = Vector3(1.8601677, 1.0165138, 0.1472784)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_65euh"]
+size = Vector3(1.3999996, 0.15, 1.3999996)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2287c"]
+size = Vector3(0.22136664, 2.052365, 0.22136664)
+
+[node name="ArrowSign" unique_id=2088010274 instance=ExtResource("1_vb2xo")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Arrow_Side" parent_id_path=PackedInt32Array(765153834) index="0" unique_id=954119677]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17137635, 1.4789541, 0.17889953)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arrow_Side/StaticBody3D" index="0" unique_id=501797769]
+shape = SubResource("BoxShape3D_3nlyr")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cylinder" parent_id_path=PackedInt32Array(690799071) index="0" unique_id=1464651216]
+transform = Transform3D(0.51618797, 0, -0.51618797, 0, 0.73, 0, 0.51618797, 0, 0.51618797, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cylinder/StaticBody3D" index="0" unique_id=1451891844]
+shape = SubResource("BoxShape3D_65euh")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Arrow_Side_001" parent_id_path=PackedInt32Array(1847603600) index="0" unique_id=1192837894]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0261825, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arrow_Side_001/StaticBody3D" index="0" unique_id=830451233]
+shape = SubResource("BoxShape3D_2287c")

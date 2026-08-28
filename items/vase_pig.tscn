@@ -48,7 +48,7 @@ script = ExtResource("3_p3ng6")
 [node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.184, 0)
 collision_layer = 512
-collision_mask = 515
+collision_mask = 523
 
 [node name="HurtBox" type="CollisionShape3D" parent="HurtArea" unique_id=442209875]
 transform = Transform3D(1.995, 0, 0, 0, 1.995, 0, 0, 0, 1.995, 0, -0.0026061535, -0.018479155)
@@ -69,6 +69,19 @@ modulate = Color(1, 0, 0.2901961, 1)
 text = "123"
 font_size = 12
 outline_size = 4
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=394672743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570856, 0)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
+font_size = 12
+outline_size = 4
+
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=231340007]
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

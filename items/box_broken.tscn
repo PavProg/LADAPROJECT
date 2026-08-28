@@ -126,5 +126,6 @@ shape = SubResource("BoxShape3D_4lbhd")
 mesh = ExtResource("6_wnw24")
 
 [node name="DisappearTimer" type="Timer" parent="." unique_id=808932510]
+wait_time = 10.0
 
 [connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

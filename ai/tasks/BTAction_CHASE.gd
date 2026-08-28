@@ -30,7 +30,7 @@ func _tick(delta: float) -> Status:
 	_t -= delta
 	if _t <= 0.0:
 		_t = repath_time
-		e.set_move_target(t.global_position)
+		e.set_move_target(t.global_position, true)	# true - преследуем бегом (speed_sprint)
 		if not e.agent.is_target_reachable():
 			return FAILURE # Пути нет - обходим, не ударяемся в стену
 	return RUNNING

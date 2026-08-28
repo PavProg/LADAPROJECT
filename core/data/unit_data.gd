@@ -3,6 +3,7 @@ class_name UnitData
 
 @export var id: String 	# GUARD, CAT, RAT
 @export var health: float = 1000.0
+## кол-во урона для перехода в рэгдолл
 @export var damage_for_ragdoll: float = 10.0
 @export var speed_walk: float = 15.0
 @export var speed_sprint: float = 30.0
@@ -10,3 +11,6 @@ class_name UnitData
 @export var damage_attack: float = 30.0
 @export var cooldown_attack: float = 3.0
 @export var range_attack: float = 10.0
+## velocity который нужно преодолеть для нанесения урона
+@export var velocity_length_threshold: float = 1.0
+@export var ragdoll_time: float = 5.0

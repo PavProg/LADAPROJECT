@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ds3hm0fafve1j"]
+
+[ext_resource type="PackedScene" uid="uid://cr7nsq0bgy3b6" path="res://models/blend/Pedestal_02.blend" id="1_j32wn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4k5l3"]
+size = Vector3(3.5, 1, 2)
+
+[node name="Pedestal_02" unique_id=1898109454 instance=ExtResource("1_j32wn")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Pedestal_002" parent_id_path=PackedInt32Array(1907798132) index="0" unique_id=660833029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50229144, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pedestal_002/StaticBody3D" index="0" unique_id=1647088304]
+shape = SubResource("BoxShape3D_4k5l3")

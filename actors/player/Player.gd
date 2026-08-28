@@ -50,10 +50,7 @@ func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 			mesh.visible = is_active
 	pass
 
-# Закоменченно потому что так надо
-#func _enter_tree() -> void:
-	#set_multiplayer_authority(name.to_int())
-
+#region INPUTS
 func apply_intent(intent: Dictionary):
 	_intent = intent
 
@@ -86,6 +83,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
  
 	if event.is_action_pressed("interact"):
+		try_interact(4)
 		_request_start.rpc_id(1)
 
 @rpc("any_peer", "call_local", "reliable")
@@ -104,13 +102,13 @@ func _request_start() -> void:
 		return
  
 	LevelManager.start_first_run()
-
-
+#endregion
+#region RAGDOLL
 func synchronize_player_and_ragdoll() -> void:
 	if is_ragdoll:
 		global_position = physical_bone_hips.position
 	pass
-		
+
 func start_ragdoll() -> void:
 	is_ragdoll = true
 	camera_main_global_transform = camera_controller.transform
@@ -216,3 +214,53 @@ func movement(delta: float) -> void:
 func _on_endurance_timer_timeout() -> void:
 	endurance_recovering = true
 	pass
+
+#endregion
+#region TAKEDAMAGE
+func take_damage() -> void:
+	pass
+#endregion
+
+
+func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
+	# Рейкаст должен выполняться только у клиента, который управляет игроком
+	if not is_multiplayer_authority():
+		return null
+
+	# Получаем камеру из CameraController (или любого другого узла, где она хранится)
+	var camera: Camera3D = $CameraController/Camera3D
+	if camera == null:
+		return null
+
+	# Пространство состояний физики текущего мира
+	var space_state := get_world_3d().direct_space_state
+
+	# Точка старта луча — позиция камеры
+	var from := camera.global_position
+	# Точка конца — вперёд от камеры на заданное расстояние (отрицательная ось Z - это вперёд в Godot)
+	var to := from + (-camera.global_transform.basis.z * max_distance)
+
+	# Параметры запроса: включаем области (Area3D) и тела (CollisionObject3D)
+	var query := PhysicsRayQueryParameters3D.create(from, to)
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+
+	# Выполняем рейкаст
+	var result := space_state.intersect_ray(query)
+	if result.is_empty():
+		return null
+		
+	return result.collider
+
+func try_interact(max_search_depth : int = 5) -> void:
+	var target = raycast_from_camera(data.interaction_range)
+	
+	if(target != null):
+		for i in range(max_search_depth):
+			if target is Node3D:
+				if target.has_method("on_interact"):
+					target.on_interact()
+					print(target.name)
+					return
+				else:
+					target = target.get_parent()

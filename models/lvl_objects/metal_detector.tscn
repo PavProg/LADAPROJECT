@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://hy7gryocy6ow"]
+
+[ext_resource type="PackedScene" uid="uid://iiprlpnj5c6p" path="res://models/blend/MetalDetector.blend" id="1_altp3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17u8t"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ymysj"]
+points = PackedVector3Array(-11.365991, -0.8015435, 1.3228443, -13.9178505, -1, -1.1139247, -13.535681, 0.9722447, 0.98208123, -11.574236, 0.97263205, -0.9801074, -11.101606, -1.0660832, -1.1882651, -13.876364, -0.93381333, 1.3228443, -12.951445, 1.048579, -1.1882651, -11.574236, 0.97263205, 0.9824685, -11.101606, -1.0660832, 1.1906261, -12.15886, 1.048579, 1.1906261, -13.535681, 0.9722447, -0.9797202, -11.233941, -0.93381333, -1.3204832, -14.0086975, -0.93381333, -1.1882651, -13.876364, -0.93381333, -1.3204832, -14.0086975, -0.93381333, 1.1906261, -12.951445, 1.048579, 1.1906261, -12.15886, 1.048579, -1.1882651, -13.9178505, -1, 1.1162858, -11.101606, -0.93381333, 1.1906261, -11.101606, -0.93381333, -1.1882651, -11.233941, -0.93381333, 1.3228443, -11.365991, -0.8015435, -1.3204832, -13.744313, -0.8015435, -1.3204832, -13.744313, -0.8015435, 1.3228443)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fs46r"]
+points = PackedVector3Array(1.1900728, -0.8015435, 1.3228443, -1.4531771, -1.0660832, -1.1882651, -0.98042345, 0.9725646, 0.9824011, 0.9813419, 0.97217685, -0.97965235, 1.4544832, -0.93381333, -1.1882651, -1.4531771, -1.0660832, 1.1906261, -0.3958202, 1.048579, -1.1882651, 0.9813419, 0.97217685, 0.9820134, 1.3636187, -1, 1.1162858, -0.98042345, 0.9725646, -0.98004, -0.3958202, 1.048579, 1.1906261, 1.3221356, -0.93381333, -1.3204832, -1.3208295, -0.93381333, -1.3204832, -1.3208295, -0.93381333, 1.3228443, 0.39712626, 1.048579, -1.1882651, 1.4544832, -0.93381333, 1.1906261, 0.39712626, 1.048579, 1.1906261, 1.3636187, -1, -1.1139247, -1.4531771, -0.93381333, 1.1906261, -1.4531771, -0.93381333, -1.1882651, 1.3221356, -0.93381333, 1.3228443, 1.1900728, -0.8015435, -1.3204832, -1.1887667, -0.8015435, -1.3204832, -1.1887667, -0.8015435, 1.3228443)
+
+[node name="MetalDetector" unique_id=1189891 instance=ExtResource("1_altp3")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cube" parent_id_path=PackedInt32Array(745372885) index="0" unique_id=108099814]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube/StaticBody3D" index="0" unique_id=1037430460]
+shape = SubResource("BoxShape3D_17u8t")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cube_001" parent_id_path=PackedInt32Array(652499128) index="0" unique_id=1434679009]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube_001/StaticBody3D" index="0" unique_id=1795822615]
+shape = SubResource("ConvexPolygonShape3D_ymysj")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Cube_001/StaticBody3D" index="1" unique_id=1145777694]
+shape = SubResource("ConvexPolygonShape3D_fs46r")

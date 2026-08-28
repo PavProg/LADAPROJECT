@@ -64,7 +64,7 @@ script = ExtResource("3_ov24w")
 
 [node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
 collision_layer = 512
-collision_mask = 515
+collision_mask = 523
 
 [node name="Collision" type="CollisionShape3D" parent="HurtArea" unique_id=239942882]
 transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 3.5802631, -0.07192993)
@@ -91,6 +91,21 @@ no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
 text = "123"
+font_size = 12
+outline_size = 4
+
+
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=419338301]
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=1826303043]
+
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570856, 0)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
 font_size = 12
 outline_size = 4
 

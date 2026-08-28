@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dqvpton34n4nr"]
+
+[ext_resource type="PackedScene" uid="uid://jjvi5iaxnly6" path="res://models/blend/Bench.blend" id="1_msvs5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ptrt"]
+size = Vector3(4.5, 0.59999996, 1.5)
+
+[node name="Bench" unique_id=2022963174 instance=ExtResource("1_msvs5")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Bench" parent_id_path=PackedInt32Array(1528085594) index="0" unique_id=506126011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30059457, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bench/StaticBody3D" index="0" unique_id=1947899163]
+shape = SubResource("BoxShape3D_1ptrt")

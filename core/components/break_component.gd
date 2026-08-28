@@ -8,24 +8,22 @@ extends Node3D
 @onready var item: RigidBody3D = get_parent()        # сам разрушаемый предмет
 @onready var timer: Timer = $"../TakeDamageTimer"
 
-@export var take_damage_recovery_time: float = 0.2   # секунд «неуязвимости» между ударами
+@export var take_damage_recovery_time: float = 0.3   # секунд «неуязвимости» между ударами
+@export var speed_damage_scale: float = 0.4          # множитель перевода скорости удара в урон (20%)
+@export var max_damage_allowed: int = 100            # ограничение максимального урона
 var can_be_hitted: bool = true                       # можно ли ударить прямо сейчас (только на сервере)
-@export var speed_damage_scale: float = 0.2          # множитель перевода скорости удара в урон (20%)
-@export var max_damage_allowed: int = 100          # множитель перевода скорости удара в урон
 
 
 # Вызывается AttackComponent оружия. На всякий продублировал чтобы прям точно
 func take_damage(dmg: int) -> void:
 	#print("BREAK_COMPONENT -- take_damage -- ")
-	if not multiplayer.is_server():
-		return
-	if not can_be_hitted:
-		return
+	if not multiplayer.is_server(): return
+	if not can_be_hitted: return
 
 	# Урон не может превысить остаток прочности
 	var final_damage: int = clampi(dmg, 0, item.item_data.durability)
 	
-	if final_damage == 0: return
+	if final_damage <= 0: return
 	item.item_data.durability -= final_damage
 	# вклчюаение метки + ее задание урона
 	item.toggle_damage_label(final_damage)
@@ -66,63 +64,44 @@ func _destroy() -> void:
 		Net.despawn_item(item.name)
 	else:
 		print("Не вышло найти id предмета")
-
-# вызывается когда объект сталкивается с другим разрушаемым объектом
-func _on_hurt_area_area_entered(area: Area3D) -> void:
-	#print("BREAK_COMPONENT -- Damage area entered")
-	var other_body := area.get_parent()
-	if other_body == null: return
-	if other_body is not RigidBody3D: return
-	#print("BREAK_COMPONENT -- RigidBody3D")
-	
-	# velocity объекта с которым столкнулись
-	var other_velocity = other_body.linear_velocity
-	var self_velocity = item.linear_velocity
-	var overall_velocity_length: float = other_velocity.length() * self_velocity.length()
-	var velocity_threshold = item.item_data.velocity_length_threshold
-	
-	if overall_velocity_length <= velocity_threshold: return
-	
-	# в данном случае это тот урон который базово получает объект при столкновениях с полом(у хрупких больше, у крепких меньше)
-	var base_damage: int = item.item_data.damage
-	# считаем урон с применением velocity (скорости удара)
-	var actual_damage: int = clampi(
-		int(base_damage * overall_velocity_length * speed_damage_scale),
-		base_damage,
-		max_damage_allowed
-	)
-	#print("BREAK_COMPONENT -- Actual damage: %d" % actual_damage)
-
-	take_damage(actual_damage)
-	pass
-
-
+		
 
 # вызывается когда объект сталкивается с объектом уровня(статичное). Нужен так как _on_hurt_area_area_entered отслеживает только Area3D, но никак не StaticBody3D
 func _on_hurt_area_body_entered(body: Node3D) -> void:
 	#print("BREAK_COMPONENT -- Damage area entered")
 	var other_body := body
 	if other_body == null: return
+	#print("BREAK_COMPONENT -- other_body NOT null")
 
 	var other_velocity_length: float
+	var other_body_damage: float
+	var self_damage: float = item.item_data.damage
 
-	if other_body is StaticBody3D:
+	if other_body is GridMap or other_body is StaticBody3D:
+		#print("StaticBody3D damaging")
 		other_velocity_length = 1.0
+		other_body_damage = 0.0
 
 	if other_body is CharacterBody3D:
+		#print("CharacterBody3D damaging")
 		other_velocity_length = other_body.velocity.length()
-		
-	#print("BREAK_COMPONENT -- StaticBody3D")
+		other_body_damage = 0.0
+	
+	if other_body is RigidBody3D and other_body.is_in_group("item"):
+		#print("RigidBody3D damaging")
+		other_velocity_length = other_body.linear_velocity.length()
+		other_body_damage = other_body.item_data.damage
 	
 	# только велосити нашего объекта тк другой объект статичен
-	var self_velocity = item.linear_velocity
-	var overall_velocity_length: float = self_velocity.length() * other_velocity_length
+	var self_velocity_length = item.linear_velocity.length()
+	var overall_velocity_length: float = self_velocity_length * other_velocity_length
 	var velocity_threshold = item.item_data.velocity_length_threshold
 	
 	if overall_velocity_length <= velocity_threshold: return
 	
 	# в данном случае это тот урон который базово получает объект при столкновениях с полом(у хрупких больше, у крепких меньше)
-	var base_damage: int = item.item_data.damage
+	var base_damage: int = self_damage + other_body_damage
+	print(base_damage)
 	# считаем урон с применением velocity (скорости удара)
 	var actual_damage: int = clampi(
 		int(base_damage * overall_velocity_length * speed_damage_scale),

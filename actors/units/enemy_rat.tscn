@@ -5,14 +5,19 @@
 [ext_resource type="Script" uid="uid://dys246mjb4a3n" path="res://core/data/unit_data.gd" id="2_rq516"]
 [ext_resource type="BehaviorTree" uid="uid://2s7g8pgn8cfo" path="res://ai/tree/root_tree.tres" id="4_vsiok"]
 [ext_resource type="PackedScene" uid="uid://2d0jolk38d62" path="res://actors/units/rig-animation-rat.tscn" id="5_rq516"]
+[ext_resource type="Script" uid="uid://clikdy28luro7" path="res://core/components/actor_damage_component.gd" id="5_vs62c"]
 
 [sub_resource type="Resource" id="Resource_7w5p4"]
 script = ExtResource("2_rq516")
 id = "Rat"
-speed_walk = 5.0
-speed_sprint = 6.0
-radius_detection = 6.0
+health = 10.0
+damage_for_ragdoll = 5.0
+speed_walk = 2.0
+speed_sprint = 5.0
+radius_detection = 15.0
+damage_attack = 5.0
 cooldown_attack = 1.5
+range_attack = 3.0
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mtgiw"]
@@ -29,7 +34,7 @@ radius = 0.7153955
 [sub_resource type="SphereShape3D" id="SphereShape3D_6fqur"]
 radius = 12.0
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_07ba6"]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_rq516"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vsiok"]
 properties/0/path = NodePath(".:position")
@@ -50,12 +55,16 @@ transform = Transform3D(-0.25881904, -4.222196e-08, -0.9659258, -0.9659258, 1.13
 shape = SubResource("CapsuleShape3D_mtgiw")
 
 [node name="Hurtbox" type="Area3D" parent="." unique_id=1108833264]
+collision_layer = 32
+collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=1614355101]
 transform = Transform3D(-0.25736016, 0.014293374, -0.9662099, -0.96631557, -0.003806774, 0.257332, 0, 0.9998906, 0.014791621, -0.009149551, 1.047647, 0.045314133)
 shape = SubResource("CapsuleShape3D_2l5kd")
 
 [node name="HitBox" type="Area3D" parent="." unique_id=1899175341]
+collision_layer = 128
+collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=1087315691]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0143966675, 1.1613705, 1.7884756)
@@ -71,7 +80,7 @@ shape = SubResource("SphereShape3D_6fqur")
 
 [node name="BTPlayer" type="BTPlayer" parent="." unique_id=1835505931]
 behavior_tree = ExtResource("4_vsiok")
-blackboard_plan = SubResource("BlackboardPlan_07ba6")
+blackboard_plan = SubResource("BlackboardPlan_rq516")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1233565699]
 replication_config = SubResource("SceneReplicationConfig_vsiok")
@@ -79,7 +88,25 @@ replication_config = SubResource("SceneReplicationConfig_vsiok")
 [node name="Eye" type="Marker3D" parent="." unique_id=259720061]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.499598, 1.664108)
 
-[node name="PriorityComponent" type="Node" parent="." unique_id=2145638191]
+[node name="PriorityComponent" type="Node" parent="." unique_id=2145638191 node_paths=PackedStringArray("fov_area", "eye")]
 script = ExtResource("1_devae")
+fov_area = NodePath("../FOV")
+eye = NodePath("../Eye")
+
+[node name="DamageComponent" type="Node3D" parent="." unique_id=313587917]
+script = ExtResource("5_vs62c")
 
 [node name="Root Scene" parent="." unique_id=622377030 instance=ExtResource("5_rq516")]
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=1727043119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570855, 0)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
+font_size = 12
+outline_size = 4
+
+[connection signal="body_entered" from="Hurtbox" to="DamageComponent" method="_on_hurtbox_body_entered"]

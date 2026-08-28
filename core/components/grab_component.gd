@@ -7,17 +7,31 @@ class_name GrabComponent
 @export var reach: float = 5.0        # дальность захвата
 
 var _held_item: Node = null           # что держит этот игрок (имеет смысл только на сервере)
+var _hover_target: Node = null        # цель прошлого кадра
+var _grab_target: Node = null         # то, что взяли
 
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority():
 		return                        # ввод читает ТОЛЬКО свой игрок
+
+	var item := _aim_item()
+
+	# шлём только при смене цели, а не каждый кадр
+	if item != _hover_target:
+		_hover_target = item
+		Events.hover_target_changed.emit(item)
+
 	if Input.is_action_just_pressed("grab"):
-		var item := _aim_item()
 		if item:
 			_request_grab.rpc_id(1, item.get_path())   # просим ХОСТА (id 1)
-			
+
+			_grab_target = item
+			Events.local_item_held_changed.emit(item)
 	elif Input.is_action_just_released("grab"):
 		_request_release.rpc_id(1)
+		if _grab_target:
+			_grab_target = null
+			Events.local_item_held_changed.emit(null)
 
 # Локальный рэйкаст из камеры — только чтобы выбрать предмет (для картинки/выбора)
 func _aim_item() -> Node:

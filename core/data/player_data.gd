@@ -12,3 +12,5 @@ class_name PlayerData
 @export var endurance_recovery_time: float = 0 
 ## кол-во выносливости добавляемое за кадр
 @export var endurance_recovery_speed: float = 0
+## для действия interact (по стандарту 'e')
+@export var interaction_range : float = 0
