@@ -70,8 +70,29 @@ script = ExtResource("3_d08ox")
 [sub_resource type="BTCondition" id="BTCondition_mucpi"]
 script = ExtResource("4_loxjt")
 
+[sub_resource type="BBNode" id="BBNode_whw32"]
+saved_value = NodePath("Root Scene/AnimationPlayer")
+resource_name = "Root Scene"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_b2d7f"]
+animation_player = SubResource("BBNode_whw32")
+blend = 0.1
+custom_name = "PlayAnimation Walk"
+
 [sub_resource type="BTAction" id="BTAction_n6oi4"]
 script = ExtResource("5_i2ttw")
+
+[sub_resource type="BTWait" id="BTWait_b2d7f"]
+duration = 0.1
+
+[sub_resource type="BBNode" id="BBNode_d08ox"]
+saved_value = NodePath("Root Scene/AnimationPlayer")
+resource_name = "Root Scene"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_loxjt"]
+animation_player = SubResource("BBNode_d08ox")
+blend = 0.1
+custom_name = "PlayAnimation Attack"
 
 [sub_resource type="BTAction" id="BTAction_p1l0d"]
 script = ExtResource("6_mcktk")

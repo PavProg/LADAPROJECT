@@ -14,8 +14,10 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 const ANIM_IDLE := &"Rat_Idle"
 const ANIM_WALK := &"Rat_Walk"
 const ANIM_RUN := &"Rat_Run"
+
 const ANIM_ATTACK := &"Rat_Attack"
 const ANIM_DEATH := &"Rat_Death"
+
 
 ## Бежать или идти. Ставится тем, кто задаёт цель (см. set_move_target)
 var is_sprinting: bool = false
@@ -200,4 +202,5 @@ func _resolve_anim(base_name: StringName) -> StringName:
 		if String(a).ends_with(String(base_name)):
 			return a
 	return &""
+
 #endregion

@@ -10,12 +10,9 @@
 [sub_resource type="Resource" id="Resource_7w5p4"]
 script = ExtResource("2_rq516")
 id = "Rat"
-health = 10.0
-damage_for_ragdoll = 5.0
-speed_walk = 2.0
+speed_walk = 4.0
 speed_sprint = 5.0
-radius_detection = 15.0
-damage_attack = 5.0
+radius_detection = 6.0
 cooldown_attack = 1.5
 range_attack = 3.0
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
@@ -92,9 +89,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.499598, 1.664108)
 script = ExtResource("1_devae")
 fov_area = NodePath("../FOV")
 eye = NodePath("../Eye")
-
-[node name="DamageComponent" type="Node3D" parent="." unique_id=313587917]
-script = ExtResource("5_vs62c")
 
 [node name="Root Scene" parent="." unique_id=622377030 instance=ExtResource("5_rq516")]
 
