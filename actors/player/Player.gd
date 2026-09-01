@@ -22,6 +22,9 @@ extends CharacterBody3D
 @export var export_data: Resource
 var data: Resource
 
+@export var sync_rate: float = 0.05 # Как часто отправляем
+var _sync_t: float  = 0.0
+
 var air_speed_reduction = 0.05   # насколько каждый кадр снижается скорость в воздухе после прыжка
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var gravity_scale: float = 1.5
@@ -41,7 +44,7 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		Events.local_player_spawned.emit(self)
 	set_unseen_meshes_visibiliy(false)
-	pass
+	print("[PLAYER/GRAB] authority=, my_id=, is_auth=, ", get_multiplayer_authority(), multiplayer.get_unique_id(), is_multiplayer_authority())
 
 func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 	# убираем видимость только для себя(тоесть код на клиенте)
@@ -49,6 +52,35 @@ func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 		for mesh in meshes_to_unsee:
 			mesh.visible = is_active
 	pass
+
+#region Ретрансляция трансформа
+#
+#@rpc("any_peer", "call_local", "unreliable_ordered")
+#func _push_transform(pos: Vector3, yaw: float, pitch: float) -> void:
+	#if not multiplayer.is_server(): return
+#
+	#if multiplayer.get_remote_sender_id() != get_multiplayer_authority():
+		#return
+	#
+	#_apply_transform(pos, yaw, pitch)
+	#_broadcast_transform.rpc(pos, yaw, pitch)
+#
+#@rpc("any_peer", "call_local", "unreliable_ordered")
+#func _broadcast_transform(pos: Vector3, yaw: float, pitch: float) -> void:
+	#if multiplayer.get_remote_sender_id() != 1:
+		#return
+	#
+	#if is_multiplayer_authority():
+		#return
+	#
+	#_apply_transform(pos, yaw, pitch)
+#
+#func _apply_transform(pos: Vector3, yaw: float, pitch: float) -> void:
+	#global_position = pos
+	#rotation.y = yaw
+	#camera_controller.rotation.x = pitch
+
+#endregion
 
 #region INPUTS
 func apply_intent(intent: Dictionary):
@@ -67,6 +99,12 @@ func input():
 		else:
 			stop_ragdoll()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+	if event.is_action_pressed("interact"):
+		try_interact(4)
+
 func _physics_process(delta: float) -> void:
 	input()
 	if is_multiplayer_authority():
@@ -76,33 +114,14 @@ func _physics_process(delta: float) -> void:
 		})
 		movement(delta)
 		synchronize_player_and_ragdoll()
-
-##### Нажатие кнопки перехода
-func _unhandled_input(event: InputEvent) -> void:
-	if not is_multiplayer_authority(): 
-		return
- 
-	if event.is_action_pressed("interact"):
-		try_interact(4)
-		_request_start.rpc_id(1)
-
-@rpc("any_peer", "call_local", "reliable")
-func _request_start() -> void:
-	if not multiplayer.is_server():
-		return
- 
-	# ID хоста. Не доверяем игроку (хоть где-то)
-	var who := multiplayer.get_remote_sender_id()
- 
-	var zone := get_tree().current_scene.get_node_or_null("StartZone")
-	if zone == null:
-		return
- 
-	if not zone.has_peer(who):
-		return
- 
-	LevelManager.start_first_run()
+	
+	## Ретрансляция трансформа
+	#_sync_t -= delta
+	#if _sync_t <= 0.0:
+		#_sync_t = sync_rate
+		#_push_transform.rpc_id(1, global_position, rotation.y, camera_controller.rotation.x)
 #endregion
+
 #region RAGDOLL
 func synchronize_player_and_ragdoll() -> void:
 	if is_ragdoll:
@@ -221,7 +240,7 @@ func take_damage() -> void:
 	pass
 #endregion
 
-
+#region КНОПКА ИНТЕРАКТА + RAYCAST
 func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
 	# Рейкаст должен выполняться только у клиента, который управляет игроком
 	if not is_multiplayer_authority():
@@ -242,8 +261,11 @@ func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
 
 	# Параметры запроса: включаем области (Area3D) и тела (CollisionObject3D)
 	var query := PhysicsRayQueryParameters3D.create(from, to)
-	query.collide_with_areas = true
+	
+	query.collision_mask = 1 | 256	# Маску здесь ставим тк хардкодим рэйкаст
+	query.collide_with_areas = false
 	query.collide_with_bodies = true
+	query.exclude = [get_rid()]
 
 	# Выполняем рейкаст
 	var result := space_state.intersect_ray(query)
@@ -264,3 +286,4 @@ func try_interact(max_search_depth : int = 5) -> void:
 					return
 				else:
 					target = target.get_parent()
+#endregion

@@ -1,0 +1,226 @@
+[gd_scene format=3 uid="uid://dvfbdj6p6drje"]
+
+[ext_resource type="Script" uid="uid://chteork7nnmac" path="res://ui/menus/lobby-menu/scripts/lobby-menu-main.gd" id="1_1a12d"]
+[ext_resource type="Texture2D" uid="uid://cpw1mln5557e5" path="res://models/materials/#fypfypfyp.jpg" id="2_o660l"]
+
+[node name="LobbyMenu" type="Control" unique_id=1754632581]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1a12d")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1108455201]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_o660l")
+
+[node name="EntryPanel" type="Control" parent="." unique_id=417735064]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuButtonsContainer" type="VBoxContainer" parent="EntryPanel" unique_id=1621908355]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.5
+anchor_right = 0.25
+anchor_bottom = 0.85
+grow_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="EntryPanel/MenuButtonsContainer" unique_id=903471288]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Lobby"
+
+[node name="HostButton" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=1490237766]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Host Game"
+
+[node name="JoinButton" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=286104913]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Join Game"
+
+[node name="ExitButton" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=750663482]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Exit"
+
+[node name="JoinGamePopup" type="Panel" parent="." unique_id=1935420677]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.35
+anchor_right = 0.6
+anchor_bottom = 0.55
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="JoinGamePopup" unique_id=1276093548]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="JoinPopupPrompt" type="Label" parent="JoinGamePopup/VBoxContainer" unique_id=622981340]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "To join the game, enter its code"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="JoinGamePopup/VBoxContainer" unique_id=1849330271]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="UIDEnterBox" type="LineEdit" parent="JoinGamePopup/VBoxContainer/MarginContainer" unique_id=506274119]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="JoinGamePopup/VBoxContainer" unique_id=1013887654]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ConfirmJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=1687324910]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Join"
+
+[node name="CancelJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=344209671]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Cancel"
+
+[node name="RoomPanel" type="Panel" parent="." unique_id=1502377843]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32
+anchor_top = 0.18
+anchor_right = 0.68
+anchor_bottom = 0.86
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="RoomPanel" unique_id=1178549302]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 14
+
+[node name="RoomContainer" type="VBoxContainer" parent="RoomPanel/MarginContainer" unique_id=1327440985]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RoomHeader" type="Label" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=651002374]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Lobby Room"
+horizontal_alignment = 1
+
+[node name="CodeRow" type="HBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1094776520]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodeLabel" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/CodeRow" unique_id=489331207]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Code:"
+vertical_alignment = 1
+
+[node name="CodeValue" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/CodeRow" unique_id=1760884493]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "------"
+vertical_alignment = 1
+
+[node name="CopyCodeButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/CodeRow" unique_id=1445097368]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Copy"
+
+[node name="Separator" type="HSeparator" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1233709450]
+layout_mode = 2
+
+[node name="PlayersHeader" type="Label" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=816427925]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Players"
+
+[node name="PlayersScroll" type="ScrollContainer" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1976352884]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayersList" type="VBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer/PlayersScroll" unique_id=1032851619]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="PlayerRowTemplate" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/PlayersScroll/PlayersList" unique_id=1409663072]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Player"
+
+[node name="ButtonsRow" type="VBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1592015736]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="InviteFriendButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=1866340298]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+text = "Invite Friend"
+
+[node name="StartGameButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=708235419]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+disabled = true
+text = "Start Game"
+
+[node name="LeaveButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=1251906047]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Leave Lobby"
+
+[node name="StatusLabel" type="Label" parent="." unique_id=933748261]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.9
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 13
+text = "Ready"
+vertical_alignment = 1

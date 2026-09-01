@@ -30,15 +30,8 @@ func _on_disconnected_peer(peer_id: int ) -> void:
 
 # СМЕНА УРОВНЕЙ И ХАБ
 # СЕРВАК
-
+#region функции хелперы
 func go_to_hub() -> void:
-	if not multiplayer.is_server():
-		return
-	_run_index = -1
-	_load(HUB)
-
-# Функция заглушка, чтобы релоуднуть хаб и клиент двигался
-func reload_hub() -> void:
 	if not multiplayer.is_server():
 		return
 	_run_index = -1
@@ -49,11 +42,6 @@ func start_first_run() -> void:
 		return
 	_run_index = 0
 	_load(RUNS[0])
-	
-func return_to_hub() -> void:
-	if not multiplayer.is_server():
-		return
-	_load(HUB)
 	
 func next_level() -> void:
 	if not multiplayer.is_server():
@@ -66,7 +54,9 @@ func next_level() -> void:
 		go_to_hub()
 	else:
 		_load(RUNS[_run_index])
+#endregion
 
+#region change Scenes
 # СМЕНА СЦЕНЫ
 func _load(path: String) -> void:
 	current_scene_path = path
@@ -87,23 +77,24 @@ func change_scene(path: String) -> void:
 	await get_tree().process_frame
 	
 	_ack_ready.rpc_id(1, multiplayer.get_unique_id())
-	
+#endregion
 
+#region rpc spawn
 # СПАВНЫ СУЩНОСТЕЙ
 @rpc("any_peer", "call_local", "reliable")
 func _ack_ready(peer_id: int) -> void:
 	if not multiplayer.is_server(): return
-	
+
 	if peer_id == 1:
 		_on_server_ready()
 		return
-		
+	
 	if not _ready_peers.has(peer_id):
 		_ready_peers.append(peer_id)
 		
 	if not _server_ready:
 		return
-		
+	
 	_handle_peer_ack(peer_id)
 
 func _on_server_ready() -> void:
@@ -114,8 +105,8 @@ func _on_server_ready() -> void:
 	
 	if not _content_spawned:
 		_content_spawned = true
+		Net.spawn_content()
 		if _run_index >= 0:
-			Net.spawn_content()
 			Net.spawn_enemies()
 			print("[LEVELMANAGER] Контент заспавнен.")
 		GameManager.on_level_start(GameManager.required_quote_next_level)
@@ -126,33 +117,10 @@ func _on_server_ready() -> void:
 	for pid in _ready_peers:
 		_handle_peer_ack(pid)
 
-
 func _handle_peer_ack(peer_id: int) -> void:
-	if _run_index == -1:
-		Net.respawn_all_players(_ready_peers)
-	else:
-		Net.server_spawn_player(peer_id)
+	Net.server_spawn_player(peer_id)
+	Net.send_items_to(peer_id)
+	if _run_index >= 0:
 		Net.give_hammer_to(peer_id)
-		Net.send_items_to(peer_id)
 		Net.send_enemies_to(peer_id)
-
-#func _ack_ready(peer_id: int) -> void:
-	#if not multiplayer.is_server():
-		#return
-	#
-	#if peer_id == 1 and not _content_spawned:
-		#_content_spawned = true
-		#if _run_index >= 0:
-			#Net.spawn_content()
-			#print("Предметы заспавнены!!")
-		#GameManager.on_level_start(GameManager.required_quote_next_level)
-	#
-	## Респавн на хабе. Чинит проблему репликации игроков на хабе.
-	#if _run_index == -1 and peer_id != 1:
-		#Net.respawn_all_players()
-	#else:
-		#Net.server_spawn_player(peer_id) # Спавним вручную, без PlayerSpawner.
-	#
-	#if _run_index >= 0 and peer_id != 1:
-		#Net.send_items_to(peer_id)   # догнать клиента уже заспавненными предметами уровня
-	#print("Игрок с пиром ", peer_id, " заспавнен!")
+#endregion

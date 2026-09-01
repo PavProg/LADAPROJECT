@@ -1,17 +1,17 @@
-extends Node3D
+extends StaticBody3D
 class_name EscapeToilet
 
+## Площадь выхода, кто вне зоны - смерть
 @export var escape_area : Area3D
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func on_interact() -> void:
-	if GameManager.current_quote > GameManager.required_quote:
-		LevelManager.return_to_hub()
+	if GameManager.current_quote >= GameManager.required_quote:
+		request_exit.rpc_id(1)
+
+@rpc("any_peer", "call_local", "reliable")
+func request_exit() -> void:
+	if not multiplayer.is_server():
+		return
+	if GameManager.current_state != GameManager.quote_states.FINISHED:
+		return 
+	LevelManager.next_level()

@@ -14,8 +14,11 @@ const GROUP_KEY: String = "My_group_id"
 var lobby_id: int = 0
 var steam_id: int = 0	# host_game и join_game происходит ЗДЕСЬ! ТК STEAM_ID назначается ЗДЕСЬ!!!
 var steam_username: String = ""
+var group_code: String = ""
 
 signal status(msg: String)
+signal group_created(code: String)
+signal group_joined(code: String)
 
 func _init() -> void:
 	OS.set_environment("SteamAppId", str(APP_ID))
@@ -49,21 +52,24 @@ func create_group() -> void:
 
 func _on_lobby_created(result: int, new_lobby_id: int):
 	if result != Steam.RESULT_OK:
+		status.emit("Не удалось создать лобби")
 		return
 
 	lobby_id = new_lobby_id
-	var uuid := LobbyUuid.generate_uuid()
+	group_code = LobbyUuid.generate_uuid()
 	## Добавляем uuid в метаданные
-	Steam.setLobbyData(lobby_id, GROUP_KEY, uuid)
-	DisplayServer.clipboard_set(str(uuid))
-	Net.host_game()
-	LevelManager.go_to_hub()
+	Steam.setLobbyData(lobby_id, GROUP_KEY, group_code)
+	Steam.setLobbyJoinable(lobby_id, true)
 	
+	Net.host_game()
+	# Эмит нового сигнала
+	group_created.emit(group_code)
 
 func _on_group_joined_by_uuid(uuid: String) -> void:
 	uuid = uuid.strip_edges()
 	if uuid.is_empty():
 		status.emit("Введите ID группы")
+		return
 	status.emit("Поиск группы...")
 	Steam.addRequestLobbyListStringFilter(GROUP_KEY, uuid, Steam.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()
@@ -73,10 +79,14 @@ func _on_lobby_joined(this_lobby_id: int, _permission: int, _locked: bool, respo
 		status.emit("Не удалось создать лобби")
 		return
 	lobby_id = this_lobby_id
+	
 	var host_id := Steam.getLobbyOwner(lobby_id)	# Steam id хоста!
 	if host_id == steam_id: return
-	print("SteamID Клиента: ", host_id)
+	
+	#print("SteamID Клиента: ", host_id)	
+	group_code = Steam.getLobbyData(lobby_id, GROUP_KEY)
 	Net.join_game(host_id)
+	group_joined.emit(group_code)
 
 func _on_join_request(lobby_steam_id: int):
 	Steam.joinLobby(lobby_steam_id)

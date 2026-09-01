@@ -94,12 +94,10 @@ text = "123"
 font_size = 12
 outline_size = 4
 
-
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=419338301]
 
 [node name="DamageLabel" type="Label3D" parent="." unique_id=1826303043]
-
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570856, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8561054, 0)
 visible = false
 billboard = 1
 no_depth_test = true

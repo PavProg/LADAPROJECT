@@ -18,7 +18,7 @@ func _ready() -> void:
 		body_exited.connect(_on_body_exited)
 	
 	can_sleep = false
-	#_update_freeze()
+	_update_freeze()
 
 func grab_by(peer_id: int) -> void:
 	_hold_by = peer_id
@@ -35,12 +35,11 @@ func _update_freeze() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
-
+	
 	if not is_on_floor and _hold_by == 0:
 		var damp_factor := exp(-air_speed_reduction * delta)
 		linear_velocity.x *= damp_factor
 		linear_velocity.z *= damp_factor
-
 	if _hold_by != 0:
 		var hold := _hold_point_of(_hold_by)
 		if hold == null:

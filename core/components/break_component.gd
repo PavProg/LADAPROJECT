@@ -36,6 +36,8 @@ func take_damage(dmg: int) -> void:
 		_destroy()
 		return
 
+	get_parent().update_durability_labelo_value()
+
 	# Иначе — "неуязвимость" на take_damage_recovery_time секунд.
 	can_be_hitted = false
 	timer.stop()

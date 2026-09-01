@@ -1,7 +1,5 @@
 extends Node
 # Работает с multiplayer напрямую
-const PORT: int = 7777
-const MAX_PLAYERS: int = 4
 const PLAYER := preload("../actors/player/player.tscn")
 const ITEMS := preload("res://items/hummer.tscn")
 const BREAK_ITEMS := preload("res://items/bust.tscn")
@@ -16,17 +14,8 @@ var _item_counter: int = 0
 var spawned_enemy: Dictionary = {}
 var _enemy_counter: int = 0
 
-#func _ready() -> void:
-	## Коннектим пиры
-	#multiplayer.peer_connected.connect(_on_peer_connected)
-	#multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	
-################################# СТИМОВСКОЕ ПОДКЛЮЧЕНИЕ
 
-# Откатить для локальных тестов:
-# SteamMultiplayerPeer -> EnetMultiplayerPeer, (NetworkSteam.VIRTUAL_PORT, MAX_PLAYERS) -> (PORT, MAX_PLAYERS)
-# (host_steam_id, NetworkSteam.VIRTUAL_PORT) -> (id, PORT)
-
+#region Steam connect
 func host_game() -> Error:	# создать апи, создать сервер, проверить, подключить мультиплеер пир, заспавнить, вернуть ошибку/подтверждение
 	peer = SteamMultiplayerPeer.new()
 	var serv = peer.create_host(NetworkSteam.VIRTUAL_PORT)
@@ -44,22 +33,10 @@ func join_game(host_steam_id: int) -> Error:	 # Стимовский айдиш�
 		return cli
 	multiplayer.multiplayer_peer = peer
 	return OK
-
-#################################
-
-#func _on_peer_connected(id: int) -> void:
-	#if multiplayer.is_server():
-		#_spawn_players(id)
-	#player_connect.emit(id)
-	#
-#func _on_peer_disconnected(id: int) -> void:
-	#if players.has(id) and is_instance_valid(players[id]):	# проверяем существование key в словаре и памяти
-		#players[id].queue_free()
-	#players.erase(id)
-	#player_disconnect.emit(id)
+#endregion
 
 ####### СПАВН ИГРОКА
-
+#region spawn player
 # Зовет сервак из ack_ready когда пир подтвердил, что в сцене
 func server_spawn_player(id: int) -> void:
 	if not multiplayer.is_server(): return
@@ -91,12 +68,6 @@ func server_dispawn_player(id: int) -> void:
 	spawned_ids.erase(id)
 	_remove_player.rpc(id)
 
-#@rpc("authority", "call_local", "reliable")
-#func _remove_player(id: int) -> void:
-	#var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
-	#if cont and cont.has_node(str(id)):
-		#cont.get_node(str(id)).queue_free()
-
 # Попытка фикса спавна игроков. Если не работает - ставим камеру вручную в create_player.
 # Если и это не сработает - process_frame.
 @rpc("authority", "call_local", "reliable")
@@ -107,11 +78,9 @@ func _remove_player(id: int) -> void:
 		node.name = "_dead" + str(id)
 		node.queue_free()
 		print("[NET/remove_player] Нода игрока была удалена.")
+#endregion
 
-#######
-
-####### СПАВН ПРЕДМЕТОВ как у игроков
-
+#region Spawn Items
 # Зовёт сервер из ack_ready. Предметы берутся с марок ItemMarks в сцене уровня.
 func spawn_content() -> void:
 	if not multiplayer.is_server(): return
@@ -121,6 +90,7 @@ func spawn_content() -> void:
 		return
 	for m in marks.get_children():
 		if m is ItemMark:
+			#print("[NET/spawn_content] Спавним контент по маркам")
 			var scene: PackedScene = m.forced_item if m.forced_item else BREAK_ITEMS
 			_server_spawn_item(scene.resource_path, m.global_position, m.global_rotation.y)
 
@@ -129,7 +99,7 @@ func _server_spawn_item(scene_path: String, pos: Vector3, yaw: float = 0.0) -> N
 	if not multiplayer.is_server(): return null
 	_item_counter += 1
 	var item_name := "item_%d" % _item_counter				# сетевое имя, по нему удалять
-	var node := _instantiate_item(scene_path, item_name, pos, yaw)	# создаём локально у сервера
+	var node := _instantiate_item(scene_path, item_name, pos, yaw)	# создаём у сервера
 	if node == null: return null
 	spawned_items[item_name] = {"scene": scene_path, "node": node}
 	_create_item.rpc(scene_path, item_name, pos, yaw)
@@ -144,9 +114,9 @@ func give_hammer_to(peer_id: int) -> void:
 	if p == null: return
 	_server_spawn_item(ITEMS.resource_path, p.global_position + Vector3.UP * 0.6)
 
-# Выполняется у КЛИЕНТОВ
-@rpc("authority", "reliable")
+@rpc("authority", "call_local", "reliable")
 func _create_item(scene_path: String, item_name: String, pos: Vector3, yaw: float) -> void:
+	#print("[NET/createItem] Функция создания rpc предмета была вызвана")
 	_instantiate_item(scene_path, item_name, pos, yaw)
 
 # Локальное создание узла (одинаково на сервере и клиенте)
@@ -159,9 +129,12 @@ func _instantiate_item(scene_path: String, item_name: String, pos: Vector3, yaw:
 	var i := scene.instantiate()
 	i.name = item_name
 	i.set_multiplayer_authority(1)		# предметы всегда серверо-авторитетны (freeze считается по этому)
+	#print("2 -- [CHECK] item full path on server: ", i.get_path())
+
 	i.position = pos
 	i.rotation.y = yaw
 	cont.add_child(i)
+	#print("[NET/inst] Функция инстанцирования предмета была вызвана.")
 	return i
 
 # Догоняем новый пир, предохранитель от херни со спавном игрока
@@ -171,6 +144,7 @@ func send_items_to(peer_id: int) -> void:
 		var d = spawned_items[item_name]
 		if is_instance_valid(d.node):
 			_create_item.rpc_id(peer_id, d.scene, item_name, d.node.global_position, d.node.rotation.y)
+			#print("[NET/send_items] Функция досылки предметов клиентам вызвана!")
 
 # зовётся из break_component при разрушении (сервер)
 func despawn_item(item_name: String) -> void:
@@ -183,21 +157,21 @@ func _remove_item(item_name: String) -> void:
 	var cont := get_tree().current_scene.get_node_or_null("Items")
 	if cont and cont.has_node(item_name):
 		cont.get_node(item_name).queue_free()
+#endregion
 
-########### СПАВН ВРАГОВ
-
+#region Spawn enemy
 func spawn_enemies() -> void:
 	if not multiplayer.is_server(): return
 	
 	var marks := get_tree().current_scene.get_node_or_null("EnemyMarkCont")
 	if marks == null:
-		push_warning("EnemyMarksCont не найден в корневой сцене уровня.")
+		push_warning("[NET/SPAWN-ENEMY] EnemyMarksCont не найден в корневой сцене уровня.")
 		return
 	
 	for m in marks.get_children():
 		if m is EnemyMark:
 			var scene: PackedScene = m.forced_enemy if m.forced_enemy else ENEMY_RAT
-			_server_spawn_enemies(scene.resource_path, m.global_position, m.global_position.y)
+			_server_spawn_enemies(scene.resource_path, m.global_position, m.global_rotation.y)
 
 ## сервер спавнит врагов
 func _server_spawn_enemies(scene_path: String, pos: Vector3, yaw: float = 0.0) -> Node:
@@ -260,28 +234,9 @@ func _remove_enemy(enemy_name: String) -> void:
 	if cont and cont.has_node(enemy_name):
 		cont.get_node(enemy_name).queue_free()
 
-###########
-########### Трубочистим
-# Респавн игроков
-func respawn_all_players(ready_peers: Array) -> void:
-	if not multiplayer.is_server(): return
-	
-	clear_spawned_players_nodes()
-	server_spawn_player(1)
-	print("[NET/respawn] Зареспавнили хоста.")
-	for pid in ready_peers:
-		server_spawn_player(pid)
-		print("[NET/respawn] Респавн клиентов: ", pid)
-	
-# Для бэкапа
-#func respawn_all_players() -> void:
-	#if not multiplayer.is_server(): return
-	#clear_spawned_players_nodes()
-	##await get_tree().process_frame	# Заглушка/хотфикс зависания камеры хоста
-	#server_spawn_player(1)
-	#for pid in multiplayer.get_peers():
-		#server_spawn_player(pid)
-	
+#endregion
+
+#region resapwn + clear
 func clear_spawned_players_nodes() -> void:
 	if not multiplayer.is_server(): return
 	for id in spawned_ids.duplicate():
@@ -292,3 +247,4 @@ func clear_spawned() -> void:
 	spawned_ids.clear()	# Чистим реестр игроков
 	spawned_items.clear()	# и реестр предметов (сами узлы умрут вместе со сценой)
 	spawned_enemy.clear()
+#endregion

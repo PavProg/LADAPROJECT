@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dwysa4ls6uoem"]
+
+[ext_resource type="Script" uid="uid://g50nn855emkd" path="res://actors/props/button_on_hub.gd" id="1_jguxg"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_f67l4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqej1"]
+
+[node name="ButtonOnHub" type="Node3D" unique_id=155695095]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1649690574]
+mesh = SubResource("BoxMesh_f67l4")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1222780847]
+collision_mask = 259
+script = ExtResource("1_jguxg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=506465907]
+shape = SubResource("BoxShape3D_pqej1")
+
+[node name="Label3D" type="Label3D" parent="MeshInstance3D" unique_id=1943235601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06672433, 0.50400823)
+text = "Move to
+the level"

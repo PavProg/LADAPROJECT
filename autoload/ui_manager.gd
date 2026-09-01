@@ -12,9 +12,13 @@ func _local_player_spawned(player):
 		self.add_child(hud)
 		
 	var quota : MarginContainer = hud.get_node("./Quota")
+	var hint : MarginContainer = hud.get_node("./Hint")
+	
 	if get_tree().current_scene.name == "Hub":
 		quota.visible = false
+		hint.visible = true
 	else:
 		quota.visible = true
+		hint.visible = false
 		
 	hud.set_player(player)

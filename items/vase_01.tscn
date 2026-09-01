@@ -9,10 +9,10 @@
 height = 1.9467773
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
-properties/0/path = NodePath(".:position")
+properties/0/path = NodePath(".:debug_sync_position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:rotation")
+properties/1/path = NodePath(".:debug_sync_rotation_y")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
@@ -39,6 +39,7 @@ transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-
 mesh = ExtResource("3_lds5s")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+process_mode = 3
 replication_config = SubResource("SceneReplicationConfig_f3rkq")
 
 [node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
@@ -68,7 +69,7 @@ outline_size = 4
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=1607676516]
 
 [node name="DamageLabel" type="Label3D" parent="." unique_id=2079563027]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570856, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0948978e-08, 0.47925675)
 visible = false
 billboard = 1
 no_depth_test = true

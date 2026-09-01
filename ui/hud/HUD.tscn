@@ -85,6 +85,30 @@ horizontal_alignment = 1
 [node name="Suffix" type="Label" parent="Quota/HBoxContainer" unique_id=1548859294]
 layout_mode = 2
 
+[node name="Hint" type="MarginContainer" parent="." unique_id=1722386578]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.011000001
+anchor_top = 0.83100003
+anchor_right = 0.28500003
+anchor_bottom = 1.0
+offset_left = -0.55000114
+offset_right = 25.849976
+grow_vertical = 0
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Hint" unique_id=982912209]
+layout_mode = 2
+
+[node name="Caption" type="Label" parent="Hint/HBoxContainer" unique_id=1663822609]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.74857974, 0.74857974, 0.7485797, 0.68235296)
+theme_override_font_sizes/font_size = 50
+text = "WASD - movement
+Left Mouse - grab
+E - interact"
+
 [node name="Crosshair" type="CenterContainer" parent="." unique_id=1411086051]
 layout_mode = 1
 anchors_preset = 15

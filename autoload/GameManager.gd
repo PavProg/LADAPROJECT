@@ -55,14 +55,14 @@ func _sync_quote(value: int, state: int) -> void:
 	current_quote = value
 	current_state = state as quote_states
 	# Отладка
-	print("QUOTE sync -> peer %d: current=%d / required=%d"
-		% [multiplayer.get_unique_id(), current_quote, required_quote])
+	#print("QUOTE sync -> peer %d: current=%d / required=%d"
+		#% [multiplayer.get_unique_id(), current_quote, required_quote])
 
 # Вызывается из main.gd на КАЖДОМ пире => старт детерминирован и одинаков у всех — отдельный RPC тут не нужен.
 func on_level_start(new_req_quote: int) -> void:
 	current_state = quote_states.PROCESS
 	current_quote = 0
-	print("required_quote = new_req_quote: ", new_req_quote)
+	#print("required_quote = new_req_quote: ", new_req_quote)
 	required_quote = new_req_quote
 
 # Итоги уровня. Считает сервер 
@@ -99,7 +99,7 @@ func _break_fx(fragments_scene_path: String, xform: Transform3D, fx_seed: int) -
 	rng.seed = fx_seed
 	for child in fragments.get_children():
 		if child is RigidBody3D:
-			print("[ГЕЙ МЕНЕДЖЕР] Нода осколка: ", child)
+			#print("[ГЕЙ МЕНЕДЖЕР] Нода осколка: ", child)
 			child.apply_central_impulse(Vector3(
 				rng.randf_range(-3, 3),
 				rng.randf_range(-1, 3),

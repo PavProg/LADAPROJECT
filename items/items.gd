@@ -9,11 +9,16 @@ var item_data: Resource
 # Физика притягивания живёт в предмете и считается только на авторитете (хосте). 
 # Предмет знает, кто его держит (held_by), и сам тянется к точке удержания этого игрока.
 
+# Отладка
+#func _process(delta: float) -> void:
+	#if not is_multiplayer_authority():
+		#print("[ITEM/sync] pos=%s auth=%d" % [global_position, get_multiplayer_authority()])
+
 func _ready() -> void:
 	add_to_group("item")
 	super._ready()
 	item_data = export_item_data
-	if durability_label: durability_label.text = str(item_data.durability)
+	update_durability_labelo_value()
 
 func grab_by(peer_id: int) -> void:
 	super.grab_by(peer_id)
@@ -53,4 +58,9 @@ func toggle_damage_label(damage: int) -> void:
 	tween.tween_property(damage_label, "modulate:a", 0.0, 0.3)
 	
 	tween.tween_callback(func(): damage_label.visible = false)
+	pass
+	
+func update_durability_labelo_value():
+	if durability_label: 
+		durability_label.text = str(item_data.durability)
 	pass

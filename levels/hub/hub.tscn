@@ -2,14 +2,11 @@
 
 [ext_resource type="MeshLibrary" uid="uid://d1moryexvlgrd" path="res://models/tile_sets/tres/floor_tiles.tres" id="1_f6udf"]
 [ext_resource type="MeshLibrary" uid="uid://clj8c52ak5r5n" path="res://models/tile_sets/tres/wall_tiles2.tres" id="3_r34rm"]
-[ext_resource type="Script" uid="uid://6x3swx76gysu" path="res://levels/hub/start_zone.gd" id="4_lksvk"]
+[ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="4_vjyq5"]
+[ext_resource type="PackedScene" uid="uid://dwysa4ls6uoem" path="res://actors/props/button-on-hub.tscn" id="5_omfrw"]
+[ext_resource type="PackedScene" uid="uid://by35nkgu3l8xy" path="res://items/vase_01.tscn" id="5_vjyq5"]
 
 [sub_resource type="Environment" id="Environment_tw1cs"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vjyq5"]
-size = Vector3(3.8692932, 3.7845154, 2.6019897)
-
-[sub_resource type="PrismMesh" id="PrismMesh_vo01p"]
 
 [node name="Hub" type="Node3D" unique_id=366666532]
 
@@ -47,14 +44,12 @@ metadata/_editor_floor_ = Vector3(0, 2, 0)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1495551110]
 transform = Transform3D(-0.05992408, 0.8073703, -0.58699435, 0.0526838, 0.5897896, 0.8058368, 0.9968118, 0.017363932, -0.07787793, -1.2480593, 4.6562405, -0.38859868)
-visible = false
 light_energy = 13.457
 spot_range = 12.555383
 spot_angle = 30.67281
 
 [node name="SpotLight3D4" type="SpotLight3D" parent="." unique_id=293073021]
 transform = Transform3D(0.9929253, 0.0550522, -0.105207756, 0.05268379, 0.58978945, 0.80583674, 0.10641351, -0.80567837, 0.5827165, 1.7696104, 4.6562405, 3.530532)
-visible = false
 light_energy = 13.457
 spot_range = 12.555383
 spot_angle = 30.67281
@@ -169,26 +164,23 @@ spot_attenuation = 0.96
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=714159769]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.786113, 2.509967, -17.487791)
 light_color = Color(0, 0.9726582, 0.97617656, 1)
-light_energy = 16.14
+light_energy = 7.79
 shadow_enabled = true
 omni_range = 14.055235
+omni_attenuation = 1.921
 
 [node name="PlayersCont" type="Node3D" parent="." unique_id=1299326983]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.891161, 1.8875536, 4.1792874)
 
-[node name="StartZone" type="Area3D" parent="." unique_id=1284133141]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3706977, 2.132411, -18.860563)
-collision_mask = 2
-script = ExtResource("4_lksvk")
+[node name="Items" type="Node3D" parent="." unique_id=28910469]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StartZone" unique_id=300171911]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.583477, 0.8041158, 0.33342743)
-shape = SubResource("BoxShape3D_vjyq5")
+[node name="ItemMarks" type="Node3D" parent="." unique_id=1982588296]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StartZone" unique_id=735179065]
-transform = Transform3D(-0.010477424, 0, 0.9999451, 0, 1, 0, -0.9999451, 0, -0.010477424, 0.4535613, -0.5826335, -0.7924957)
-mesh = SubResource("PrismMesh_vo01p")
+[node name="ItemMark" type="Marker3D" parent="ItemMarks" unique_id=1194571201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9776309, 3.6524124, 0)
+script = ExtResource("4_vjyq5")
+forced_item = ExtResource("5_vjyq5")
+metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
-[node name="Label3D" type="Label3D" parent="StartZone/MeshInstance3D" unique_id=181122658]
-transform = Transform3D(-0.010477424, 0.37319446, -0.9276942, 0, 0.9277449, 0.37321487, 0.9999451, 0.0039103306, -0.009720378, -0.2655201, 0.013928771, 0.016578197)
-text = "Click E"
+[node name="ButtonOnHub" parent="." unique_id=155695095 instance=ExtResource("5_omfrw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5741787, 1.5988693, -19.087206)
