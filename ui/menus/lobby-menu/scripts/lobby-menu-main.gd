@@ -5,7 +5,7 @@ extends Control
 @onready var host_button: Button = $EntryPanel/MenuButtonsContainer/HostButton
 @onready var join_button: Button = $EntryPanel/MenuButtonsContainer/JoinButton
 @onready var exit_button: Button = $EntryPanel/MenuButtonsContainer/ExitButton
-#@onready var single_button: Button = $EntryPanel/MenuButtonsContainer/SingleButton
+@onready var single_button: Button = $EntryPanel/MenuButtonsContainer/SinglePlayer
 
 @onready var join_popup: Panel = $JoinGamePopup
 @onready var uid_box: LineEdit = $JoinGamePopup/VBoxContainer/MarginContainer/UIDEnterBox
@@ -29,7 +29,7 @@ func _ready() -> void:
 	host_button.pressed.connect(_on_host_pressed)
 	join_button.pressed.connect(_on_join_pressed)
 	exit_button.pressed.connect(_on_exit_pressed)
-	#single_button.pressed.connect(_on_single_pressed)
+	single_button.pressed.connect(_on_single_pressed)
 	
 	confirm_join.pressed.connect(_on_confirm_join_pressed)
 	cancel_join.pressed.connect(_on_cancel_join_pressed)
@@ -46,10 +46,18 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_changed)
 	multiplayer.peer_disconnected.connect(_on_peer_changed)
 	
+	_apply_steam_availability()
 	_show_entry()
 #endregion
 
 #region КЛЮЧЕВОЕ: 3 состояния экрана
+func _apply_steam_availability() -> void:
+	host_button.disabled = not NetworkSteam.steam_ok
+	join_button.disabled = not NetworkSteam.steam_ok
+	if not NetworkSteam.steam_ok:
+		status_label.text = "Steam не запущен - доступна только одиночная игра" 
+	
+
 func _show_entry() -> void:
 	entry_panel.visible = true
 	room_panel.visible = false
@@ -130,6 +138,8 @@ func _on_start_button_pressed() -> void:
 
 ## Кнопка приглашения стим
 func _on_invite_button_pressed() -> void:
+	print("[STEAM] overlay enabled: ", Steam.isOverlayEnabled())
+	print("[STEAM] lobby_id: ", NetworkSteam.lobby_id)
 	Steam.activateGameOverlayInviteDialog(NetworkSteam.lobby_id)
 
 ## Кнопка копирования кода группы
@@ -154,7 +164,8 @@ func _on_confirm_join_pressed() -> void:
 
 ## Кнопка для перехода в сингл
 func _on_single_pressed() -> void:
-	pass
+	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	LevelManager.go_to_hub()
 
 ## Кнопка хоста
 func _on_host_pressed() -> void:

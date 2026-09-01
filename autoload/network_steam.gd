@@ -15,6 +15,7 @@ var lobby_id: int = 0
 var steam_id: int = 0	# host_game и join_game происходит ЗДЕСЬ! ТК STEAM_ID назначается ЗДЕСЬ!!!
 var steam_username: String = ""
 var group_code: String = ""
+var steam_ok: bool = false
 
 signal status(msg: String)
 signal group_created(code: String)
@@ -25,10 +26,13 @@ func _init() -> void:
 	OS.set_environment("SteamGameId", str(APP_ID))
 
 func _ready() -> void:
-	if not Steam.steamInit():
-		push_error("Ошибка инициализации стима")
+	steam_ok = Steam.steamInit()
+	if not steam_ok:
+		push_warning("Ошибка инициализации стима")
 		return
 	steam_id = Steam.getSteamID()
+	steam_username = Steam.getPersonaName()
+	
 	###### ЛОГИ
 	multiplayer.connected_to_server.connect(func(): print("[NET] connected_to_server - Клиент подключился к серверу"))
 	multiplayer.connection_failed.connect(func() : push_error("[NET] connection_failed - Клиент не подключился к серверу"))
@@ -42,8 +46,11 @@ func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.lobby_match_list.connect(_on_steam_lobby_match_list)
 	Steam.join_requested.connect(_on_join_request)
+	
 
 func _process(_delta: float):
+	if not steam_ok:
+		return
 	Steam.run_callbacks()
 
 # Для кнопки ХОСТА в main_menu_controller.gd
