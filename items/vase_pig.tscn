@@ -83,6 +83,8 @@ outline_size = 4
 
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=231340007]
 
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=406051754]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
 [connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]

@@ -25,6 +25,9 @@ var _candidates: Array[Node3D] = []
 var _timer: float = 0.0
 var _cos_half_fov: float
 
+## Для тестов угла обзора врага
+@export var use_fov_check: bool = true
+
 func _ready() -> void:
 	_enemy = get_parent() as Enemy
 	if not multiplayer.is_server():
@@ -38,11 +41,11 @@ func _ready() -> void:
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") and not _candidates.has(body):
 		_candidates.append(body)
-		print("[FOV] Игрок вошел в зону видимости врага")
+		# print("[FOV] Игрок вошел в зону видимости врага")
 
 func _on_body_exited(body: Node3D) -> void:
 	_candidates.erase(body)
-	print("[FOV] Игрок вышел из зоны видимости врага")
+	# print("[FOV] Игрок вышел из зоны видимости врага")
 
 func _process(delta: float) -> void:
 	_timer -= delta
@@ -78,13 +81,16 @@ func _rescan() -> void:
 		last_known_position = current_target.global_position
 		has_last_known = true
 	current_target = best
-	#if current_target != null:
-		#print("[PRIORITY] Приоритетный игрок найден: ", current_target)
+	if current_target != null:
+		print("[PRIORITY] Приоритетный игрок найден: ", current_target)
 
 ## Нагло скомуниздил алгоритм вычисления нахождения игрока в поле зрения
 func _in_fov(to: Vector3) -> bool:
-	var forward : Vector3 = -_enemy.global_transform.basis.z
+	if not use_fov_check:
+		return true
+	var forward : Vector3 = (-_enemy.global_transform.basis.z).normalized()
 	var flat: Vector3 = Vector3(to.x, 0.0, to.z).normalized()
+	# print("[FOV-DEBUG] forward_length=%s" % (-_enemy.global_transform.basis.z).length())
 	return forward.dot(flat) >= _cos_half_fov
 
 func _has_los(p: Node3D) -> bool:

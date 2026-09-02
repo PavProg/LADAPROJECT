@@ -10,6 +10,13 @@ extends CharacterBody3D
 @onready var bone_attachment_3d: BoneAttachment3D = $PlayerBody/Rig_Medium/Skeleton3D/BoneAttachment3D
 @onready var third_person_camera_pos: Node3D = $ThirdPersonCameraPos
 
+#for sounds 
+@onready var foot_step_player: AudioStreamPlayer3D = $FootStepPlayer
+@onready var jump_sound_player: AudioStreamPlayer3D = $JumpSoundPlayer
+@onready var landing_sound_player: AudioStreamPlayer3D = $LandSoundPlayer
+
+var was_on_floor: bool = true
+
 #@onready var reload_button: Button = get_parent().get_parent().get_node("button2/SubViewport/Control/Button")
 
 @onready var meshes_to_unsee: Array[MeshInstance3D] = [
@@ -36,15 +43,51 @@ var camera_main_global_transform: Transform3D
 var need_jump: bool = false
 var running: bool = false
 var endurance_recovering: bool = false
-var is_ragdoll: bool = false
+var is_ragdoll: bool = false # TODO временный @export
+var exceptions: Array[RID]
+
+# Ragdoll
 var is_ragdoll_on_floor: bool = false
+var _hold_by: int = 0
+var grabbed_bone: PhysicalBone3D = null
+@onready var anchor: Node3D = $CameraController/HoldPoint/HoldPoint_Ragdoll
+@onready var pin_joint: Generic6DOFJoint3D = $CameraController/HoldPoint/HoldPoint_Ragdoll/PinJoint3D
+
+
+
+#for sounds
+var walk_step_interval: float = 0.45
+var run_step_interval: float = 0.28
+
+var walk_step_volume: float = -20.0
+var run_step_volume: float = -15.0
+
+var foot_step_timer: float = 0.0
+
+var _health: float = 100.0
 
 func _ready() -> void:
 	data = export_data
+	_health = data.max_health
+
 	if is_multiplayer_authority():
 		Events.local_player_spawned.emit(self)
 	set_unseen_meshes_visibiliy(false)
-	print("[PLAYER/GRAB] authority=, my_id=, is_auth=, ", get_multiplayer_authority(), multiplayer.get_unique_id(), is_multiplayer_authority())
+	set_physical_bones_ignore() # отключение для рейкаста хватания своих костей из видимости
+	pin_joint.node_a = NodePath("")
+	pin_joint.node_b = NodePath("")
+	if is_ragdoll: start_ragdoll()
+	pass
+
+func set_physical_bones_ignore() -> void:
+		# Исключение скелета того кто хватает из своего рейкаста
+	var phys_skeleton := $PlayerBody/Rig_Medium/Skeleton3D/PhysicalBoneSimulator3D as PhysicalBoneSimulator3D 
+	if phys_skeleton:
+		# Перебираем все дочерние узлы скелета в поиске физических костей
+		for child in phys_skeleton.get_children():
+			if child is PhysicalBone3D:
+				exceptions.append(child.get_rid()) # Добавляем RID каждой кости
+	pass
 
 func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 	# убираем видимость только для себя(тоесть код на клиенте)
@@ -107,12 +150,16 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	input()
+	#print("HoldPoint", $CameraController/HoldPoint.global_position)
+	#print("Anchor", anchor.global_position)
 	if is_multiplayer_authority():
 		apply_intent({
 			"move": input_movement_vector,
 			"jump": need_jump
 		})
 		movement(delta)
+		handle_footsteps(delta)
+		handle_landing()
 		synchronize_player_and_ragdoll()
 	
 	## Ретрансляция трансформа
@@ -140,7 +187,7 @@ func start_ragdoll() -> void:
 func stop_ragdoll() -> void:
 	is_ragdoll = false
 	if is_on_floor() or is_on_wall():
-		print("floor")
+		#print("floor")
 		global_position += Vector3(0.0, 0.3, 0.0)
 	camera_controller.transform = camera_main_global_transform
 	physical_bone_controller.physical_bones_stop_simulation()
@@ -154,7 +201,40 @@ func ragdoll_process(delta: float) -> void:
 	var target_transform = camera_controller.global_transform.looking_at(bone_attachment_3d.global_position, Vector3.UP)
 	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 5 * delta)
 	pass
+
 	
+func try_grab(_grabbed_bone: PhysicalBone3D) -> void:
+	#print("try_grab")
+	grabbed_bone = _grabbed_bone
+	pin_joint.node_a = pin_joint.get_path_to(anchor)
+	pin_joint.node_b = pin_joint.get_path_to(grabbed_bone)
+	
+	pass
+
+func release_grab() -> void:
+	#print("release_grab")
+	if grabbed_bone:
+		pin_joint.node_a = NodePath("")
+		pin_joint.node_b = NodePath("")
+		grabbed_bone = null
+
+func grab_by(peer_id: int) -> void:
+	_hold_by = peer_id
+	
+func release() -> void:
+	_hold_by = 0
+
+func is_free() -> bool:
+	return _hold_by == 0
+	
+
+func _hold_point_of(peer_id: int) -> Node3D:
+	var players := get_tree().current_scene.get_node_or_null("PlayersCont")
+	if players == null: return null
+	var p := players.get_node_or_null(str(peer_id))
+	if p == null: return null
+	return p.get_node_or_null("CameraController/HoldPoint")
+
 
 func _process(delta: float) -> void:
 	if is_ragdoll:
@@ -198,6 +278,7 @@ func movement(delta: float) -> void:
 		# прыжок
 		if need_jump:
 			velocity.y = data.jump_velocity
+			jump_sound_player.play()
 			anim_player.play("Jump_Idle")
 		
 	# перемещение в воздухе 
@@ -235,9 +316,17 @@ func _on_endurance_timer_timeout() -> void:
 	pass
 
 #endregion
+
 #region TAKEDAMAGE
-func take_damage() -> void:
-	pass
+func take_damage(amount: int) -> void:
+	if not multiplayer.is_server(): return
+
+	_health = maxf(0.0, _health - amount)
+	print("[PLAYER/TAKEDAMAGE] Нанесли урон! ", _health)
+
+	if _health <= 0.0:
+		is_ragdoll = true
+
 #endregion
 
 #region КНОПКА ИНТЕРАКТА + RAYCAST
@@ -286,4 +375,51 @@ func try_interact(max_search_depth : int = 5) -> void:
 					return
 				else:
 					target = target.get_parent()
+
+#endregion
+
+#for sounds
+#region sounds
+func handle_footsteps(delta: float) -> void:
+	# В воздухе шагов нет
+	if !is_on_floor():
+		foot_step_timer = 0.0
+		return
+
+	# Проверяем, действительно ли персонаж движется
+	var horizontal_speed = Vector2(velocity.x, velocity.z).length()
+
+	if horizontal_speed < 0.1:
+		foot_step_timer = 0.0
+		return
+
+	# Выбираем частоту и громкость
+	var step_interval: float
+
+	if running and data.endurance > 0:
+		step_interval = run_step_interval
+		foot_step_player.volume_db = run_step_volume
+	else:
+		step_interval = walk_step_interval
+		foot_step_player.volume_db = walk_step_volume
+
+	# Отсчитываем время до следующего шага
+	foot_step_timer -= delta
+
+	if foot_step_timer <= 0.0:
+		play_footstep()
+		foot_step_timer = step_interval
+
+func play_footstep() -> void:
+	foot_step_player.pitch_scale = randf_range(0.96, 1.04)
+	foot_step_player.play()
+
+
+func handle_landing() -> void:
+	if !was_on_floor and is_on_floor():
+		play_landing_sound()
+		
+func play_landing_sound() -> void:
+	landing_sound_player.pitch_scale = randf_range(0.97, 1.03)
+	landing_sound_player.play()
 #endregion

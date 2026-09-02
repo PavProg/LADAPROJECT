@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 	if not player:
 		return
 	# пока что никак не обновляется, будет работать от сигнала изменения
-	healthValue.text = "%d " % player.data.health
+	healthValue.text = "%d " % player._health
 	healthSuffix.text = "/ %d" % player.data.max_health
 	quotaValue.text = "%d " % GameManager.current_quote
 	quotaSuffix.text = "/ %d" % GameManager.required_quote

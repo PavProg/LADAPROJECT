@@ -204,6 +204,7 @@ func _instantiate_enemy(scene_path: String, enemy_name: String, pos: Vector3, ya
 	if scene == null: return null
 	
 	var e := scene.instantiate()
+	e.add_to_group("enemy")
 	e.name = enemy_name
 	e.set_multiplayer_authority(1)
 	e.position = pos

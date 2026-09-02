@@ -25,6 +25,26 @@ script = ExtResource("2_b2d7f")
 custom_name = "sequence \"RAGDOLL\""
 children = [SubResource("BTCondition_whw32"), SubResource("BTAction_yqqh8")]
 
+[sub_resource type="BTCondition" id="BTCondition_b2d7f"]
+script = ExtResource("3_d08ox")
+
+[sub_resource type="BTCondition" id="BTCondition_d08ox"]
+script = ExtResource("4_loxjt")
+
+[sub_resource type="BTAction" id="BTAction_loxjt"]
+script = ExtResource("5_i2ttw")
+max_time = null
+angle_tolerance = null
+
+[sub_resource type="BTWait" id="BTWait_whw32"]
+
+[sub_resource type="BTAction" id="BTAction_i2ttw"]
+script = ExtResource("6_mcktk")
+
+[sub_resource type="BTSequence" id="BTSequence_mcktk"]
+custom_name = "sequence \"ATTACK\""
+children = [SubResource("BTCondition_b2d7f"), SubResource("BTCondition_d08ox"), SubResource("BTAction_loxjt"), SubResource("BTWait_whw32"), SubResource("BTAction_i2ttw")]
+
 [sub_resource type="BTCondition" id="BTCondition_2oxhx"]
 script = ExtResource("3_d08ox")
 
@@ -64,32 +84,11 @@ children = [SubResource("BTCondition_83l3e"), SubResource("BTAction_vx7g2"), Sub
 [sub_resource type="BTAction" id="BTAction_r41sq"]
 script = ExtResource("12_11yfm")
 
-[sub_resource type="BTCondition" id="BTCondition_kp1si"]
-script = ExtResource("3_d08ox")
-
-[sub_resource type="BTCondition" id="BTCondition_mucpi"]
-script = ExtResource("4_loxjt")
-
-[sub_resource type="BTAction" id="BTAction_n6oi4"]
-script = ExtResource("5_i2ttw")
-
-[sub_resource type="BTAction" id="BTAction_p1l0d"]
-script = ExtResource("6_mcktk")
-
-[sub_resource type="BTSequence" id="BTSequence_ow216"]
-custom_name = "sequence \"ATTACK\""
-children = [SubResource("BTCondition_kp1si"), SubResource("BTCondition_mucpi"), SubResource("BTAction_n6oi4"), SubResource("BTAction_p1l0d")]
-
-[sub_resource type="BTCooldown" id="BTCooldown_whw32"]
-duration = 1.5
-children = [SubResource("BTSequence_ow216")]
-
-[sub_resource type="BTComment" id="BTComment_loxjt"]
-children = [SubResource("BTCooldown_whw32")]
+[sub_resource type="BTComment" id="BTComment_d08ox"]
 
 [sub_resource type="BTDynamicSelector" id="BTDynamicSelector_wx20v"]
 custom_name = "Root"
-children = [SubResource("BTSequence_b2d7f"), SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq"), SubResource("BTComment_loxjt")]
+children = [SubResource("BTSequence_b2d7f"), SubResource("BTSequence_mcktk"), SubResource("BTSequence_5304o"), SubResource("BTSequence_2n1ri"), SubResource("BTAction_r41sq"), SubResource("BTComment_d08ox")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_7w5p4")

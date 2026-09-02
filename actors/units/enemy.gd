@@ -6,8 +6,14 @@ class_name Enemy
 @export var data: UnitData
 @onready var agent: NavigationAgent3D = $NavigationAgent3D
 @onready var priority: PriorityComponent = $PriorityComponent
+@onready var attack: EnemyAttackComponent = $EnemyAttackComponent
 @onready var anim: AnimationPlayer = $"Root Scene/AnimationPlayer"
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+@onready var damage_label: Label3D = $"DamageLabel"
+@export var take_damage_recovery_time: float = 0.3   # секунд «неуязвимости» между ударами
+@export var speed_damage_scale: float = 0.2          # множитель перевода скорости удара в урон (20%)
+@export var max_damage_allowed: int = 100            # ограничение максимального урона
 
 ## Базовые имена анимаций. Реальные в AnimationPlayer могут иметь префикс
 ## арматуры ("RatArmature|Rat_Idle") - его снимает _resolve_anim.
@@ -86,6 +92,7 @@ func stop_moving() -> void:
 	is_sprinting = false
 	agent.target_position = global_position
 #endregion
+
 #region take_damage_component
 func take_damage(amount: float) -> void:
 	if not multiplayer.is_server():
@@ -94,9 +101,11 @@ func take_damage(amount: float) -> void:
 		return # лежачего не бьют
 
 	_health = maxf(0.0, _health - amount)
+	# print("[ENEMY/TAKEDAMAGE] Крыса получила урон! Состояние здоровья: ", _health)
+	toggle_damage_label.rpc(amount)
+
 	if _health <= 0.0:
 		_is_ragdolled = true	# Оставил как заглушку, TODO гибкая настройка урона от velocity + смерть
-		print("[ENEMY] Крыса зарэгдолена")
 
 # Пока нет костей для рэгдола заглушка в виде отладки и анимации смерти
 # TODO Докинуть кости и делать через physical_bones_start_simulation
@@ -113,7 +122,7 @@ func _enter_ragdoll() -> void:
  
 @rpc("authority", "call_local", "reliable")
 func ragdolled_fx() -> void:
-	print("[ENEMY/REPLICATION] Крыса в рэгдоле!")
+	print("------- [ENEMY/REPLICATION] Крыса в рэгдоле! -------")
 
 func recover_from_ragdoll() -> void:
 	if not multiplayer.is_server():
@@ -121,29 +130,80 @@ func recover_from_ragdoll() -> void:
 	
 	_health = data.health
 	_anim_lock_left = 0.0
+	_is_ragdolled = false
+	# play_anim(ANIM_IDLE, true)
+	_update_anim()
 	recover_fx.rpc()
 
 @rpc("authority", "call_local", "reliable")
 func recover_fx() -> void:
 	print("[ENEMY/REPLICATION] Крыса встала")
 
-#endregion
-#region Attack from Rat
-func can_attack() -> bool:
-	return _attack_cd_left <= 0 and not _is_ragdolled
+@rpc("any_peer", "call_local", "reliable")
+func toggle_damage_label(damage: int) -> void:
 
-func do_attack() -> void:
-	if not multiplayer.is_server():
-		return
+	damage_label.text = str(damage)
+	damage_label.scale = Vector3.ZERO
+	damage_label.modulate = Color.WHITE 
+	damage_label.visible = true
 	
-	_attack_cd_left = data.cooldown_attack
-	play_anim(ANIM_ATTACK, false)
-	_anim_lock_left = 0.6
+	# Создаем твин от имени damage_label
+	var tween = damage_label.create_tween()
+	
+	# Устанавливает тип перехода
+	tween.set_trans(Tween.TRANS_CUBIC)
+	#tween.set_ease(Tween.EASE_OUT)
+	
+	# Плавный взлет вверх
+	#var target_y = damage_label.position.y + 1.5
+	#tween.tween_property(damage_label, "position:y", target_y, 1.0)
+	
+	# Пульсация размера
+	tween.parallel().tween_property(damage_label, "scale", Vector3(1.2, 1.2, 1.2), 3.0)
+	tween.tween_property(damage_label, "modulate:a", 0.0, 1.0)
+	
+	tween.tween_callback(func(): damage_label.visible = false)
+	pass
 
-	for area in $HitBox.get_overlapping_areas():
-		var body = area.get_parent()
-		if body and body.is_in_group("player") and body.has_method("take_damage"):
-			body.take_damage(data.damage_attack)
+
+func _on_hurtbox_body_entered(body: Node3D) -> void:
+	#print("DAMAGE_COMPONENT -- Damage area entered")
+	var other_body := body
+	if other_body == null: return
+	if not is_instance_valid(other_body) and !other_body.is_in_group("item"): return	
+
+	var other_velocity_length = other_body.linear_velocity.length()
+	var other_body_damage = other_body.item_data.damage
+	
+	var self_velocity_length = 0.9 if self.velocity.length() == 0 else self.velocity.length()
+	var overall_velocity_length: float = self_velocity_length * other_velocity_length
+	var velocity_threshold = self.data.velocity_length_threshold
+	
+	# print("actor.velocity            : ", self.velocity)
+	# print("other_body.linear_velocity: ", other_body.linear_velocity)
+	# print("DAMAGE_COMPONENT -- CHECK VELOCITY")
+	# print("overall_velocity: ", self.velocity * other_body.linear_velocity)
+	if overall_velocity_length <= velocity_threshold: return
+	
+	# в данном случае это тот урон который базово получает объект при столкновениях с полом(у хрупких больше, у крепких меньше)
+	var base_damage: int = other_body_damage
+	# считаем урон с применением velocity (скорости удара)
+	var actual_damage: int = clampi(
+		int(base_damage * overall_velocity_length * speed_damage_scale),
+		base_damage,
+		max_damage_allowed
+	)
+	# print("BREAK_COMPONENT -- Actual damage: %d" % actual_damage)
+
+
+	take_damage(actual_damage)
+
+#endregion
+
+#region Attack from Rat
+## Функция хелпер. Проверяет поле _is_ragdolled.
+func is_ragdolled() -> bool:
+	return _is_ragdolled
 
 func face_target(target_pos: Vector3, delta: float) -> void:
 	var to := target_pos - global_position
@@ -156,11 +216,15 @@ func face_target(target_pos: Vector3, delta: float) -> void:
 	rotation.y = lerp_angle(rotation.y, want, 8.0 * delta)
 	
 #endregion
+
 #region Animations
 
 ## Выбор анимации по текущей скорости. Крутится ТОЛЬКО на сервере
 ## (у клиента _physics_process выключен), поэтому клиентам состояние
 ## доезжает через RPC внутри play_anim.
+func _lock_anim(seconds: float) -> void:
+	_anim_lock_left = seconds
+
 func _update_anim() -> void:
 	if _anim_lock_left > 0 or _is_ragdolled:
 		return

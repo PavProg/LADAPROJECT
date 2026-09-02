@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dys246mjb4a3n" path="res://core/data/unit_data.gd" id="2_rq516"]
 [ext_resource type="BehaviorTree" uid="uid://2s7g8pgn8cfo" path="res://ai/tree/root_tree.tres" id="4_vsiok"]
 [ext_resource type="PackedScene" uid="uid://2d0jolk38d62" path="res://actors/units/rig-animation-rat.tscn" id="5_rq516"]
-[ext_resource type="Script" uid="uid://clikdy28luro7" path="res://core/components/actor_damage_component.gd" id="5_vs62c"]
+[ext_resource type="Script" uid="uid://dmkbo3pp8ed8s" path="res://core/components/agent_attack_component.gd" id="5_vs62c"]
 
 [sub_resource type="Resource" id="Resource_7w5p4"]
 script = ExtResource("2_rq516")
@@ -14,27 +14,23 @@ health = 10.0
 damage_for_ragdoll = 5.0
 speed_walk = 2.0
 speed_sprint = 5.0
-radius_detection = 15.0
+radius_detection = 30.0
 damage_attack = 5.0
 cooldown_attack = 1.5
-range_attack = 3.0
+range_attack = 6.0
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mtgiw"]
-radius = 1.3823242
-height = 4.510376
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l5kd"]
 radius = 1.1904297
 height = 4.2385254
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2l5kd"]
-radius = 0.7153955
+radius = 3.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6fqur"]
-radius = 12.0
+radius = 30.0
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_rq516"]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_vs62c"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vsiok"]
 properties/0/path = NodePath(".:position")
@@ -44,17 +40,24 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_f67l4"]
+radius = 1.1224245
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f67l4"]
+radius = 0.4399414
+height = 1.8039551
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pqej1"]
+radius = 0.933657
+
 [node name="Rat" type="CharacterBody3D" unique_id=1053980717]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.9861336, 2.2473187, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 collision_mask = 3
 script = ExtResource("1_vsiok")
 data = SubResource("Resource_7w5p4")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2048518709]
-transform = Transform3D(-0.25881904, -4.222196e-08, -0.9659258, -0.9659258, 1.131334e-08, 0.25881904, 0, 1, -4.371139e-08, 0, 1.25, -0.19024587)
-shape = SubResource("CapsuleShape3D_mtgiw")
-
 [node name="Hurtbox" type="Area3D" parent="." unique_id=1108833264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0067834556, 0)
 collision_layer = 32
 collision_mask = 8
 
@@ -67,7 +70,7 @@ collision_layer = 128
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=1087315691]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0143966675, 1.1613705, 1.7884756)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0143966675, 1.7393138, 3.8699067)
 shape = SubResource("SphereShape3D_2l5kd")
 
 [node name="FOV" type="Area3D" parent="." unique_id=356454422]
@@ -80,7 +83,7 @@ shape = SubResource("SphereShape3D_6fqur")
 
 [node name="BTPlayer" type="BTPlayer" parent="." unique_id=1835505931]
 behavior_tree = ExtResource("4_vsiok")
-blackboard_plan = SubResource("BlackboardPlan_rq516")
+blackboard_plan = SubResource("BlackboardPlan_vs62c")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1233565699]
 replication_config = SubResource("SceneReplicationConfig_vsiok")
@@ -92,9 +95,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.499598, 1.664108)
 script = ExtResource("1_devae")
 fov_area = NodePath("../FOV")
 eye = NodePath("../Eye")
+use_fov_check = false
 
-[node name="DamageComponent" type="Node3D" parent="." unique_id=313587917]
+[node name="EnemyAttackComponent" type="Node" parent="." unique_id=974868760]
 script = ExtResource("5_vs62c")
+metadata/_custom_type_script = "uid://dmkbo3pp8ed8s"
 
 [node name="Root Scene" parent="." unique_id=622377030 instance=ExtResource("5_rq516")]
 
@@ -106,7 +111,19 @@ no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
 text = "0"
-font_size = 12
-outline_size = 4
+font_size = 60
+outline_size = 30
 
-[connection signal="body_entered" from="Hurtbox" to="DamageComponent" method="_on_hurtbox_body_entered"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1931290340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1307305, -0.9402889)
+shape = SubResource("SphereShape3D_f67l4")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=1496694095]
+transform = Transform3D(1, 0, 0, 0, -0.17818405, -0.9839973, 0, 0.9839973, -0.17818405, 0, 1.2043418, 1.1842657)
+shape = SubResource("CapsuleShape3D_f67l4")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=927455243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9160546, -0.017840393)
+shape = SubResource("SphereShape3D_pqej1")
+
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

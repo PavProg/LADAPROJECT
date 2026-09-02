@@ -26,7 +26,10 @@ func take_damage(dmg: int) -> void:
 	if final_damage <= 0: return
 	item.item_data.durability -= final_damage
 	# вклчюаение метки + ее задание урона
-	item.toggle_damage_label(final_damage)
+	# item.toggle_damage_label(final_damage)
+	call_toggle_damage_label.rpc(final_damage)	# Рассылка по сети
+	## DAMAGE SOUND
+	item.play_sound()
 
 	# Начисляем квоту. GameManager на сервере сам разошлёт новое значение всем.
 	GameManager.on_quote_earned(final_damage)
@@ -44,6 +47,9 @@ func take_damage(dmg: int) -> void:
 	timer.wait_time = take_damage_recovery_time
 	timer.start()
 
+@rpc("any_peer", "call_local", "reliable")
+func call_toggle_damage_label(amount: int) -> void:
+	item.toggle_damage_label(amount)
 
 func _on_take_damage_timer_timeout() -> void:
 	# Таймер тикает там же, где стартовал — на сервере.
@@ -74,6 +80,8 @@ func _on_hurt_area_body_entered(body: Node3D) -> void:
 	var other_body := body
 	if other_body == null: return
 	#print("BREAK_COMPONENT -- other_body NOT null")
+	# Предохраняемся от дублирования логики
+	if not is_instance_valid(other_body) and !other_body.is_in_group("enemy"): return
 
 	var other_velocity_length: float
 	var other_body_damage: float

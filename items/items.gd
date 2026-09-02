@@ -2,6 +2,7 @@ extends HoldableBody
 
 @onready var durability_label: Label3D = $DurabilityLabel
 @onready var damage_label: Label3D = $DamageLabel
+@onready var sound_player: AudioStreamPlayer3D = get_node_or_null("AudioStreamPlayer3D")
 @export var filename: String
 @export var export_item_data: Resource
 var item_data: Resource
@@ -64,3 +65,14 @@ func update_durability_labelo_value():
 	if durability_label: 
 		durability_label.text = str(item_data.durability)
 	pass
+
+
+func play_sound() -> void:
+	if sound_player == null:
+		return
+	if item_data.sound == null:
+		return
+
+	sound_player.stream = item_data.sound
+	sound_player.volume_db = -30.0
+	sound_player.play()

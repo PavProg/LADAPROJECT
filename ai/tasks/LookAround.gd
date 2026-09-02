@@ -27,7 +27,8 @@ func _tick(delta: float) -> Status:
 		return SUCCESS
 	
 	_left -= delta
-	e.rotate_y(turn_speed * delta)
+	#e.rotate_y(turn_speed * delta)
+	#e.stop_moving()
 	
 	if _left > 0.0:
 		return RUNNING	# Еще осматриваемся 

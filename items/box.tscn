@@ -63,9 +63,7 @@ text = "123"
 font_size = 12
 outline_size = 4
 
-
 [node name="DamageLabel" type="Label3D" parent="." unique_id=1403496064]
-
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570856, 0)
 visible = false
 billboard = 1
@@ -76,8 +74,9 @@ text = "0"
 font_size = 12
 outline_size = 4
 
-
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=1453216472]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1193675005]
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
