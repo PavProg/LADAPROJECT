@@ -2,7 +2,7 @@
 extends BTAction
 
 ## Длительность search
-@export var duration: float = 2.5
+@export var duration: float = 5.0
 ## Скорость вращения рад/сек
 @export var turn_speed: float = 1.5
 
@@ -22,16 +22,17 @@ func _tick(delta: float) -> Status:
 	if e == null:
 		return FAILURE
 	
-	# Увидел игрока - обрываем ВСЮ ветку SEARCH через FAILURE.
-	# Если вернуть SUCCESS, Sequence пойдёт дальше в ClearTarget
-	# и сотрёт только что найденную цель.
+	# Увидел игрока - сразу в chase
+	if e.priority.current_target != null:
+		return SUCCESS
+	
+	_left -= delta
+	#e.rotate_y(turn_speed * delta)
+	#e.stop_moving()
+	
+	if _left > 0.0:
+		return RUNNING	# Еще осматриваемся 
+	
 	if e.priority.current_target != null:
 		return FAILURE
-
-	_left -= delta
-	e.rotate_y(turn_speed * delta)	# крутимся на месте, осматриваясь
-
-	if _left > 0.0:
-		return RUNNING	# Еще осматриваемся
-
-	return SUCCESS		# время вышло, никого - дальше ClearTarget
+	return SUCCESS

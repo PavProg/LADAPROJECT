@@ -54,11 +54,10 @@ radius = 0.8306273
 
 [node name="Bust_broken" type="Node3D" unique_id=326480734]
 script = ExtResource("1_ermlx")
-time_to_disappear_fragments = 30.0
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=944942329]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("2_yf5fm")
@@ -78,7 +77,7 @@ replication_config = SubResource("SceneReplicationConfig_yf5fm")
 
 [node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1099495513]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("2_yf5fm")
@@ -98,7 +97,7 @@ replication_config = SubResource("SceneReplicationConfig_yf5fm")
 
 [node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=838319713]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("2_yf5fm")
@@ -116,7 +115,7 @@ replication_config = SubResource("SceneReplicationConfig_yf5fm")
 
 [node name="RigidBody3D4" type="RigidBody3D" parent="." unique_id=936961570]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("2_yf5fm")

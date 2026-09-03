@@ -24,8 +24,10 @@ size = Vector3(0.3317871, 0.7636719, 0.35351563)
 
 [node name="Hummer" type="RigidBody3D" unique_id=1336073646]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
+mass = 8.0
 can_sleep = false
+continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_g6kdb")

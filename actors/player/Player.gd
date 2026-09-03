@@ -1,68 +1,70 @@
 extends CharacterBody3D
 
+#region Ragdoll vars
 @onready var physical_bone_controller: PhysicalBoneSimulator3D = $PlayerBody/Rig_Medium/Skeleton3D/PhysicalBoneSimulator3D
 @onready var physical_bone_hips: PhysicalBone3D = $"PlayerBody/Rig_Medium/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hips"
-@onready var mannequin_head: MeshInstance3D = $PlayerBody/Rig_Medium/Skeleton3D/Mannequin_Head
-@onready var endurance_timer: Timer = $EnduranceTimer # таймер, по истечении которого начинает восстанавливаться выносливость
-@onready var anim_player: AnimationPlayer = $PlayerBody/AnimationPlayer
-@onready var collision: CollisionShape3D = $Collision
-@onready var camera_controller: Node3D = $CameraController
 @onready var bone_attachment_3d: BoneAttachment3D = $PlayerBody/Rig_Medium/Skeleton3D/BoneAttachment3D
+@onready var anchor: Node3D = $CameraController/HoldPoint/HoldPoint_Ragdoll
+@onready var pin_joint: Generic6DOFJoint3D = $CameraController/HoldPoint/HoldPoint_Ragdoll/PinJoint3D
+var is_ragdoll_on_floor: bool = false
+var _hold_by: int = 0
+var grabbed_bone: PhysicalBone3D = null
+var is_ragdoll: bool = false
+var exceptions: Array[RID] # RID костей который игнорирует игрок(свои кости собственно)
+#endregion
+
+#region Movement vars
+@onready var endurance_timer: Timer = $EnduranceTimer # таймер, по истечении которого начинает восстанавливаться выносливость
+var endurance_recovering: bool = false
+var air_speed_reduction = 0.05   # насколько каждый кадр снижается скорость в воздухе после прыжка
+var input_movement_vector = Vector3.ZERO
+var need_jump: bool = false
+var running: bool = false
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity_scale: float = 1.5
+#endregion
+
+#region Camera vars
+@onready var camera_controller: Node3D = $CameraController
 @onready var third_person_camera_pos: Node3D = $ThirdPersonCameraPos
-
-#for sounds 
-@onready var foot_step_player: AudioStreamPlayer3D = $FootStepPlayer
-@onready var jump_sound_player: AudioStreamPlayer3D = $JumpSoundPlayer
-@onready var landing_sound_player: AudioStreamPlayer3D = $LandSoundPlayer
-
-var was_on_floor: bool = true
-
-#@onready var reload_button: Button = get_parent().get_parent().get_node("button2/SubViewport/Control/Button")
-
+var camera_main_global_transform: Transform3D
+#endregion
+#region Meshes / Collisions vars
+@onready var collision: CollisionShape3D = $Collision
 @onready var meshes_to_unsee: Array[MeshInstance3D] = [
 	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_Head,
 	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_LegLeft,
 	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_LegRight,
 	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_Body
 ]
+#endregion
 
-@export var export_data: Resource
-var data: Resource
-
-@export var sync_rate: float = 0.05 # Как часто отправляем
-var _sync_t: float  = 0.0
-
-var air_speed_reduction = 0.05   # насколько каждый кадр снижается скорость в воздухе после прыжка
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var gravity_scale: float = 1.5
-
-var _intent = {"move": Vector2.ZERO, "jump": false }
-var ragdoll_root_offset: Vector3 = Vector3(0, 0.5, 0)
-var input_movement_vector = Vector3.ZERO
-var camera_main_global_transform: Transform3D
-var need_jump: bool = false
-var running: bool = false
-var endurance_recovering: bool = false
-var is_ragdoll: bool = false # TODO временный @export
-var exceptions: Array[RID]
-
-# Ragdoll
-var is_ragdoll_on_floor: bool = false
-var _hold_by: int = 0
-var grabbed_bone: PhysicalBone3D = null
-@onready var anchor: Node3D = $CameraController/HoldPoint/HoldPoint_Ragdoll
-@onready var pin_joint: Generic6DOFJoint3D = $CameraController/HoldPoint/HoldPoint_Ragdoll/PinJoint3D
-
-
-
-#for sounds
+#region Sounds vars
+@onready var foot_step_player: AudioStreamPlayer3D = $FootStepPlayer
+@onready var jump_sound_player: AudioStreamPlayer3D = $JumpSoundPlayer
+@onready var landing_sound_player: AudioStreamPlayer3D = $LandSoundPlayer
 var walk_step_interval: float = 0.45
 var run_step_interval: float = 0.28
-
 var walk_step_volume: float = -20.0
 var run_step_volume: float = -15.0
-
 var foot_step_timer: float = 0.0
+var was_on_floor: bool = true
+#endregion
+
+#region Data vars
+@export var export_data: Resource
+var data: Resource
+#endregion
+
+#region Net vars
+@export var sync_rate: float = 0.05 # Как часто отправляем
+var _sync_t: float  = 0.0
+var _intent = {"move": Vector2.ZERO, "jump": false }
+#endregion
+
+#region Animations vars
+@onready var anim_player: AnimationPlayer = $PlayerBody/AnimationPlayer
+#endregion
 
 var _health: float = 100.0
 
@@ -72,6 +74,7 @@ func _ready() -> void:
 
 	if is_multiplayer_authority():
 		Events.local_player_spawned.emit(self)
+	
 	set_unseen_meshes_visibiliy(false)
 	set_physical_bones_ignore() # отключение для рейкаста хватания своих костей из видимости
 	pin_joint.node_a = NodePath("")
@@ -161,7 +164,7 @@ func _physics_process(delta: float) -> void:
 		handle_footsteps(delta)
 		handle_landing()
 		synchronize_player_and_ragdoll()
-	
+
 	## Ретрансляция трансформа
 	#_sync_t -= delta
 	#if _sync_t <= 0.0:
@@ -295,20 +298,32 @@ func movement(delta: float) -> void:
 		# падение
 		velocity.y -= gravity * gravity_scale * delta
 		
+	# Защита от катапультирования игрока в ебеня
+	var velocity_before_slide = velocity
+		
 	move_and_slide()
 	
+	# Защита от катапультирования игрока в ебеня
+	var delta_v = velocity - velocity_before_slide
+	var max_delta_v: float = 2.0  # максимально допустимое изменение скорости за кадр
+	if delta_v.length() > max_delta_v:
+		velocity = velocity_before_slide + delta_v.limit_length(max_delta_v)
 	
 	# столкновения
 	for i in get_slide_collision_count():
 		var item_collision = get_slide_collision(i)
 		var item_body = item_collision.get_collider() as RigidBody3D
-		if item_body is RigidBody3D:
-			var push_dir = item_collision.get_position() - global_position
-			# сила толчка
-			item_body.apply_force(push_dir * 5, item_collision.get_position())
-			
-			#var push_force = data.speed * 5 if !running else data.run_speed * 5
-			#item_body.apply_impulse(push_dir * push_force * velocity.length() * delta, item_collision.get_position() - item_body.global_position)
+		if item_body:
+			#print("Collision pos: ", item_collision.get_position(), " Body pos: ", item_body.global_position, " Diff: ", item_collision.get_position() - item_body.global_position)
+			var horizontal_velocity := Vector3(velocity.x, 0.0, velocity.z)
+			var push_dir = -item_collision.get_normal()
+			push_dir.y = 0.0
+			var push_speed = clamp(horizontal_velocity.length(), 0.0, 6.0)
+			if push_speed <= 0.01 and push_dir.length_squared() <= 0.001: continue
+			var push_strength = push_speed  * item_body.mass * 0.15
+			#print("Direction: %s \nStrength: %f " % [push_dir, push_strength])
+			var relative_pos = item_collision.get_position() - item_body.global_position
+			item_body.apply_impulse(push_strength * push_dir, relative_pos)
 
 
 func _on_endurance_timer_timeout() -> void:
@@ -322,10 +337,10 @@ func take_damage(amount: int) -> void:
 	if not multiplayer.is_server(): return
 
 	_health = maxf(0.0, _health - amount)
-	print("[PLAYER/TAKEDAMAGE] Нанесли урон! ", _health)
+	# print("[PLAYER/TAKEDAMAGE] Нанесли урон! ", _health)
 
 	if _health <= 0.0:
-		is_ragdoll = true
+		start_ragdoll()
 
 #endregion
 
@@ -357,6 +372,7 @@ func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
 	query.exclude = [get_rid()]
 
 	# Выполняем рейкаст
+	#if not space_state: return
 	var result := space_state.intersect_ray(query)
 	if result.is_empty():
 		return null

@@ -19,7 +19,7 @@ func _ready() -> void:
 	add_to_group("item")
 	super._ready()
 	item_data = export_item_data
-	update_durability_labelo_value()
+	update_durability_label_value()
 
 func grab_by(peer_id: int) -> void:
 	super.grab_by(peer_id)
@@ -61,7 +61,7 @@ func toggle_damage_label(damage: int) -> void:
 	tween.tween_callback(func(): damage_label.visible = false)
 	pass
 	
-func update_durability_labelo_value():
+func update_durability_label_value():
 	if durability_label: 
 		durability_label.text = str(item_data.durability)
 	pass

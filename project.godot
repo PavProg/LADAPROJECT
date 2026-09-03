@@ -26,6 +26,8 @@ ThreadsRegistry="*uid://c6bsmchkphduy"
 
 [display]
 
+window/size/viewport_width=2600
+window/size/viewport_height=1600
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -121,6 +123,9 @@ reloadHUB={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/simulation/penetration_slop=0.2
+jolt_physics_3d/simulation/baumgarte_stabilization_factor=0.7
+jolt_physics_3d/collisions/collision_margin_fraction=0.01
 
 [rendering]
 

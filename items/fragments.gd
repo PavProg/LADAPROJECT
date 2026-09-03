@@ -1,7 +1,7 @@
 extends Node3D
 @onready var disappear_timer: Timer = $DisappearTimer
 
-@export var time_to_disappear_fragments: float # в секундах
+var time_to_disappear_fragments: float = 30 # в секундах
 
 func _ready() -> void:
 	if not multiplayer.is_server(): return

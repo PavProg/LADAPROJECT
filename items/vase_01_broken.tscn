@@ -7,7 +7,7 @@
 [ext_resource type="ArrayMesh" uid="uid://dc2a3vn5i207x" path="res://models/meshes/vase_01/broken/Vase_01_Broken_Cube_002_cell_003.res" id="4_wndji"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wcwi2"]
-size = Vector3(0.44107056, 0.84524536, 1)
+size = Vector3(0.44107056, 0.84524536, 0.07910156)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_41drb"]
 height = 1.1811523
@@ -17,14 +17,17 @@ radius = 0.44384766
 height = 1.0991211
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wvh4y"]
-size = Vector3(0.4491577, 0.84910583, 1)
+size = Vector3(0.4491577, 0.84910583, 0.08984375)
 
 [node name="Vase_01_broken" type="Node3D" unique_id=326480734]
 script = ExtResource("1_41drb")
 
 [node name="fragment" type="RigidBody3D" parent="." unique_id=782267921]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -38,7 +41,10 @@ mesh = ExtResource("1_wvh4y")
 
 [node name="fragment2" type="RigidBody3D" parent="." unique_id=1993701384]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -52,7 +58,10 @@ mesh = ExtResource("3_vh7ms")
 
 [node name="fragment3" type="RigidBody3D" parent="." unique_id=1893560337]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -66,7 +75,10 @@ mesh = ExtResource("4_wndji")
 
 [node name="fragment4" type="RigidBody3D" parent="." unique_id=251805878]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 

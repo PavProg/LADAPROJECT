@@ -18,12 +18,12 @@ points = PackedVector3Array(0.16308604, 1.089998, 1.409548, -1.2592112, 1.005359
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nr822"]
 points = PackedVector3Array(0.8825065, 2.0346487, 0.42851853, -0.108097754, 1.0024194, -1.4216284, -0.108716846, 1.083939, -1.4247825, -1.2881411, 1.2522392, -0.5726514, 0.7024359, 0.25731528, 0.11962342, 1.2522047, 1.001035, -0.7286664, 0.13604641, 1.9996557, -0.95357347, -0.98502684, 1.9879348, -0.14030373, 1.2650138, 1.1659484, 0.72568804, -0.35237402, 0.30878675, -0.765656, 0.58482826, 0.5148244, -1.0087751, 0.6156769, 2.0747595, 0.72568804, -0.5127603, 2.0193791, -0.8452504, 0.8649313, 2.0152204, -0.47893077, 0.7065137, 1.3282526, -1.2112204, -1.1582738, 0.733249, -0.70250696)
 
-[node name="Vase_02_broken" type="Node3D" unique_id=326480734]
+[node name="Vase_Pig_broken" type="Node3D" unique_id=326480734]
 script = ExtResource("1_svjnd")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=411397787]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -36,7 +36,7 @@ mesh = ExtResource("2_uv45a")
 
 [node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1876025268]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -48,7 +48,7 @@ mesh = ExtResource("3_qoutj")
 
 [node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=178018466]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -60,7 +60,7 @@ mesh = ExtResource("4_nr822")
 
 [node name="RigidBody3D4" type="RigidBody3D" parent="." unique_id=420929107]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 

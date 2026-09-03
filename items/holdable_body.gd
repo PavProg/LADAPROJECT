@@ -10,7 +10,6 @@ var _hold_by: int = 0
 
 func _ready() -> void:
 	contact_monitor = true
-	can_sleep = false
 	# подвязка сигналов для объекта/осколка
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)

@@ -4,10 +4,8 @@ class_name EnemyAttackComponent
 #region поля
 ## Хитбокс врага
 @export var hitbox: Area3D
-## Насколько блокируется анимация во время атаки.
-## Должно быть НЕ МЕНЬШЕ damage_delay, иначе _update_anim перебьёт
-## анимацию удара на Idle/Walk уже в следующем физкадре.
-@export var anim_lock: float = 0.7
+## Насколько блокируется анимация во время атаки
+@export var anim_lock: float = 0.0
 ## Делей атаки
 @export var damage_delay: float = 0.6
 
@@ -42,7 +40,7 @@ func _start_attack() -> void:
 	if not multiplayer.is_server(): return
 	if not _can_attack(): return
 
-	print("[ATTACK-COMPONENT] Атака началась!")
+	#print("[ATTACK-COMPONENT] Атака началась!")
 	_cd_left = _enemy.data.cooldown_attack
 	_pending = damage_delay
 	_enemy.play_anim(_enemy.ANIM_ATTACK, false)
@@ -57,7 +55,7 @@ func _deal_damage() -> void:
 		var body := area.get_parent()
 		if body and body.is_in_group("player") and body.has_method("take_damage"):
 			body.take_damage(_enemy.data.damage_attack)
-			print("[ATTACK-COMPONENT] Вызвал функцию получения дамага!")
+			#print("[ATTACK-COMPONENT] Вызвал функцию получения дамага!")
 
 
 #endregion

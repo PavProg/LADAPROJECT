@@ -39,7 +39,7 @@ func take_damage(dmg: int) -> void:
 		_destroy()
 		return
 
-	get_parent().update_durability_labelo_value()
+	get_parent().update_durability_label_value()
 
 	# Иначе — "неуязвимость" на take_damage_recovery_time секунд.
 	can_be_hitted = false
@@ -111,7 +111,7 @@ func _on_hurt_area_body_entered(body: Node3D) -> void:
 	
 	# в данном случае это тот урон который базово получает объект при столкновениях с полом(у хрупких больше, у крепких меньше)
 	var base_damage: int = self_damage + other_body_damage
-	print(base_damage)
+	#print(base_damage)
 	# считаем урон с применением velocity (скорости удара)
 	var actual_damage: int = clampi(
 		int(base_damage * overall_velocity_length * speed_damage_scale),

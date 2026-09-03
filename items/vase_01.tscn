@@ -22,8 +22,10 @@ height = 1.7661133
 [node name="vase_01" type="RigidBody3D" unique_id=1572425250]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
+mass = 10.0
 can_sleep = false
+continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_lds5s")

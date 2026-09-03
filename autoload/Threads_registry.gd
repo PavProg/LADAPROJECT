@@ -28,8 +28,6 @@ func _on_dropped(item: Node) -> void:
 ## Функция возвращающая value предмета (Синглтон Threads_registry).
 func value_by(peer: int) -> int:
 	var item = _taken.get(peer)
-	# or, а не and: у освобождённого объекта item == null даёт false,
-	# и со связкой and мы проваливались в обращение к мёртвой ссылке.
 	if item == null or not is_instance_valid(item):
 		return 0
 	return item.item_data.value

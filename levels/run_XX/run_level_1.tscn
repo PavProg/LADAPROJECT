@@ -37,6 +37,7 @@ size = Vector3(0.5136719, 0.19946289, 0.125)
 [node name="RunLevel1" type="Node3D" unique_id=1480632097]
 
 [node name="Roof" type="GridMap" parent="." unique_id=2023515924]
+visible = false
 mesh_library = ExtResource("5_gv00n")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
@@ -276,7 +277,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.743214, 0.030008316, 17.374
 [node name="EnemyMarkCont" type="Node3D" parent="." unique_id=1022792314]
 
 [node name="EnemyMark" type="Marker3D" parent="EnemyMarkCont" unique_id=1907457145]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98318064, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.985863, 0.98318064, -12.510272)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("10_qws6t")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="EnemyMark2" type="Marker3D" parent="EnemyMarkCont" unique_id=937053743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.54086, 1.0232904, -1.2884194)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("10_qws6t")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="EnemyMark3" type="Marker3D" parent="EnemyMarkCont" unique_id=703237361]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.516575, 1.0232904, -3.790897)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("10_qws6t")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="EnemyMark4" type="Marker3D" parent="EnemyMarkCont" unique_id=1133625041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.620308, 1.0232904, -16.09095)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("10_qws6t")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="EnemyMark5" type="Marker3D" parent="EnemyMarkCont" unique_id=1396299915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.735558, 1.0232904, -6.7209744)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("10_qws6t")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="EnemyMark6" type="Marker3D" parent="EnemyMarkCont" unique_id=1414511264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.582184, 1.0232904, -6.6316023)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("10_qws6t")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="EnemyMark7" type="Marker3D" parent="EnemyMarkCont" unique_id=1140227418]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.436176, 1.0232904, 14.151538)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"

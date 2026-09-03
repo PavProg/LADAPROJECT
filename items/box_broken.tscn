@@ -67,6 +67,7 @@ script = ExtResource("1_skjx2")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1077610774]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -79,6 +80,7 @@ mesh = ExtResource("2_ktc66")
 
 [node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1020769271]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -91,6 +93,7 @@ mesh = ExtResource("3_rexeg")
 
 [node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=191436119]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -103,6 +106,7 @@ mesh = ExtResource("4_qh4gi")
 
 [node name="RigidBody3D4" type="RigidBody3D" parent="." unique_id=1102364867]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -115,6 +119,7 @@ mesh = SubResource("ArrayMesh_4lbhd")
 
 [node name="RigidBody3D5" type="RigidBody3D" parent="." unique_id=752694343]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 

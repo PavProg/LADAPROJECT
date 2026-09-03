@@ -2,15 +2,9 @@
 extends BTAction
 
 @export var _repath_time: float = 0.2
-## Максимум времени на дорогу до последней известной точки.
-## Без него, если точка недостижима, is_navigation_finished() никогда
-## не станет true и враг навсегда зависнет в состоянии поиска.
-@export var max_travel_time: float = 6.0
-
 var _t = 0.0
 ## Цель уже выставлена хотя бы раз в этом заходе
 var _target_set: bool = false
-var _travel_left: float = 0.0
 
 func _generate_name() -> String:
 	return "Action move to last known"
@@ -18,7 +12,6 @@ func _generate_name() -> String:
 func _enter() -> void:
 	_t = 0.0
 	_target_set = false
-	_travel_left = max_travel_time
 
 func _tick(delta: float) -> Status:
 	var e := agent as Enemy
@@ -27,12 +20,6 @@ func _tick(delta: float) -> Status:
 		return FAILURE
 	if not e.priority.has_last_known:
 		return FAILURE
-
-	# Время вышло - считаем, что дошли: пусть отработает LookAround,
-	# а затем ClearTarget вернёт врага в патруль. Иначе поиск залипает.
-	_travel_left -= delta
-	if _travel_left <= 0.0:
-		return SUCCESS
 
 	_t -= delta
 	# Цель ставим ДО проверки is_navigation_finished.

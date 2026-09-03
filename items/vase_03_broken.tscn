@@ -20,7 +20,7 @@ script = ExtResource("1_j5ui0")
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=411397787]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -35,7 +35,7 @@ shape = SubResource("ConvexPolygonShape3D_j5ui0")
 [node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1876025268]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
@@ -50,7 +50,7 @@ shape = SubResource("ConvexPolygonShape3D_hjvmd")
 [node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=178018466]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 collision_layer = 8
-collision_mask = 15
+collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 

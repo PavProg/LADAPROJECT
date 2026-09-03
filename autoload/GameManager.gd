@@ -45,15 +45,16 @@ func on_quote_earned(quote: int) -> void:
 	if current_quote >= required_quote:
 		current_state = quote_states.FINISHED
 	# Рассылаем актуальную квоту ВСЕМ пирам (call_local => и самому серверу тоже).
-	_sync_quote.rpc(current_quote, current_state)
+	_sync_quote.rpc(current_quote, current_state, required_quote)
 
 
 # Выполняется у ВСЕХ пиров. Отправить может только авторитет автолоада (сервер, id 1).
 # Клиенты просто присваивают присланные значения.
 @rpc("authority", "call_local", "reliable")
-func _sync_quote(value: int, state: int) -> void:
+func _sync_quote(value: int, state: int, req: int) -> void:
 	current_quote = value
 	current_state = state as quote_states
+	required_quote = req
 	# Отладка
 	#print("QUOTE sync -> peer %d: current=%d / required=%d"
 		#% [multiplayer.get_unique_id(), current_quote, required_quote])

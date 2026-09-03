@@ -2,6 +2,8 @@ extends Node
 class_name PriorityComponent
 # Функция для расчета приоритета цели врага. Возвращает ноду игрока (за кем следует)
 
+#region ПОЛЯ
+
 @export var fov_area: Area3D
 @export var eye: Marker3D
 @export var fov_degrees: float = 140.0
@@ -31,8 +33,9 @@ var _cos_half_fov: float
 ## Сколько секунд враг "помнит" цель, потеряв прямую видимость.
 ## Без этого запаса одиночный сбой рейкаста (столб, угол, кадр физики)
 ## мгновенно сбрасывал цель и ронял дерево в SEARCH.
-@export var lose_grace: float = 0.6
+@export var lost_grace: float = 0.6
 var _lost_for: float = 0.0
+#endregion
 
 func _ready() -> void:
 	_enemy = get_parent() as Enemy
@@ -86,12 +89,10 @@ func _rescan() -> void:
 		_lost_for = 0.0
 		current_target = best
 	elif current_target != null and is_instance_valid(current_target):
-		# Цель пропала из виду, но сразу не сбрасываем: даём lose_grace секунд.
-		# Позицию обновляем каждый скан, чтобы SEARCH шёл в самую свежую точку.
 		_lost_for += scan_interval
 		last_known_position = current_target.global_position
-		if _lost_for >= lose_grace:
-			print("[PRIORITY/SEARCH-STATE] Игрок ушел из виду, враг запомнил позицию и цель!")
+		if _lost_for >= lost_grace:
+			# print("[PRIORITY/SEARCH-STATE] Игрок ушел из виду, враг запомнил позицию и цель!")
 			has_last_known = true
 			current_target = null
 	else:
@@ -101,14 +102,12 @@ func _rescan() -> void:
 func _in_fov(to: Vector3) -> bool:
 	if not use_fov_check:
 		return true
-	# Модель импортирована с use_model_front, и look_at/face_target наводят на цель +Z.
-	# Поэтому "вперёд" здесь тоже +Z. С минусом конус смотрел крысе в затылок.
 	var forward : Vector3 = _enemy.forward_dir()
 	var flat: Vector3 = Vector3(to.x, 0.0, to.z)
-	# Игрок почти над крысой: горизонтальная составляющая вырождается,
-	# normalized() дал бы нулевой вектор и проверка бы провалилась.
+	# print("[FOV-DEBUG] forward_length=%s" % (-_enemy.global_transform.basis.z).length())
 	if flat.length_squared() < 0.0001:
 		return true
+
 	return forward.dot(flat.normalized()) >= _cos_half_fov
 
 func _has_los(p: Node3D) -> bool:
