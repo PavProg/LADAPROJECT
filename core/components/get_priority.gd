@@ -28,6 +28,12 @@ var _cos_half_fov: float
 ## Для тестов угла обзора врага
 @export var use_fov_check: bool = true
 
+## Сколько секунд враг "помнит" цель, потеряв прямую видимость.
+## Без этого запаса одиночный сбой рейкаста (столб, угол, кадр физики)
+## мгновенно сбрасывал цель и ронял дерево в SEARCH.
+@export var lose_grace: float = 0.6
+var _lost_for: float = 0.0
+
 func _ready() -> void:
 	_enemy = get_parent() as Enemy
 	if not multiplayer.is_server():
@@ -76,22 +82,34 @@ func _rescan() -> void:
 			best_score = score
 			best = p
 	
-	if best == null and current_target != null and is_instance_valid(current_target):
-		print("[PRIORITY/SEARCH-STATE] Игрок ушел из виду, враг запомнил позицию и цель!")
+	if best != null:
+		_lost_for = 0.0
+		current_target = best
+	elif current_target != null and is_instance_valid(current_target):
+		# Цель пропала из виду, но сразу не сбрасываем: даём lose_grace секунд.
+		# Позицию обновляем каждый скан, чтобы SEARCH шёл в самую свежую точку.
+		_lost_for += scan_interval
 		last_known_position = current_target.global_position
-		has_last_known = true
-	current_target = best
-	if current_target != null:
-		print("[PRIORITY] Приоритетный игрок найден: ", current_target)
+		if _lost_for >= lose_grace:
+			print("[PRIORITY/SEARCH-STATE] Игрок ушел из виду, враг запомнил позицию и цель!")
+			has_last_known = true
+			current_target = null
+	else:
+		current_target = null
 
 ## Нагло скомуниздил алгоритм вычисления нахождения игрока в поле зрения
 func _in_fov(to: Vector3) -> bool:
 	if not use_fov_check:
 		return true
-	var forward : Vector3 = (-_enemy.global_transform.basis.z).normalized()
-	var flat: Vector3 = Vector3(to.x, 0.0, to.z).normalized()
-	# print("[FOV-DEBUG] forward_length=%s" % (-_enemy.global_transform.basis.z).length())
-	return forward.dot(flat) >= _cos_half_fov
+	# Модель импортирована с use_model_front, и look_at/face_target наводят на цель +Z.
+	# Поэтому "вперёд" здесь тоже +Z. С минусом конус смотрел крысе в затылок.
+	var forward : Vector3 = _enemy.forward_dir()
+	var flat: Vector3 = Vector3(to.x, 0.0, to.z)
+	# Игрок почти над крысой: горизонтальная составляющая вырождается,
+	# normalized() дал бы нулевой вектор и проверка бы провалилась.
+	if flat.length_squared() < 0.0001:
+		return true
+	return forward.dot(flat.normalized()) >= _cos_half_fov
 
 func _has_los(p: Node3D) -> bool:
 	#if eye == null:

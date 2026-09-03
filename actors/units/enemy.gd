@@ -45,8 +45,20 @@ func _ready() -> void:
 
 func _setup_nav() -> void:
 	await get_tree().physics_frame
+	# Значения в МИРОВЫХ метрах, меряются в 3D (вместе с высотой).
+	# Навмеш запечён ВЫШЕ пола (полигоны на y=0.4), поэтому расстояние от
+	# врага до точки пути никогда не меньше этого зазора. Если порог сделать
+	# меньше зазора, агент не сможет "дойти" до путевой точки и встанет
+	# намертво. Держим их заведомо больше зазора, но target - меньше
+	# range_attack (1.3), иначе враг останавливается вне зоны удара.
 	agent.path_desired_distance = 0.5
-	agent.target_desired_distance = 1.0
+	agent.target_desired_distance = 0.7
+
+## Направление взгляда. Модель импортирована с use_model_front,
+## значит на цель наводится +Z - здесь единый источник правды для всех,
+## кто считает "куда смотрит враг" (FOV, довороты, будущие проверки).
+func forward_dir() -> Vector3:
+	return global_transform.basis.z.normalized()
 
 ## sprint задаёт тот, кто ставит цель: Chase - true, патруль/поиск - false.
 ## Так скорость всегда соответствует намерению и сбрасывается сама.
@@ -170,7 +182,11 @@ func _on_hurtbox_body_entered(body: Node3D) -> void:
 	#print("DAMAGE_COMPONENT -- Damage area entered")
 	var other_body := body
 	if other_body == null: return
-	if not is_instance_valid(other_body) and !other_body.is_in_group("item"): return	
+	# or, а не and: выйти нужно если тело невалидно ЛИБО это не предмет.
+	# И проверка типа обязательна - ниже читаются поля RigidBody3D и ItemData.
+	if not is_instance_valid(other_body) or not other_body.is_in_group("item"): return
+	if not (other_body is RigidBody3D): return
+	if other_body.item_data == null: return
 
 	var other_velocity_length = other_body.linear_velocity.length()
 	var other_body_damage = other_body.item_data.damage

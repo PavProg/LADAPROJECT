@@ -17,7 +17,7 @@ speed_sprint = 5.0
 radius_detection = 30.0
 damage_attack = 5.0
 cooldown_attack = 1.5
-range_attack = 6.0
+range_attack = 1.3
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l5kd"]
@@ -52,6 +52,7 @@ radius = 0.933657
 
 [node name="Rat" type="CharacterBody3D" unique_id=1053980717]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_vsiok")
 data = SubResource("Resource_7w5p4")
@@ -95,10 +96,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.499598, 1.664108)
 script = ExtResource("1_devae")
 fov_area = NodePath("../FOV")
 eye = NodePath("../Eye")
-use_fov_check = false
+use_fov_check = true
 
-[node name="EnemyAttackComponent" type="Node" parent="." unique_id=974868760]
+[node name="EnemyAttackComponent" type="Node" parent="." unique_id=974868760 node_paths=PackedStringArray("hitbox")]
 script = ExtResource("5_vs62c")
+hitbox = NodePath("../HitBox")
 metadata/_custom_type_script = "uid://dmkbo3pp8ed8s"
 
 [node name="Root Scene" parent="." unique_id=622377030 instance=ExtResource("5_rq516")]
