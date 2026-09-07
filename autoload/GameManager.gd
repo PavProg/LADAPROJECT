@@ -1,5 +1,7 @@
 extends Node
 
+var died_players: Array[int] = []
+
 ## квота которую нужно набрать за ТЕКУЩИЙ уровень
 var required_quote: int = 0
 ## квота которую нужно набрать за СЛЕДУЮЩИЙ уровень

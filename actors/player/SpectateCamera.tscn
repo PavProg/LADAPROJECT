@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bt7ct37lqd8gl"]
+
+[ext_resource type="Script" uid="uid://h6rdtt7vlddh" path="res://actors/player/spectate_mode.gd" id="1_05ih7"]
+
+[node name="SpectateCamera" type="Camera3D" unique_id=1943775386]
+script = ExtResource("1_05ih7")

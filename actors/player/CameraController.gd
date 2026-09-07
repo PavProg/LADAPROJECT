@@ -16,7 +16,7 @@ func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): 
 		return                       # мышь обрабатываем только у своего игрока
 		
-	if player.is_ragdoll:  return
+	# if player.is_ragdoll:  return
 	if event is InputEventMouseMotion:
 		player.rotate_y(-event.relative.x * mouse_sensitivity)   # yaw (вращение по вертикали) — на теле игрока (реплицируется через Player.rotation)
 		rotate_x(-event.relative.y * mouse_sensitivity)          # pitch (вращение по горизонтали) — на камере (реплицируется через CameraController.rotation)

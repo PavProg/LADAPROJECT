@@ -3,7 +3,6 @@ extends Node
 # Берет сигнал взятия предмета и помещает в словарь item: by_peer
 
 var _taken: Dictionary = {}
-
 func _ready() -> void:
 	Events.item_grabbed.connect(_on_grabbed)
 	Events.item_dropped.connect(_on_dropped)

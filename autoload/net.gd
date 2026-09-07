@@ -8,6 +8,8 @@ var peer: SteamMultiplayerPeer
 
 var spawned_ids: Array[int] = []
 
+var _alive_players: Array[Node3D] = []
+
 var spawned_items: Dictionary = {}
 var _item_counter: int = 0
 
@@ -59,6 +61,8 @@ func create_player(id: int) -> void:
 	p.add_to_group("player") # Добавляем в группу игроков
 	p.set_multiplayer_authority(id)
 	cont.add_child(p)
+	if not _alive_players.has(p):
+		_alive_players.append(p)
 	print("[NET/create_player] Создали ноду игрока, добавили в контейнер: ", cont)
 	#if id == multiplayer.get_unique_id():                       # ТОЛЬКО свой игрок
 		#p.get_node("CameraController/Camera3D").call_deferred("make_current")
@@ -249,3 +253,6 @@ func clear_spawned() -> void:
 	spawned_items.clear()	# и реестр предметов (сами узлы умрут вместе со сценой)
 	spawned_enemy.clear()
 #endregion
+
+func get_alive_players() -> Array[Node3D]:
+	return _alive_players

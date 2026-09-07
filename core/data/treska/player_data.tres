@@ -5,7 +5,7 @@
 [resource]
 resource_local_to_scene = true
 script = ExtResource("1_b7aec")
-max_health = 100.0
+max_health = 30.0
 health = 100.0
 max_endurance = 50.0
 endurance = 50.0

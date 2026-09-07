@@ -34,14 +34,12 @@ script = ExtResource("4_loxjt")
 [sub_resource type="BTAction" id="BTAction_loxjt"]
 script = ExtResource("5_i2ttw")
 
-[sub_resource type="BTWait" id="BTWait_whw32"]
-
 [sub_resource type="BTAction" id="BTAction_i2ttw"]
 script = ExtResource("6_mcktk")
 
 [sub_resource type="BTSequence" id="BTSequence_mcktk"]
 custom_name = "sequence \"ATTACK\""
-children = [SubResource("BTCondition_b2d7f"), SubResource("BTCondition_d08ox"), SubResource("BTAction_loxjt"), SubResource("BTWait_whw32"), SubResource("BTAction_i2ttw")]
+children = [SubResource("BTCondition_b2d7f"), SubResource("BTCondition_d08ox"), SubResource("BTAction_loxjt"), SubResource("BTAction_i2ttw")]
 
 [sub_resource type="BTCondition" id="BTCondition_2oxhx"]
 script = ExtResource("3_d08ox")

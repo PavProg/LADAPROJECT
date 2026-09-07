@@ -54,7 +54,8 @@ func _deal_damage() -> void:
 	for area in hitbox.get_overlapping_areas():
 		var body := area.get_parent()
 		if body and body.is_in_group("player") and body.has_method("take_damage"):
-			body.take_damage(_enemy.data.damage_attack)
+			var peer_id := str(body.name).to_int()
+			body.take_damage(_enemy.data.damage_attack, peer_id)
 			#print("[ATTACK-COMPONENT] Вызвал функцию получения дамага!")
 
 

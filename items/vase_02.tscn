@@ -79,8 +79,6 @@ outline_size = 4
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1220363808]
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]
 [connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
 [connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
 [connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

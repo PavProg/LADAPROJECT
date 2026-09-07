@@ -6,7 +6,7 @@ class_name GrabComponent
 @export var camera: Camera3D          # откуда пускаем луч (взгляд игрока)
 @export var reach: float = 5.0        # дальность захвата
 
-var _held_item: Node = null           # что держит этот игрок (имеет смысл только на сервере)
+var _held_object: Node = null           # что держит этот игрок (имеет смысл только на сервере)
 var _hover_target: Node = null        # цель прошлого кадра
 var _grab_target: Node = null         # то, что взяли
 
@@ -15,7 +15,6 @@ func _physics_process(_delta: float) -> void:
 		return                        # ввод читает ТОЛЬКО свой игрок
 
 	var item := _aim_item()
-
 	# шлём только при смене цели, а не каждый кадр
 	if item != _hover_target:
 		_hover_target = item
@@ -41,7 +40,7 @@ func _aim_item() -> Node:
 	var from := camera.global_position
 	var to := from - camera.global_transform.basis.z * reach   # -Z камеры = вперёд
 	var query := PhysicsRayQueryParameters3D.create(from, to)
-	query.collision_mask = 4104          # слой item (чтобы не хватать стены/игроков)
+	query.collision_mask = 4104          # слой item и рэгдол (чтобы не хватать стены/игроков)
 	query.exclude = owner.exceptions
 	
 	var hit := space.intersect_ray(query)
@@ -64,33 +63,25 @@ func _request_grab(item_path: NodePath) -> void:
 		return
 	var grabbed_object = get_node_or_null(item_path)
 	var who := get_multiplayer_authority()   # id владельца этого GrabComponent = кто просит
-	if grabbed_object and grabbed_object.is_in_group("item") and grabbed_object.is_free():
-		grabbed_object.grab_by(who)                    # помечаем предмет занятым (физика внутри предмета)
-		_held_item = grabbed_object
+	# если хватаем объект
+	if grabbed_object and grabbed_object.is_in_group("item"):
+		grabbed_object.enable_gravity(true)
+		owner.try_grab(grabbed_object)
+		_held_object = grabbed_object
 		grabbed_object.play_sound()
 		Events.item_grabbed.emit(grabbed_object, who)
 		pass
-		
+	# если хватаем рэгдол игрока
 	elif grabbed_object and grabbed_object is PhysicalBone3D:
-		print("_request_grab: ", grabbed_object)
-		grabbed_object.owner.grab_by(who)
 		owner.try_grab(grabbed_object)
-		_held_item = grabbed_object
+		_held_object = grabbed_object
 		Events.item_grabbed.emit(grabbed_object, who)
 		pass
 
 @rpc("any_peer", "call_local", "reliable")
 func _request_release() -> void:
 	if not multiplayer.is_server(): return
-	if _held_item and is_instance_valid(_held_item):
-		# хватание рэгдола
-		if _held_item is PhysicalBone3D:
-			_held_item.owner.release()
-			owner.release_grab()
-			Events.item_dropped.emit(_held_item)
-			_held_item = null
-			pass
-		else:
-			_held_item.release()
-			Events.item_dropped.emit(_held_item)
-			_held_item = null
+	if _held_object and is_instance_valid(_held_object):
+		owner.release_grab()
+		Events.item_dropped.emit(_held_object)
+		_held_object = null

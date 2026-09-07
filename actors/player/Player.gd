@@ -7,9 +7,8 @@ extends CharacterBody3D
 @onready var anchor: Node3D = $CameraController/HoldPoint/HoldPoint_Ragdoll
 @onready var pin_joint: Generic6DOFJoint3D = $CameraController/HoldPoint/HoldPoint_Ragdoll/PinJoint3D
 var is_ragdoll_on_floor: bool = false
-var _hold_by: int = 0
-var grabbed_bone: PhysicalBone3D = null
-var is_ragdoll: bool = false
+var grabbed_object: Node3D = null
+@export var is_ragdoll: bool = false
 var exceptions: Array[RID] # RID костей который игнорирует игрок(свои кости собственно)
 #endregion
 
@@ -66,7 +65,16 @@ var _intent = {"move": Vector2.ZERO, "jump": false }
 @onready var anim_player: AnimationPlayer = $PlayerBody/AnimationPlayer
 #endregion
 
+#region take damage vars
 var _health: float = 100.0
+var _spectate_mode: bool = false
+
+@onready var death_label: Label3D = $DeathLabel
+@export var timer_to_death: float = 5.0
+@export var timer_to_revive: float = 30.0
+
+var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
+#endregion
 
 func _ready() -> void:
 	data = export_data
@@ -139,7 +147,7 @@ func input():
 	input_movement_vector = Input.get_vector("move_left", "move_right", "move_forward","move_backward")
 	need_jump = Input.is_action_just_pressed("jump")
 	running = Input.is_action_pressed("run")
-	if Input.is_action_just_pressed("ragdoll") and is_multiplayer_authority():
+	if Input.is_action_just_pressed("ragdoll") and is_multiplayer_authority() and _health > 0:
 		if !is_ragdoll:
 			start_ragdoll()
 		else:
@@ -153,8 +161,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	input()
-	#print("HoldPoint", $CameraController/HoldPoint.global_position)
-	#print("Anchor", anchor.global_position)
 	if is_multiplayer_authority():
 		apply_intent({
 			"move": input_movement_vector,
@@ -187,6 +193,15 @@ func start_ragdoll() -> void:
 	collision.set_deferred("disabled", true)
 	anim_player.stop()
 
+func start_ragdoll_for_death() -> void:
+	is_ragdoll = true
+	camera_main_global_transform = camera_controller.transform
+	physical_bone_controller.physical_bones_start_simulation()
+	set_unseen_meshes_visibiliy(true)
+	# отключить обычную коллизию CharacterBody
+	collision.set_deferred("disabled", true)
+	anim_player.stop()
+
 func stop_ragdoll() -> void:
 	is_ragdoll = false
 	if is_on_floor() or is_on_wall():
@@ -205,38 +220,20 @@ func ragdoll_process(delta: float) -> void:
 	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 5 * delta)
 	pass
 
-	
-func try_grab(_grabbed_bone: PhysicalBone3D) -> void:
+
+func try_grab(_grabbed_object: Node3D) -> void:
 	#print("try_grab")
-	grabbed_bone = _grabbed_bone
+	grabbed_object = _grabbed_object
 	pin_joint.node_a = pin_joint.get_path_to(anchor)
-	pin_joint.node_b = pin_joint.get_path_to(grabbed_bone)
+	pin_joint.node_b = pin_joint.get_path_to(grabbed_object)
 	
 	pass
 
 func release_grab() -> void:
-	#print("release_grab")
-	if grabbed_bone:
+	if grabbed_object:
 		pin_joint.node_a = NodePath("")
 		pin_joint.node_b = NodePath("")
-		grabbed_bone = null
-
-func grab_by(peer_id: int) -> void:
-	_hold_by = peer_id
-	
-func release() -> void:
-	_hold_by = 0
-
-func is_free() -> bool:
-	return _hold_by == 0
-	
-
-func _hold_point_of(peer_id: int) -> Node3D:
-	var players := get_tree().current_scene.get_node_or_null("PlayersCont")
-	if players == null: return null
-	var p := players.get_node_or_null(str(peer_id))
-	if p == null: return null
-	return p.get_node_or_null("CameraController/HoldPoint")
+		grabbed_object = null
 
 
 func _process(delta: float) -> void:
@@ -333,14 +330,57 @@ func _on_endurance_timer_timeout() -> void:
 #endregion
 
 #region TAKEDAMAGE
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, peer_id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	_health = maxf(0.0, _health - amount)
 	# print("[PLAYER/TAKEDAMAGE] Нанесли урон! ", _health)
 
+	# print("[PLAYER/PEER-ID] peer_id = ", peer_id)
 	if _health <= 0.0:
-		start_ragdoll()
+		if Net.spawned_ids.size() == 1:
+			_death()
+		if Net.spawned_ids.size() >= 2:
+			_multiplayer_death.rpc_id(peer_id, peer_id)
+			if not GameManager.died_players.has(peer_id):
+				GameManager.died_players.append(peer_id)
+			if GameManager.died_players.size() == Net.spawned_ids.size():
+				await get_tree().create_timer(timer_to_death).timeout
+				LevelManager.go_to_hub()
+				GameManager.died_players.clear()
+			# print("[PLAYER/DEATH] Игроки, которых загрызли: ", GameManager.died_players)
+
+## Смерть в синглплеере
+func _death() -> void:
+	start_ragdoll_for_death()
+	death_label.visible = true
+	await get_tree().create_timer(timer_to_death).timeout
+	LevelManager.go_to_hub()
+
+## Смерть игрока в мультиплеере
+@rpc("any_peer", "call_local", "reliable")
+func _multiplayer_death(peer_id: int) -> void:
+	start_ragdoll_for_death()
+	death_label.visible = true
+	_spectate_mode = true
+	
+	var own_camera: Camera3D = $CameraController/Camera3D
+	own_camera.current = false
+	
+	var alive := Net.get_alive_players()
+	alive.erase(self)
+
+	var camera_mode: SpectateMode = SPECTATEMODE.instantiate()
+	get_tree().current_scene.add_child(camera_mode)
+
+	camera_mode.start_spectating(alive)
+	# print("[PLAYER/SPECTATE] Наблюдение началось!")
+
+	Events.player_died.emit(peer_id, _spectate_mode)
+
+	await get_tree().create_timer(timer_to_revive).timeout
+	stop_ragdoll()
+	# print("СМЕРТЬ в мультиплеере.")
 
 #endregion
 
