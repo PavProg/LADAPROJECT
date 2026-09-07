@@ -1,9 +1,9 @@
 extends CharacterBody3D
 
 #region Ragdoll vars
-@onready var physical_bone_controller: PhysicalBoneSimulator3D = $PlayerBody/Rig_Medium/Skeleton3D/PhysicalBoneSimulator3D
-@onready var physical_bone_hips: PhysicalBone3D = $"PlayerBody/Rig_Medium/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hips"
-@onready var bone_attachment_3d: BoneAttachment3D = $PlayerBody/Rig_Medium/Skeleton3D/BoneAttachment3D
+@onready var physical_bone_controller: PhysicalBoneSimulator3D = $Character/root/Skeleton3D/PhysicalBoneSimulator3D
+@onready var physical_bone_spine: PhysicalBone3D = $"Character/root/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine"
+@onready var bone_attachment_3d: BoneAttachment3D = $Character/root/Skeleton3D/BoneAttachment3D
 @onready var anchor: Node3D = $CameraController/HoldPoint/HoldPoint_Ragdoll
 @onready var pin_joint: Generic6DOFJoint3D = $CameraController/HoldPoint/HoldPoint_Ragdoll/PinJoint3D
 var is_ragdoll_on_floor: bool = false
@@ -25,16 +25,18 @@ var gravity_scale: float = 1.5
 
 #region Camera vars
 @onready var camera_controller: Node3D = $CameraController
-@onready var third_person_camera_pos: Node3D = $ThirdPersonCameraPos
+@onready var ragdoll_camera_pos: Node3D = $RagdollSpringArm/RagdollCameraPos
+@onready var ragdoll_spring_arm: SpringArm3D = $RagdollSpringArm
 var camera_main_global_transform: Transform3D
 #endregion
 #region Meshes / Collisions vars
 @onready var collision: CollisionShape3D = $Collision
 @onready var meshes_to_unsee: Array[MeshInstance3D] = [
-	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_Head,
-	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_LegLeft,
-	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_LegRight,
-	$PlayerBody/Rig_Medium/Skeleton3D/Mannequin_Body
+	$Character/root/Skeleton3D/Body,
+	$Character/root/Skeleton3D/eye_l,
+	$Character/root/Skeleton3D/eye_r,
+	$Character/root/Skeleton3D/eyelash_down,
+	$Character/root/Skeleton3D/eyelash_up
 ]
 #endregion
 
@@ -62,16 +64,18 @@ var _intent = {"move": Vector2.ZERO, "jump": false }
 #endregion
 
 #region Animations vars
-@onready var anim_player: AnimationPlayer = $PlayerBody/AnimationPlayer
+@onready var anim_player: AnimationPlayer = $Character/AnimationPlayer
 #endregion
 
 #region take damage vars
 var _health: float = 100.0
+
 var _spectate_mode: bool = false
+var _is_death: bool = false
+var _spectate_camera: SpectateMode = null
 
 @onready var death_label: Label3D = $DeathLabel
 @export var timer_to_death: float = 5.0
-@export var timer_to_revive: float = 30.0
 
 var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
 #endregion
@@ -92,7 +96,7 @@ func _ready() -> void:
 
 func set_physical_bones_ignore() -> void:
 		# Исключение скелета того кто хватает из своего рейкаста
-	var phys_skeleton := $PlayerBody/Rig_Medium/Skeleton3D/PhysicalBoneSimulator3D as PhysicalBoneSimulator3D 
+	var phys_skeleton := $Character/root/Skeleton3D/PhysicalBoneSimulator3D as PhysicalBoneSimulator3D
 	if phys_skeleton:
 		# Перебираем все дочерние узлы скелета в поиске физических костей
 		for child in phys_skeleton.get_children():
@@ -106,35 +110,6 @@ func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 		for mesh in meshes_to_unsee:
 			mesh.visible = is_active
 	pass
-
-#region Ретрансляция трансформа
-#
-#@rpc("any_peer", "call_local", "unreliable_ordered")
-#func _push_transform(pos: Vector3, yaw: float, pitch: float) -> void:
-	#if not multiplayer.is_server(): return
-#
-	#if multiplayer.get_remote_sender_id() != get_multiplayer_authority():
-		#return
-	#
-	#_apply_transform(pos, yaw, pitch)
-	#_broadcast_transform.rpc(pos, yaw, pitch)
-#
-#@rpc("any_peer", "call_local", "unreliable_ordered")
-#func _broadcast_transform(pos: Vector3, yaw: float, pitch: float) -> void:
-	#if multiplayer.get_remote_sender_id() != 1:
-		#return
-	#
-	#if is_multiplayer_authority():
-		#return
-	#
-	#_apply_transform(pos, yaw, pitch)
-#
-#func _apply_transform(pos: Vector3, yaw: float, pitch: float) -> void:
-	#global_position = pos
-	#rotation.y = yaw
-	#camera_controller.rotation.x = pitch
-
-#endregion
 
 #region INPUTS
 func apply_intent(intent: Dictionary):
@@ -170,18 +145,12 @@ func _physics_process(delta: float) -> void:
 		handle_footsteps(delta)
 		handle_landing()
 		synchronize_player_and_ragdoll()
-
-	## Ретрансляция трансформа
-	#_sync_t -= delta
-	#if _sync_t <= 0.0:
-		#_sync_t = sync_rate
-		#_push_transform.rpc_id(1, global_position, rotation.y, camera_controller.rotation.x)
 #endregion
 
 #region RAGDOLL
 func synchronize_player_and_ragdoll() -> void:
 	if is_ragdoll:
-		global_position = physical_bone_hips.position
+		global_position = physical_bone_spine.position
 	pass
 
 func start_ragdoll() -> void:
@@ -212,13 +181,16 @@ func stop_ragdoll() -> void:
 	set_unseen_meshes_visibiliy(false)
 	# вернуть коллизию
 	collision.set_deferred("disabled", false)
-	anim_player.play("Idle_A")
+	anim_player.play("Idle")
 
 func ragdoll_process(delta: float) -> void:
-	camera_controller.global_position = third_person_camera_pos.global_position
-	var target_transform = camera_controller.global_transform.looking_at(bone_attachment_3d.global_position, Vector3.UP)
-	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 5 * delta)
-	pass
+	# RagdollSpringArm следует за spine Bone на игроке
+	ragdoll_spring_arm.global_position = bone_attachment_3d.global_position
+	# камера берет позицию RagdollCameraPos на RagdollSpringArm
+	camera_controller.global_position = camera_controller.global_position.lerp(ragdoll_camera_pos.global_position, 50 * delta)
+	# поворот камеры
+	var target_transform := camera_controller.global_transform.looking_at(bone_attachment_3d.global_position, Vector3.UP)
+	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 50 * delta)
 
 
 func try_grab(_grabbed_object: Node3D) -> void:
@@ -259,7 +231,7 @@ func movement(delta: float) -> void:
 			input_movement_vector = (global_transform.basis * input_movement_vector).normalized()
 			if !running or data.endurance <= 0.0:
 				velocity = input_movement_vector * data.speed
-				anim_player.play("Walking_A")
+				anim_player.play("Running_forward")
 			# бег
 			else:
 				velocity = input_movement_vector * data.run_speed
@@ -269,17 +241,17 @@ func movement(delta: float) -> void:
 				endurance_timer.stop()
 				endurance_timer.wait_time = data.endurance_recovery_time
 				endurance_timer.start()
-				anim_player.play("Running_A")
+				anim_player.play("Running_forward_fast")
 		else:
 			velocity.x = 0
 			velocity.z = 0
-			anim_player.play("Idle_A")
-			
+			anim_player.play("Idle")
+
 		# прыжок
 		if need_jump:
 			velocity.y = data.jump_velocity
 			jump_sound_player.play()
-			anim_player.play("Jump_Idle")
+			anim_player.play("Jump")
 		
 	# перемещение в воздухе 
 	else:
@@ -332,23 +304,40 @@ func _on_endurance_timer_timeout() -> void:
 #region TAKEDAMAGE
 func take_damage(amount: int, peer_id: int) -> void:
 	if not multiplayer.is_server(): return
+	if _is_death: return
 
 	_health = maxf(0.0, _health - amount)
-	# print("[PLAYER/TAKEDAMAGE] Нанесли урон! ", _health)
+	_health_update.rpc(_health)
+	if _health > 0.0:
+		return
+	
+	_is_death = true
+	if not GameManager.died_players.has(peer_id):
+		GameManager.died_players.append(peer_id)
+	
+	if Net.spawned_ids.size() == 1:
+		_death()
+		return
+	
+	var alive_ids: Array[int] = Net.get_alive_peer_ids()
+	if alive_ids.is_empty():
+		await get_tree().create_timer(timer_to_death).timeout
+		GameManager.died_players.clear()
+		LevelManager.go_to_hub()
+		return
+	
+	_multiplayer_death.rpc_id(peer_id, alive_ids)
+	
+	for dead_id in GameManager.died_players:
+		if dead_id != peer_id:
+			Net.spectate_retarget.rpc_id(dead_id, alive_ids)
 
-	# print("[PLAYER/PEER-ID] peer_id = ", peer_id)
-	if _health <= 0.0:
-		if Net.spawned_ids.size() == 1:
-			_death()
-		if Net.spawned_ids.size() >= 2:
-			_multiplayer_death.rpc_id(peer_id, peer_id)
-			if not GameManager.died_players.has(peer_id):
-				GameManager.died_players.append(peer_id)
-			if GameManager.died_players.size() == Net.spawned_ids.size():
-				await get_tree().create_timer(timer_to_death).timeout
-				LevelManager.go_to_hub()
-				GameManager.died_players.clear()
-			# print("[PLAYER/DEATH] Игроки, которых загрызли: ", GameManager.died_players)
+@rpc("any_peer", "call_local", "reliable")
+func _health_update(value: float) -> void:
+	var sender := multiplayer.get_remote_sender_id()
+	if sender != 1 and sender != 0:
+		return
+	_health = value
 
 ## Смерть в синглплеере
 func _death() -> void:
@@ -359,29 +348,47 @@ func _death() -> void:
 
 ## Смерть игрока в мультиплеере
 @rpc("any_peer", "call_local", "reliable")
-func _multiplayer_death(peer_id: int) -> void:
+func _multiplayer_death(alive_ids: Array) -> void:
+	if is_instance_valid(_spectate_camera):
+		return
+	
 	start_ragdoll_for_death()
 	death_label.visible = true
 	_spectate_mode = true
 	
-	var own_camera: Camera3D = $CameraController/Camera3D
-	own_camera.current = false
+	$CameraController/Camera3D.current = false
 	
-	var alive := Net.get_alive_players()
-	alive.erase(self)
+	var alive := _resolve_alive(alive_ids)
+	if alive.is_empty():
+		return
+	
+	_spectate_camera = SPECTATEMODE.instantiate()
+	get_tree().current_scene.add_child(_spectate_camera)
+	_spectate_camera.start_spectating(alive)
+	
+	Events.player_died.emit(str(name).to_int(), true)
 
-	var camera_mode: SpectateMode = SPECTATEMODE.instantiate()
-	get_tree().current_scene.add_child(camera_mode)
+func is_dead() -> bool:
+	return _is_death
 
-	camera_mode.start_spectating(alive)
-	# print("[PLAYER/SPECTATE] Наблюдение началось!")
+func is_spectating() -> bool:
+	return _spectate_mode
 
-	Events.player_died.emit(peer_id, _spectate_mode)
+func _resolve_alive(alive_ids: Array) -> Array[Node3D]:
+	var alive: Array[Node3D] = []
+	for id in alive_ids:
+		var p: Node3D = Net.get_player_node(id)
+		if p != null and p != self:
+			alive.append(p)
+	return alive
 
-	await get_tree().create_timer(timer_to_revive).timeout
-	stop_ragdoll()
-	# print("СМЕРТЬ в мультиплеере.")
-
+func retarget_spectate(alive_ids: Array) -> void:
+	if not is_instance_valid(_spectate_camera):
+		return
+	var alive := _resolve_alive(alive_ids)
+	if alive.is_empty():
+		return
+	_spectate_camera.start_spectating(alive)
 #endregion
 
 #region КНОПКА ИНТЕРАКТА + RAYCAST
@@ -478,4 +485,97 @@ func handle_landing() -> void:
 func play_landing_sound() -> void:
 	landing_sound_player.pitch_scale = randf_range(0.97, 1.03)
 	landing_sound_player.play()
+#endregion
+
+#region DEBUG: проверка камеры наблюдателя без второго игрока
+# =============================================================================
+# КАК ПОЛЬЗОВАТЬСЯ
+#
+#   F9  - создать болванчика рядом с собой и начать за ним наблюдать.
+#         Каждое нажатие добавляет ещё одного болванчика, поэтому
+#         жми дважды, если хочешь проверить переключение целей.
+#   F10 - переключиться на следующего болванчика (нужно 2+).
+#   F8  - прекратить наблюдение и вернуть свою камеру.
+#
+# ЧТО ЭТИМ ПРОВЕРЯЕТСЯ
+#   - камера следует за движущейся целью (болванчик ездит по кругу);
+#   - орбита мышью работает (крути мышью во время наблюдения);
+#   - SpringArm3D подтягивает камеру, когда между ней и целью стена
+#     (встань так, чтобы болванчик уезжал за угол);
+#   - switch_target() и автоподхват следующей цели: удали болванчика
+#     из дерева в отладчике - камера должна сама перейти на другого.
+#
+# ЧЕГО ЭТИМ НЕ ПРОВЕРИТЬ
+#   Вся сетевая обвязка вокруг камеры: take_damage -> _multiplayer_death,
+#   Net.get_alive_peer_ids(), Net.spectate_retarget, переход в хаб
+#   после гибели последнего. Для этого нужен реальный второй пир
+#   (два экземпляра игры + ENet вместо Steam на время локального теста).
+#
+# ПЕРЕД РЕЛИЗОМ весь регион можно удалить - на игровую логику он не влияет.
+# =============================================================================
+
+const DEBUG_DUMMY := preload("res://actors/player/spectate_dummy.gd")
+
+var _debug_dummies: Array[Node3D] = []
+
+
+func _input(event: InputEvent) -> void:
+	# Отладка только в дебажной сборке и только у своего игрока.
+	if not OS.is_debug_build():
+		return
+	if not is_multiplayer_authority():
+		return
+	if not (event is InputEventKey) or not event.pressed or event.echo:
+		return
+
+	match event.keycode:
+		KEY_F9:
+			_debug_spawn_dummy()
+		KEY_F10:
+			if is_instance_valid(_spectate_camera):
+				_spectate_camera.switch_target()
+		KEY_F8:
+			_debug_stop_spectate()
+
+
+## Создаёт болванчика и (пере)запускает наблюдение по всем созданным.
+func _debug_spawn_dummy() -> void:
+	var dummy := Node3D.new()
+	dummy.set_script(DEBUG_DUMMY)
+	dummy.name = "SpectateDummy_%d" % (_debug_dummies.size() + 1)
+
+	var mesh := MeshInstance3D.new()
+	var capsule := CapsuleMesh.new()
+	capsule.height = 1.0
+	capsule.radius = 0.25
+	mesh.mesh = capsule
+	mesh.position = Vector3(0.0, 0.5, 0.0)
+	dummy.add_child(mesh)
+
+	get_tree().current_scene.add_child(dummy)
+	# Разносим болванчиков в стороны, чтобы они не ездили по одному кругу.
+	dummy.global_position = global_position + Vector3(3.0 + _debug_dummies.size() * 2.0, 0.0, 0.0)
+	_debug_dummies.append(dummy)
+
+	if not is_instance_valid(_spectate_camera):
+		_spectate_camera = SPECTATEMODE.instantiate()
+		get_tree().current_scene.add_child(_spectate_camera)
+		$CameraController/Camera3D.current = false
+
+	_spectate_camera.start_spectating(_debug_dummies)
+
+
+## Убирает камеру наблюдателя и болванчиков, возвращает управление игроку.
+func _debug_stop_spectate() -> void:
+	if is_instance_valid(_spectate_camera):
+		_spectate_camera.stop_spectating()
+		_spectate_camera.queue_free()
+	_spectate_camera = null
+
+	for d in _debug_dummies:
+		if is_instance_valid(d):
+			d.queue_free()
+	_debug_dummies.clear()
+
+	$CameraController/Camera3D.current = true
 #endregion

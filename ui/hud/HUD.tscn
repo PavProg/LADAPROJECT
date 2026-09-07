@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dy658rn1iq7uq"]
+[gd_scene format=3 uid="uid://lwu0ldtpcj14"]
 
 [ext_resource type="Script" uid="uid://husucchjl5ck" path="res://ui/hud/hud.gd" id="1_xmswo"]
 [ext_resource type="Theme" uid="uid://cikpbqcqce4x7" path="res://ui/hud/hud_theme.tres" id="2_4d6w6"]
@@ -13,6 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("2_4d6w6")
 script = ExtResource("1_xmswo")
 hoverCrosshairTexture = ExtResource("3_w75iv")

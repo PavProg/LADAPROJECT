@@ -172,13 +172,16 @@ func toggle_damage_label(damage: int) -> void:
 
 
 func _on_hurtbox_body_entered(body: Node3D) -> void:
-	#print("DAMAGE_COMPONENT -- Damage area entered")
-	var other_body := body
-	if other_body == null: return
-	if not is_instance_valid(other_body) and !other_body.is_in_group("item"): return	
+	if not is_instance_valid(body): return
+	if not body.is_in_group("item"): return
+	if not (body is RigidBody3D): return
 
-	var other_velocity_length = other_body.linear_velocity.length()
-	var other_body_damage = other_body.item_data.damage
+	# Осколки - голые RigidBody3D без item_data, они должны отсеяться здесь.
+	var idata = body.get("item_data")
+	if idata == null: return
+
+	var other_velocity_length: float = body.linear_velocity.length()
+	var other_body_damage: int = idata.damage
 	
 	var self_velocity_length = 0.9 if self.velocity.length() == 0 else self.velocity.length()
 	var overall_velocity_length: float = self_velocity_length * other_velocity_length

@@ -1,90 +1,102 @@
-extends Camera3D
-## Класс для наблюдения за живыми игроками. Живет локально.
+extends Node3D
 class_name SpectateMode
 
-## Насколько позади игрока
-@export var distance_back: float = 2.0
-## Насколько выше игрока
-@export var height_offset: float = 1.0
-## Скорость доворота 0 = мгновенно
-@export var look_smoothing: float = 8.0
+@export var distance_back: float = 3.0
+@export var height_offset: float = 1.2
+@export var follow_smoothing: float = 10.0
+@export var mouse_sensitivity: float = 0.005
+@export var pitch_min: float = -1.2
+@export var pitch_max: float = 1.2
+@export var collide_radius: float = 0.2
+@export var arm_margin: float = 0.1
+
+@onready var spring: SpringArm3D = $SpringArm3D
+@onready var cam: Camera3D = $SpringArm3D/Camera3D
 
 var _alive_players: Array[Node3D] = []
 var _target_player: Node3D = null
 var _target_index: int = -1
 
 var orbit_yaw: float = 0.0
-## Радиана. Наклон сверху
 var orbit_pitch: float = 0.4
 
-func _ready() -> void:
-	current = false
+var _active: bool = false
 
-## Начало наблюдения. Просчет направление и вектора камеры.
+
+func _ready() -> void:
+	cam.current = false
+	spring.spring_length = distance_back
+	spring.margin = arm_margin
+	spring.collision_mask = 1
+	var shape := SphereShape3D.new()
+	shape.radius = collide_radius
+	spring.shape = shape
+
+
 func start_spectating(alive: Array[Node3D]) -> void:
 	_alive_players = alive.filter(func(p): return is_instance_valid(p))
 	if _alive_players.is_empty():
-		print("[DEBUG SPECTATE] Alive players list is empty! Camera is not active.")
 		return
-
-	# print("[SPECTATE-CHECK] print active players: ", _alive_players)
 
 	_target_index = 0
 	_target_player = _alive_players[0]
-	current = true
+
+	if not _active:
+		orbit_yaw = _target_player.global_rotation.y
+	_active = true
+	cam.current = true
 	_snap_to_target()
 
+
 func stop_spectating() -> void:
-	current = false
+	_active = false
+	cam.current = false
 	_target_player = null
 
+
 func _process(delta: float) -> void:
-	if not current or _target_player == null or not is_instance_valid(_target_player):
-		push_error("[DEBUG] target player: ", _target_player, ". CURRENT: ", current, ". IS_INSTANCE_VALID: ", is_instance_valid(_target_player))
+	if not _active:
 		return
+	if _target_player == null or not is_instance_valid(_target_player):
+		if not _pick_next_valid():
+			return
 	_follow_target(delta)
-	# print("[Spectate DEBUG] Position spectate camera: ")
+
+
+func _pick_next_valid() -> bool:
+	_alive_players = _alive_players.filter(func(p): return is_instance_valid(p))
+	if _alive_players.is_empty():
+		_target_player = null
+		return false
+	_target_index = clampi(_target_index, 0, _alive_players.size() - 1)
+	_target_player = _alive_players[_target_index]
+	_snap_to_target()
+	return true
+
+
+func switch_target() -> void:
+	_alive_players = _alive_players.filter(func(p): return is_instance_valid(p))
+	if _alive_players.size() <= 1:
+		return
+	_target_index = (_target_index + 1) % _alive_players.size()
+	_target_player = _alive_players[_target_index]
+	_snap_to_target()
+
 
 func _follow_target(delta: float) -> void:
-	# var desired_pos := _calc_desired_position()
-	var desired_pos := _calc_desired_mobiled_position()
-	global_position = desired_pos
+	var pivot: Vector3 = _target_player.global_position + Vector3.UP * height_offset
+	global_position = global_position.lerp(pivot, clampf(follow_smoothing * delta, 0.0, 1.0))
+	rotation = Vector3(orbit_pitch, orbit_yaw, 0.0)
 
-	print("[DEBUG-SPECTATE] Target player: ", _target_player)
-
-	var look_target := _target_player.global_position + Vector3.UP
-	if look_smoothing > 0.0:
-		var current_basis := global_transform.basis
-		var t := Transform3D(current_basis, global_position).looking_at(look_target, Vector3.UP)
-		global_transform.basis = global_transform.basis.slerp(t.basis, look_smoothing * delta)
-		# print("[DEBUG-SPECTATE] global transform camera: ", global_transform.basis)
-	else:
-		look_at(look_target, Vector3.UP)
-		# print("look_at: ", look_target, Vector3.UP)
-	pass
-
-## Просчет подвижной камеры
-func _calc_desired_mobiled_position() -> Vector3:
-	var offset := Vector3(0, 0, distance_back).rotated(Vector3.RIGHT, orbit_pitch).rotated(Vector3.UP, orbit_yaw)
-	return _target_player.global_position + Vector3.UP * height_offset + offset
-
-## Просчет статичной камеры
-func _calc_desired_position() -> Vector3:
-	var player_forward: Vector3 = -_target_player.global_transform.basis.z.normalized()
-	# Vector3(Позиция игрока, - направление взгляда натянутое на оффсет (distance_back), 
-	# Растягиваем единичный вектор высоты камеры)
-	return _target_player.global_position \
-		- player_forward * distance_back \
-		+ Vector3.UP * height_offset
 
 func _snap_to_target() -> void:
-	# global_position = _calc_desired_position()
-	global_position = _calc_desired_mobiled_position()
-	look_at(_target_player.global_position + Vector3.UP * 1.0, Vector3.UP)
-	# print("[SPECTATEMODE] Просчитали позицию камеры (в отладке не полная, считается через look_at): ", global_position)
+	global_position = _target_player.global_position + Vector3.UP * height_offset
+	rotation = Vector3(orbit_pitch, orbit_yaw, 0.0)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if not current: return
+
+func _input(event: InputEvent) -> void:
+	if not _active:
+		return
 	if event is InputEventMouseMotion:
-		orbit_yaw -= event.relative.x * 0.005
-		orbit_pitch = clamp(orbit_pitch - event.relative.y * 0.005, -1.2, 1.2)
+		orbit_yaw -= event.relative.x * mouse_sensitivity
+		orbit_pitch = clampf(orbit_pitch - event.relative.y * mouse_sensitivity, pitch_min, pitch_max)

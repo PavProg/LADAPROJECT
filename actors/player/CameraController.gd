@@ -16,10 +16,21 @@ func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): 
 		return                       # мышь обрабатываем только у своего игрока
 		
-	# if player.is_ragdoll:  return
+	if event.is_action_pressed("mouse_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		
+	if player.is_ragdoll:
+		if player.is_spectating():
+			return
+		if event is InputEventMouseMotion:
+			player.ragdoll_spring_arm.rotate_y(-event.relative.x * mouse_sensitivity) # повернуть руку камеры
+			player.ragdoll_spring_arm.rotate_object_local(Vector3.RIGHT, -event.relative.y * mouse_sensitivity) #
+			var pitch = player.ragdoll_spring_arm.rotation.x
+			player.ragdoll_spring_arm.rotation.x = clamp(pitch, deg_to_rad(-80), deg_to_rad(80))
+			pass
+		return
+		
 	if event is InputEventMouseMotion:
 		player.rotate_y(-event.relative.x * mouse_sensitivity)   # yaw (вращение по вертикали) — на теле игрока (реплицируется через Player.rotation)
 		rotate_x(-event.relative.y * mouse_sensitivity)          # pitch (вращение по горизонтали) — на камере (реплицируется через CameraController.rotation)
 		rotation.x = clamp(rotation.x, deg_to_rad(-89), deg_to_rad(89))
-	if event.is_action_pressed("mouse_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

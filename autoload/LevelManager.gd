@@ -27,6 +27,7 @@ func _on_disconnected_peer(peer_id: int ) -> void:
 	if not multiplayer.is_server(): return
 	_ready_peers.erase(peer_id)
 	Net.server_dispawn_player(peer_id)
+	_broadcast_ready_peers()
 
 # СМЕНА УРОВНЕЙ И ХАБ
 # СЕРВАК
@@ -123,4 +124,14 @@ func _handle_peer_ack(peer_id: int) -> void:
 	if _run_index >= 0:
 		Net.give_hammer_to(peer_id)
 		Net.send_enemies_to(peer_id)
+	_broadcast_ready_peers()
+
+func _broadcast_ready_peers() -> void:
+	if not multiplayer.is_server(): return
+	var ids: Array = [1]
+	for pid in _ready_peers:
+		if not ids.has(pid):
+			ids.append(pid)
+	print("[LEVELMANAGER/BROADCAST/DEBUG] _ready_peers: ", _ready_peers)	# Список должен быть чем-то вроде 1, A, B.
+	Net.sync_ready_peers.rpc(ids)
 #endregion

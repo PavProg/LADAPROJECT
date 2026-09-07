@@ -7,8 +7,7 @@ const ENEMY_RAT := preload("res://actors/units/enemy_rat.tscn")
 var peer: SteamMultiplayerPeer
 
 var spawned_ids: Array[int] = []
-
-var _alive_players: Array[Node3D] = []
+var _ready_peers_cache: Array = []
 
 var spawned_items: Dictionary = {}
 var _item_counter: int = 0
@@ -61,8 +60,14 @@ func create_player(id: int) -> void:
 	p.add_to_group("player") # Добавляем в группу игроков
 	p.set_multiplayer_authority(id)
 	cont.add_child(p)
-	if not _alive_players.has(p):
-		_alive_players.append(p)
+
+	if id == multiplayer.get_unique_id():
+		var sync := p.get_node_or_null("MultiplayerSynchronizer") as MultiplayerSynchronizer
+		if sync:
+			sync.public_visibility = false	# Гейт видимости. Сделано, чтобы не вылетали ошибки синхрнайзера при переходах по тиму
+			# get_node: Node not found: "RunLevel1/PlayersCont/1375982948/MultiplayerSynchronizer" (relative to "/root").
+			sync.set_visibility_for(1, true)
+		_apply_sync_visibility()
 	print("[NET/create_player] Создали ноду игрока, добавили в контейнер: ", cont)
 	#if id == multiplayer.get_unique_id():                       # ТОЛЬКО свой игрок
 		#p.get_node("CameraController/Camera3D").call_deferred("make_current")
@@ -72,8 +77,6 @@ func server_dispawn_player(id: int) -> void:
 	spawned_ids.erase(id)
 	_remove_player.rpc(id)
 
-# Попытка фикса спавна игроков. Если не работает - ставим камеру вручную в create_player.
-# Если и это не сработает - process_frame.
 @rpc("authority", "call_local", "reliable")
 func _remove_player(id: int) -> void:
 	var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
@@ -82,6 +85,25 @@ func _remove_player(id: int) -> void:
 		node.name = "_dead" + str(id)
 		node.queue_free()
 		print("[NET/remove_player] Нода игрока была удалена.")
+
+# Тот же гейт.
+@rpc("authority", "call_local", "reliable")
+func sync_ready_peers(ids: Array) -> void:
+	_ready_peers_cache = ids.duplicate()
+	_apply_sync_visibility()
+
+func _apply_sync_visibility() -> void:
+	var me := get_player_node(multiplayer.get_unique_id())
+	if me == null: return
+	var sync := me.get_node_or_null("MultiplayerSynchronizer") as MultiplayerSynchronizer
+	if sync == null: return
+
+	sync.public_visibility = false
+	sync.set_visibility_for(1, true)
+	print("[SYNCPEERS/DEBUG] _ready_peer_cache: ", _ready_peers_cache)
+	for pid in _ready_peers_cache:
+		sync.set_visibility_for(int(pid), true)
+
 #endregion
 
 #region Spawn Items
@@ -254,5 +276,31 @@ func clear_spawned() -> void:
 	spawned_enemy.clear()
 #endregion
 
-func get_alive_players() -> Array[Node3D]:
-	return _alive_players
+# Массив - ссылочный тип данных в годоте.
+# Причина в том, что реестр узлов дублирует то, что и так известно: spawned_ids плюс GameManager.died_players. 
+# Вместо фикса дублирования массива и spectate-camera,
+# лучше убрать сам массив — это разом закрывает и мутацию по ссылке, 
+# и накопление освобождённых узлов при смене сцены.
+# По сети теперь ездят id, а не узлы
+# — это ВАЖНО: узел валиден только внутри своей сцены, а id переживает любые переходы.
+
+#region alive/died players
+func get_alive_peer_ids() -> Array[int]:
+	var result: Array[int] = []
+	for id in spawned_ids:
+		if GameManager.died_players.has(id):
+			continue
+		result.append(id)
+	return result	# возвращаю массив АЙДИ!!
+
+func get_player_node(peer_id: int) -> Node3D:
+	var cont := get_tree().current_scene.get_node_or_null("PlayersCont")
+	if cont == null: return null
+	return cont.get_node_or_null(str(peer_id)) as Node3D
+
+@rpc("authority", "call_local", "reliable")
+func spectate_retarget(alive_ids: Array) -> void:
+	var me := get_player_node(multiplayer.get_unique_id())
+	if me == null: return
+	me.retarget_spectate(alive_ids)
+#endregion

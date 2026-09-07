@@ -37,7 +37,6 @@ size = Vector3(0.5136719, 0.19946289, 0.125)
 [node name="RunLevel1" type="Node3D" unique_id=1480632097]
 
 [node name="Roof" type="GridMap" parent="." unique_id=2023515924]
-visible = false
 mesh_library = ExtResource("5_gv00n")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false

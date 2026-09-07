@@ -2,5 +2,15 @@
 
 [ext_resource type="Script" uid="uid://h6rdtt7vlddh" path="res://actors/player/spectate_mode.gd" id="1_05ih7"]
 
-[node name="SpectateCamera" type="Camera3D" unique_id=1943775386]
+[sub_resource type="SphereShape3D" id="SphereShape3D_spec1"]
+radius = 0.2
+
+[node name="SpectateCamera" type="Node3D" unique_id=1943775386]
 script = ExtResource("1_05ih7")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=1943775387]
+shape = SubResource("SphereShape3D_spec1")
+spring_length = 3.0
+margin = 0.1
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1943775388]

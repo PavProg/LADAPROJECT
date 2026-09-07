@@ -69,9 +69,16 @@ func _rescan() -> void:
 	var detect: float = _enemy.data.radius_detection
 	var lose: float = detect * lose_multiplayer
 	
+	if current_target != null and is_instance_valid(current_target) \
+			and current_target.has_method("is_dead") and current_target.is_dead():
+		current_target = null
+		has_last_known = false
+		_lost_for = 0.0
+
 	for p in _candidates:
 		if not is_instance_valid(p): continue
-		
+		if p.has_method("is_dead") and p.is_dead(): continue
+
 		var to: Vector3 = p.global_position - _enemy.global_position
 		var dist_sq: float = to.length_squared()	# вычисляем произведение  векторов (кратчайший путь)
 		var limit: float = lose if p == current_target else detect
