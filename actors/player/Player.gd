@@ -10,6 +10,14 @@ var is_ragdoll_on_floor: bool = false
 var grabbed_object: Node3D = null
 @export var is_ragdoll: bool = false
 var exceptions: Array[RID] # RID костей который игнорирует игрок(свои кости собственно)
+
+## Как часто сервер шлет корень трупа. 0.05 = 20 раз в секунду
+@export var ragdoll_sync_rate: float = 0.08
+## Порог ошибки, ниже не вмешиваемся в рэгдолл. Постоянная коррекция вызывает больше рассинхрона
+@export var ragdoll_snap_treshhold: float = 0.35
+
+var _rag_sync_t: float = 0.0
+var is_held: bool = false
 #endregion
 
 #region Movement vars
@@ -111,7 +119,7 @@ func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 			mesh.visible = is_active
 	pass
 
-#region INPUTS
+#region INPUTS + PhysicProcess
 func apply_intent(intent: Dictionary):
 	_intent = intent
 
@@ -122,11 +130,9 @@ func input():
 	input_movement_vector = Input.get_vector("move_left", "move_right", "move_forward","move_backward")
 	need_jump = Input.is_action_just_pressed("jump")
 	running = Input.is_action_pressed("run")
+
 	if Input.is_action_just_pressed("ragdoll") and is_multiplayer_authority() and _health > 0:
-		if !is_ragdoll:
-			start_ragdoll()
-		else:
-			stop_ragdoll()
+		_request_ragdoll.rpc_id(1, not is_ragdoll)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
@@ -144,13 +150,86 @@ func _physics_process(delta: float) -> void:
 		movement(delta)
 		handle_footsteps(delta)
 		handle_landing()
-		synchronize_player_and_ragdoll()
+	
+	# Вынес из авторитета, тк узел игрока должен следовать за своим локальным трупом у каждого пира
+	# иначе спектейт и подсказки уйдут в пустое место
+	synchronize_player_and_ragdoll()
+
+	if is_ragdoll and multiplayer.is_server():
+		_rag_sync_t -= delta
+		if _rag_sync_t <= 0.0:
+			_rag_sync_t = ragdoll_sync_rate
+			_push_ragdoll_root.rpc(physical_bone_spine.global_position)
 #endregion
 
 #region RAGDOLL
+# unrelieable тк переотправлять нет смысла, через 50мс придет новый кадр позиции
+@rpc("any_peer", "unreliable_ordered")
+func _push_ragdoll_root(pos: Vector3) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		return
+	if multiplayer.is_server():
+		return
+	if not is_ragdoll:
+		return
+	
+	_correct_ragdoll_root(pos)
+
+func _correct_ragdoll_root(pos: Vector3) -> void:
+	var err: Vector3 = pos - physical_bone_spine.global_position
+	if err.length() < _current_snap_treshold():
+		return
+	
+	# Один сдвиг костей для всех - поза не деформируется
+	for bone in physical_bone_controller.get_children():
+		if bone is PhysicalBone3D:
+			bone.global_position += err
+
+func _current_snap_treshold() -> float:
+	return 0.08 if is_held else ragdoll_snap_treshhold
+
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _request_ragdoll(want: bool) -> void:
+	if not multiplayer.is_server(): return
+
+	var sender := multiplayer.get_remote_sender_id()
+	# 0 - локальный вызов рэгдолла с хоста. Иначе просит только владелец узла
+	if sender != 0 and sender != get_multiplayer_authority():
+		return
+	if _is_death and not want:
+		return
+	set_ragdoll_state(want)
+
+## Единая точка входа. ТОЛЬКО сервер
+func set_ragdoll_state(want: bool) -> void:
+	if not multiplayer.is_server():
+		return
+	if is_ragdoll == want:
+		return
+	
+	# чтоб рассинхрона не было сразу шлем позицию вместе с состоянием 
+	var at := physical_bone_spine.global_position if is_ragdoll else global_position
+	apply_ragdoll.rpc(want, at)
+
+# Сервер - все. any_peer + проверка на 1, узел клиент-авторитетный
+@rpc("any_peer", "call_local", "reliable")
+func apply_ragdoll(want: bool, at: Vector3) -> void:
+	var sender := multiplayer.get_remote_sender_id()
+	if sender != 0 and sender != 1:
+		return
+	if want:
+		global_position = at
+		start_ragdoll()
+	else:
+		global_position = at
+		stop_ragdoll()
+
+
 func synchronize_player_and_ragdoll() -> void:
 	if is_ragdoll:
-		global_position = physical_bone_spine.position
+		global_position = physical_bone_spine.global_position
 	pass
 
 func start_ragdoll() -> void:
@@ -161,27 +240,27 @@ func start_ragdoll() -> void:
 	# отключить обычную коллизию CharacterBody
 	collision.set_deferred("disabled", true)
 	anim_player.stop()
+	_apply_ragdoll_collision_profile()
 
-func start_ragdoll_for_death() -> void:
-	is_ragdoll = true
-	camera_main_global_transform = camera_controller.transform
-	physical_bone_controller.physical_bones_start_simulation()
-	set_unseen_meshes_visibiliy(true)
-	# отключить обычную коллизию CharacterBody
-	collision.set_deferred("disabled", true)
-	anim_player.stop()
+func _apply_ragdoll_collision_profile() -> void:
+	var mask := 4111 if multiplayer.is_server() else 1
+	for bone in physical_bone_controller.get_children():
+		if bone is  PhysicalBone3D:
+			bone.collision_mask = mask
 
 func stop_ragdoll() -> void:
 	is_ragdoll = false
-	if is_on_floor() or is_on_wall():
-		#print("floor")
-		global_position += Vector3(0.0, 0.3, 0.0)
-	camera_controller.transform = camera_main_global_transform
+	is_held = false
 	physical_bone_controller.physical_bones_stop_simulation()
 	set_unseen_meshes_visibiliy(false)
 	# вернуть коллизию
 	collision.set_deferred("disabled", false)
+	camera_controller.transform = camera_main_global_transform
 	anim_player.play("Idle")
+	if is_on_floor() or is_on_wall():
+		#print("floor")
+		global_position += Vector3(0.0, 0.3, 0.0)
+	
 
 func ragdoll_process(delta: float) -> void:
 	# RagdollSpringArm следует за spine Bone на игроке
@@ -326,6 +405,7 @@ func take_damage(amount: int, peer_id: int) -> void:
 		LevelManager.go_to_hub()
 		return
 	
+	set_ragdoll_state(true)
 	_multiplayer_death.rpc_id(peer_id, alive_ids)
 	
 	for dead_id in GameManager.died_players:
@@ -341,7 +421,7 @@ func _health_update(value: float) -> void:
 
 ## Смерть в синглплеере
 func _death() -> void:
-	start_ragdoll_for_death()
+	start_ragdoll()
 	death_label.visible = true
 	await get_tree().create_timer(timer_to_death).timeout
 	LevelManager.go_to_hub()
@@ -352,7 +432,6 @@ func _multiplayer_death(alive_ids: Array) -> void:
 	if is_instance_valid(_spectate_camera):
 		return
 	
-	start_ragdoll_for_death()
 	death_label.visible = true
 	_spectate_mode = true
 	

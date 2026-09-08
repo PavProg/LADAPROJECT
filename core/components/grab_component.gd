@@ -50,8 +50,7 @@ func _aim_item() -> Node:
 			return hit.collider
 			
 		elif hit.collider is PhysicalBone3D:
-			#print("_aim_item PhysicalBone3D")
-			if !hit.collider.owner.is_ragdoll: return
+			if !hit.collider.owner.owner.is_ragdoll: return
 			return hit.collider
 
 	return null
