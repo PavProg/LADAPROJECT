@@ -9,10 +9,13 @@ class_name GrabComponent
 var _held_object: Node = null           # что держит этот игрок (имеет смысл только на сервере)
 var _hover_target: Node = null        # цель прошлого кадра
 var _grab_target: Node = null         # то, что взяли
+var _held_victim: Node = null # жертва которую взяли
 
 func _physics_process(_delta: float) -> void:
+	if not Net.is_net_active():
+		return
 	if not is_multiplayer_authority():
-		return                        # ввод читает ТОЛЬКО свой игрок
+		return
 
 	var item := _aim_item()
 	# шлём только при смене цели, а не каждый кадр
@@ -32,6 +35,17 @@ func _physics_process(_delta: float) -> void:
 			_grab_target = null
 			Events.local_item_held_changed.emit(null)
 
+## Ищет узел игрока, которому принадлежит кость рэгдолла.
+## Через owner постоянно будет что-то ломаться при малейшей правке рига
+func _player_of(node: Node) -> Node:
+	var n: Node = node
+	while n != null:
+		if n.is_in_group("player"):
+			return n
+		n = n.get_parent()
+	return null
+
+
 # Локальный рэйкаст из камеры — только чтобы выбрать предмет (для картинки/выбора)
 func _aim_item() -> Node:
 	if camera == null:
@@ -50,7 +64,9 @@ func _aim_item() -> Node:
 			return hit.collider
 			
 		elif hit.collider is PhysicalBone3D:
-			if !hit.collider.owner.owner.is_ragdoll: return
+			var victim := _player_of(hit.collider)
+			if victim == null or not victim.is_ragdoll:
+				return null
 			return hit.collider
 
 	return null
@@ -72,14 +88,24 @@ func _request_grab(item_path: NodePath) -> void:
 		pass
 	# если хватаем рэгдол игрока
 	elif grabbed_object and grabbed_object is PhysicalBone3D:
+		var victim := _player_of(grabbed_object)
+		# Состояние проверяет СЕРВЕР. Проверка в _aim_item клиентская
+		# и нужна для прицеливания, а не для доверия.
+		if victim == null or not victim.is_ragdoll: return
+		if victim == owner: return
 		owner.try_grab(grabbed_object)
 		_held_object = grabbed_object
+		_held_victim = victim
+		victim.server_change_hold(+1)
 		Events.item_grabbed.emit(grabbed_object, who)
-		pass
 
 @rpc("any_peer", "call_local", "reliable")
 func _request_release() -> void:
 	if not multiplayer.is_server(): return
+	if _held_victim and is_instance_valid(_held_victim):
+		_held_victim.server_change_hold(-1)
+		_held_victim = null
+	
 	if _held_object and is_instance_valid(_held_object):
 		owner.release_grab()
 		Events.item_dropped.emit(_held_object)

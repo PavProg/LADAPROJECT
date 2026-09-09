@@ -10,14 +10,6 @@ var is_ragdoll_on_floor: bool = false
 var grabbed_object: Node3D = null
 @export var is_ragdoll: bool = false
 var exceptions: Array[RID] # RID костей который игнорирует игрок(свои кости собственно)
-
-## Как часто сервер шлет корень трупа. 0.05 = 20 раз в секунду
-@export var ragdoll_sync_rate: float = 0.08
-## Порог ошибки, ниже не вмешиваемся в рэгдолл. Постоянная коррекция вызывает больше рассинхрона
-@export var ragdoll_snap_treshhold: float = 0.35
-
-var _rag_sync_t: float = 0.0
-var is_held: bool = false
 #endregion
 
 #region Movement vars
@@ -88,6 +80,32 @@ var _spectate_camera: SpectateMode = null
 var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
 #endregion
 
+#region vars for interpolations
+## Частота рассылки корня, когда труп просто лежит
+@export var ragdoll_sync_rate: float = 0.08
+## Частота, пока труп несут: он движется со скоростью игрока
+@export var ragdoll_sync_rate_held: float = 0.033
+## Какую долю ошибки выбираем за секунду. Рабочий диапазон 15-25
+@export var ragdoll_correction_speed: float = 20.0
+## Больше этого - уже не сглаживание, а восстановление. Тут скачок уместен
+@export var ragdoll_hard_snap: float = 1.5
+## Ниже этого не дёргаем вообще - гасим сетевой шум
+@export var ragdoll_deadzone: float = 0.02
+## Сколько секунд можно экстраполировать без новых пакетов
+@export var ragdoll_extrapolation_limit: float = 0.25
+## Порог ошибки, ниже не вмешиваемся в рэгдолл. Постоянная коррекция вызывает больше рассинхрона
+@export var ragdoll_snap_treshhold: float = 0.35
+
+var _root_target_pos: Vector3 = Vector3.ZERO
+var _root_target_vel: Vector3 = Vector3.ZERO
+var _root_target_age: float = 0.0
+var _has_root_target: bool = false
+
+var _rag_sync_t: float = 0.0
+# булевая переменная сломается если труп возьмет больше одного игрока
+var _hold_count: int = 0
+#endregion
+
 func _ready() -> void:
 	data = export_data
 	_health = data.max_health
@@ -141,6 +159,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		try_interact(4)
 
 func _physics_process(delta: float) -> void:
+	# Соединение оборвалось - молча замираем. Без этой строки каждый
+	# is_multiplayer_authority() ниже сыпет ошибку каждый кадр.
+	if not Net.is_net_active():
+		return
 	input()
 	if is_multiplayer_authority():
 		apply_intent({
@@ -155,17 +177,41 @@ func _physics_process(delta: float) -> void:
 	# иначе спектейт и подсказки уйдут в пустое место
 	synchronize_player_and_ragdoll()
 
-	if is_ragdoll and multiplayer.is_server():
-		_rag_sync_t -= delta
-		if _rag_sync_t <= 0.0:
-			_rag_sync_t = ragdoll_sync_rate
-			_push_ragdoll_root.rpc(physical_bone_spine.global_position)
+	if is_ragdoll:
+		if multiplayer.is_server():
+			_rag_sync_t -= delta
+			if _rag_sync_t <= 0.0:
+				_rag_sync_t = _current_sync_rate()
+				_push_ragdoll_root.rpc(
+					physical_bone_spine.global_position,
+					physical_bone_spine.linear_velocity)
+		else:
+			_correct_ragdoll_root(delta)
 #endregion
 
 #region RAGDOLL
+func is_held() -> bool:
+	return _hold_count > 0
+
+#Сервак. меняет счетчик и рассылает его всем
+func server_change_hold(delta_count: int) -> void:
+	if not multiplayer.is_server(): return
+	_set_hold_count.rpc(maxi(0, _hold_count + delta_count))
+
+@rpc("any_peer", "call_local", "reliable")
+func _set_hold_count(count: int) -> void:
+	var sender := multiplayer.get_remote_sender_id()
+	if sender != 0 and sender != 1:
+		return
+	_hold_count = maxi(0, count)
+
+## Труп пока несут чаще обновляется
+func _current_sync_rate() -> float:
+	return ragdoll_sync_rate_held if is_held() else ragdoll_sync_rate
+
 # unrelieable тк переотправлять нет смысла, через 50мс придет новый кадр позиции
 @rpc("any_peer", "unreliable_ordered")
-func _push_ragdoll_root(pos: Vector3) -> void:
+func _push_ragdoll_root(pos: Vector3, vel: Vector3) -> void:
 	if multiplayer.get_remote_sender_id() != 1:
 		return
 	if multiplayer.is_server():
@@ -173,22 +219,40 @@ func _push_ragdoll_root(pos: Vector3) -> void:
 	if not is_ragdoll:
 		return
 	
-	_correct_ragdoll_root(pos)
+	_root_target_pos = pos
+	_root_target_vel = vel
+	_root_target_age = 0.0
+	_has_root_target = true
 
-func _correct_ragdoll_root(pos: Vector3) -> void:
-	var err: Vector3 = pos - physical_bone_spine.global_position
-	if err.length() < _current_snap_treshold():
-		return
+func _correct_ragdoll_root(delta: float) -> void:
+	if not _has_root_target: return
 	
-	# Один сдвиг костей для всех - поза не деформируется
+	# Подача скорости вперёд: между пакетами двигаем цель сами.
+	# Без этого у пропорциональной коррекции остаётся постоянное отставание
+	_root_target_age += delta
+	if _root_target_age < ragdoll_extrapolation_limit:
+		_root_target_pos += _root_target_vel * delta
+
+	var err: Vector3 = _root_target_pos - physical_bone_spine.global_position
+	var d: float = err.length()
+
+	if d < ragdoll_deadzone:
+		return
+	if d > ragdoll_hard_snap:
+		_shift_all_bones(err)          # настоящий рассинхрон - возвращаем разом
+		return
+
+	_shift_all_bones(err * clampf(ragdoll_correction_speed * delta, 0.0, 1.0))
+
+## Сдвиг всех костей на ОДИН вектор - поза не деформируется,
+## суставы не рвутся. Вынесено, потому что зовётся из двух мест.
+func _shift_all_bones(offset: Vector3) -> void:
 	for bone in physical_bone_controller.get_children():
 		if bone is PhysicalBone3D:
-			bone.global_position += err
+			bone.global_position += offset
 
 func _current_snap_treshold() -> float:
-	return 0.08 if is_held else ragdoll_snap_treshhold
-
-
+	return ragdoll_snap_treshhold
 
 @rpc("any_peer", "call_local", "reliable")
 func _request_ragdoll(want: bool) -> void:
@@ -250,7 +314,7 @@ func _apply_ragdoll_collision_profile() -> void:
 
 func stop_ragdoll() -> void:
 	is_ragdoll = false
-	is_held = false
+	_hold_count = 0
 	physical_bone_controller.physical_bones_stop_simulation()
 	set_unseen_meshes_visibiliy(false)
 	# вернуть коллизию
