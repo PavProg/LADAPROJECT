@@ -2,7 +2,8 @@ extends Node
 
 const HUB := "res://levels/hub/hub.tscn"
 const RUNS := [
-	"res://levels/run_XX/run_level_1.tscn"
+	"res://levels/run_XX/run_level_1.tscn",
+	"res://levels/hub/hub_old.tscn"
 ]
 
 ## Отладочные принты

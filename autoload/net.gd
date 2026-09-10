@@ -432,6 +432,8 @@ func spectate_retarget(alive_ids: Array) -> void:
 	me.retarget_spectate(alive_ids)
 #endregion
 
+
+
 #region debug
 func _players_cont() -> Node:
 	var scene_root := get_tree().current_scene
@@ -468,12 +470,13 @@ func _input(event: InputEvent) -> void:
 func dump_state() -> void:
 	var me := _me()
 	print("\n========== [NET DUMP] пир %d ==========" % me)
-	print("  роль          : %s" % ("СЕРВЕР" if multiplayer.is_server() else "клиент"))
+	print_rich("[color=red]  роль          : %s" % ("СЕРВЕР" if multiplayer.is_server() else "клиент"))
 	print("  LevelManager  : %s" % LevelManager.debug_report())
 	print("  epoch (Net)   : %d" % epoch)
-	print("  spawned_ids   : %s" % str(spawned_ids))
+	print_rich("[color=red]  spawned_ids   : %s" % str(spawned_ids))
 	print("  pending_state : %s" % ("нет" if _pending_state.is_empty() else str(_pending_state)))
 	print("  соединённые   : %s" % str(multiplayer.get_peers()))
+	print_rich("[color=red]  [CHECK] server_relay=", multiplayer.server_relay)
 
 	var cont := _players_cont()
 	if cont == null:

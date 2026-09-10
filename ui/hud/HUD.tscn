@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://8v2eqno65oik" path="res://models/crosshairs/crosshair-187.png" id="3_e0nub"]
 [ext_resource type="Texture2D" uid="uid://4s7lkee6yvvd" path="res://models/crosshairs/crosshair-016.png" id="3_w75iv"]
 [ext_resource type="Texture2D" uid="uid://c46uyqvbv14tb" path="res://models/crosshairs/crosshair-011.png" id="5_imuuq"]
+[ext_resource type="PackedScene" uid="uid://blbum820d17iu" path="res://ui/tutorialUI/tutorial.tscn" id="6_kwc50"]
 
 [node name="Hud" type="Control" unique_id=1916678595]
 layout_mode = 3
@@ -122,3 +123,6 @@ pivot_offset = Vector2(20, 20)
 [node name="CrosshairTexture" type="TextureRect" parent="Crosshair" unique_id=1308377777]
 layout_mode = 2
 texture = ExtResource("3_e0nub")
+
+[node name="Tutorial" parent="." unique_id=136018050 instance=ExtResource("6_kwc50")]
+layout_mode = 1

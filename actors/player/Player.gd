@@ -65,6 +65,8 @@ var _intent = {"move": Vector2.ZERO, "jump": false }
 
 #region Animations vars
 @onready var anim_player: AnimationPlayer = $Character/AnimationPlayer
+@onready var anim_tree: AnimationTree = $Character/AnimationTree
+@onready var anim_movement_state_machine: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/MovementStateMachine/playback")
 #endregion
 
 #region take damage vars
@@ -114,10 +116,12 @@ func _ready() -> void:
 		Events.local_player_spawned.emit(self)
 	
 	set_unseen_meshes_visibiliy(false)
+	#enable_upper_body_ragdoll(true)
 	set_physical_bones_ignore() # отключение для рейкаста хватания своих костей из видимости
 	pin_joint.node_a = NodePath("")
 	pin_joint.node_b = NodePath("")
 	if is_ragdoll: start_ragdoll()
+	anim_movement_state_machine.start("Idle")
 	pass
 
 func set_physical_bones_ignore() -> void:
@@ -187,6 +191,83 @@ func _physics_process(delta: float) -> void:
 					physical_bone_spine.linear_velocity)
 		else:
 			_correct_ragdoll_root(delta)
+
+func movement(delta: float) -> void:
+	
+	if is_ragdoll: return
+	
+	#print(data.endurance)
+	if is_on_floor():
+		# хождение на земле
+		if input_movement_vector != Vector2.ZERO:
+			input_movement_vector = Vector3(input_movement_vector.x, 0, input_movement_vector.y)
+			input_movement_vector = (global_transform.basis * input_movement_vector).normalized()
+			if !running or data.endurance <= 0.0:
+				velocity = input_movement_vector * data.speed
+				anim_movement_state_machine.travel("Running_forward")
+			# бег
+			else:
+				velocity = input_movement_vector * data.run_speed
+				data.endurance = clamp(data.endurance - 0.2, 0.0, data.max_endurance)
+				endurance_recovering = false
+				# перезапуска таймера
+				endurance_timer.stop()
+				endurance_timer.wait_time = data.endurance_recovery_time
+				endurance_timer.start()
+				anim_movement_state_machine.travel("Running_forward_fast")
+		else:
+			velocity.x = 0
+			velocity.z = 0
+			anim_movement_state_machine.travel("Idle")
+
+		# прыжок
+		if need_jump:
+			velocity.y = data.jump_velocity
+			jump_sound_player.play()
+			anim_tree.set("parameters/JumpOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+		
+	# перемещение в воздухе 
+	else:
+		# в воздухе игрок не управляет персонажем, просто летит туда куда прыгнул
+		var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
+		var speed_h = horizontal_velocity.length()
+		if speed_h > 0.0:
+			speed_h = move_toward(speed_h, 0, air_speed_reduction)
+			horizontal_velocity = horizontal_velocity.normalized() * speed_h
+			pass
+		velocity.x = horizontal_velocity.x
+		velocity.z = horizontal_velocity.z
+		# падение
+		velocity.y -= gravity * gravity_scale * delta
+		
+	# Защита от катапультирования игрока в ебеня
+	var velocity_before_slide = velocity
+		
+	move_and_slide()
+	
+	# Защита от катапультирования игрока в ебеня
+	# P.S от сетевого разраба, НАФИГА ЭТО НАДО?????????? ЛУЧШИЙ МОМЕНТ ГЕЙМ-ЛУПА
+	var delta_v = velocity - velocity_before_slide
+	var max_delta_v: float = 2.0  # максимально допустимое изменение скорости за кадр
+	if delta_v.length() > max_delta_v:
+		velocity = velocity_before_slide + delta_v.limit_length(max_delta_v)
+	
+	# столкновения
+	for i in get_slide_collision_count():
+		var item_collision = get_slide_collision(i)
+		var item_body = item_collision.get_collider() as RigidBody3D
+		if item_body:
+			#print("Collision pos: ", item_collision.get_position(), " Body pos: ", item_body.global_position, " Diff: ", item_collision.get_position() - item_body.global_position)
+			var horizontal_velocity := Vector3(velocity.x, 0.0, velocity.z)
+			var push_dir = -item_collision.get_normal()
+			push_dir.y = 0.0
+			var push_speed = clamp(horizontal_velocity.length(), 0.0, 6.0)
+			if push_speed <= 0.01 and push_dir.length_squared() <= 0.001: continue
+			var push_strength = push_speed  * item_body.mass * 0.15
+			#print("Direction: %s \nStrength: %f " % [push_dir, push_strength])
+			var relative_pos = item_collision.get_position() - item_body.global_position
+			item_body.apply_impulse(push_strength * push_dir, relative_pos)
+
 #endregion
 
 #region RAGDOLL
@@ -303,7 +384,7 @@ func start_ragdoll() -> void:
 	set_unseen_meshes_visibiliy(true)
 	# отключить обычную коллизию CharacterBody
 	collision.set_deferred("disabled", true)
-	anim_player.stop()
+	#anim_player.stop()
 	_apply_ragdoll_collision_profile()
 
 func _apply_ragdoll_collision_profile() -> void:
@@ -320,7 +401,7 @@ func stop_ragdoll() -> void:
 	# вернуть коллизию
 	collision.set_deferred("disabled", false)
 	camera_controller.transform = camera_main_global_transform
-	anim_player.play("Idle")
+	anim_movement_state_machine.start("Idle")
 	if is_on_floor() or is_on_wall():
 		#print("floor")
 		global_position += Vector3(0.0, 0.3, 0.0)
@@ -335,6 +416,21 @@ func ragdoll_process(delta: float) -> void:
 	var target_transform := camera_controller.global_transform.looking_at(bone_attachment_3d.global_position, Vector3.UP)
 	camera_controller.global_transform = camera_controller.global_transform.interpolate_with(target_transform, 50 * delta)
 
+func enable_upper_body_ragdoll(enable: bool) -> void:
+	var bones_to_simulate = [
+		"shoulder.L",
+		"upper_arm.L",
+		"shoulder.R",
+		"upper_arm.R"
+	]
+	
+	if enable: physical_bone_controller.physical_bones_start_simulation(bones_to_simulate)
+	else: physical_bone_controller.physical_bones_stop_simulation()
+	pass
+
+#endregion
+
+#region grabbing in ragdoll
 
 func try_grab(_grabbed_object: Node3D) -> void:
 	#print("try_grab")
@@ -342,6 +438,8 @@ func try_grab(_grabbed_object: Node3D) -> void:
 	pin_joint.node_a = pin_joint.get_path_to(anchor)
 	pin_joint.node_b = pin_joint.get_path_to(grabbed_object)
 	
+	if grabbed_object.has_node("TutorialScript"):
+		grabbed_object.get_node("TutorialScript").off_hint()
 	pass
 
 func release_grab() -> void:
@@ -360,83 +458,6 @@ func _process(delta: float) -> void:
 		if data.endurance == data.max_endurance: endurance_recovering = false
 		
 	pass
-
-
-func movement(delta: float) -> void:
-	
-	if is_ragdoll: return
-	
-	#print(data.endurance)
-	if is_on_floor():
-		# хождение на земле
-		if input_movement_vector != Vector2.ZERO:
-			input_movement_vector = Vector3(input_movement_vector.x, 0, input_movement_vector.y)
-			input_movement_vector = (global_transform.basis * input_movement_vector).normalized()
-			if !running or data.endurance <= 0.0:
-				velocity = input_movement_vector * data.speed
-				anim_player.play("Running_forward")
-			# бег
-			else:
-				velocity = input_movement_vector * data.run_speed
-				data.endurance = clamp(data.endurance - 0.2, 0.0, data.max_endurance)
-				endurance_recovering = false
-				# перезапуска таймера
-				endurance_timer.stop()
-				endurance_timer.wait_time = data.endurance_recovery_time
-				endurance_timer.start()
-				anim_player.play("Running_forward_fast")
-		else:
-			velocity.x = 0
-			velocity.z = 0
-			anim_player.play("Idle")
-
-		# прыжок
-		if need_jump:
-			velocity.y = data.jump_velocity
-			jump_sound_player.play()
-			anim_player.play("Jump")
-		
-	# перемещение в воздухе 
-	else:
-		# в воздухе игрок не управляет персонажем, просто летит туда куда прыгнул
-		var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
-		var speed_h = horizontal_velocity.length()
-		if speed_h > 0.0:
-			speed_h = move_toward(speed_h, 0, air_speed_reduction)
-			horizontal_velocity = horizontal_velocity.normalized() * speed_h
-			pass
-		velocity.x = horizontal_velocity.x
-		velocity.z = horizontal_velocity.z
-		# падение
-		velocity.y -= gravity * gravity_scale * delta
-		
-	# Защита от катапультирования игрока в ебеня
-	var velocity_before_slide = velocity
-		
-	move_and_slide()
-	
-	# Защита от катапультирования игрока в ебеня
-	var delta_v = velocity - velocity_before_slide
-	var max_delta_v: float = 2.0  # максимально допустимое изменение скорости за кадр
-	if delta_v.length() > max_delta_v:
-		velocity = velocity_before_slide + delta_v.limit_length(max_delta_v)
-	
-	# столкновения
-	for i in get_slide_collision_count():
-		var item_collision = get_slide_collision(i)
-		var item_body = item_collision.get_collider() as RigidBody3D
-		if item_body:
-			#print("Collision pos: ", item_collision.get_position(), " Body pos: ", item_body.global_position, " Diff: ", item_collision.get_position() - item_body.global_position)
-			var horizontal_velocity := Vector3(velocity.x, 0.0, velocity.z)
-			var push_dir = -item_collision.get_normal()
-			push_dir.y = 0.0
-			var push_speed = clamp(horizontal_velocity.length(), 0.0, 6.0)
-			if push_speed <= 0.01 and push_dir.length_squared() <= 0.001: continue
-			var push_strength = push_speed  * item_body.mass * 0.15
-			#print("Direction: %s \nStrength: %f " % [push_dir, push_strength])
-			var relative_pos = item_collision.get_position() - item_body.global_position
-			item_body.apply_impulse(push_strength * push_dir, relative_pos)
-
 
 func _on_endurance_timer_timeout() -> void:
 	endurance_recovering = true
@@ -721,4 +742,10 @@ func _debug_stop_spectate() -> void:
 	_debug_dummies.clear()
 
 	$CameraController/Camera3D.current = true
+#endregion
+
+#region AnimationTree
+func set_grab_blend_amount(amount: int) -> void:
+	anim_tree.set("parameters/GrabBlend/blend_amount", amount)
+	pass
 #endregion

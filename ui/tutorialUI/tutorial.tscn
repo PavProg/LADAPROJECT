@@ -4,3 +4,9 @@
 
 [node name="Tutorial" type="Node" unique_id=446686153]
 script = ExtResource("1_t5i3b")
+
+[node name="dialogue_timer" type="Timer" parent="." unique_id=1507330263]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="dialogue_timer" to="." method="_on_dialogue_timer_timeout"]

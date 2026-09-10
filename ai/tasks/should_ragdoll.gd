@@ -8,4 +8,4 @@ func _tick(delta: float) -> Status:
 	var e := agent as Enemy
 	if e == null:
 		return FAILURE
-	return SUCCESS if e._is_ragdolled else FAILURE
+	return SUCCESS if e.is_ragdoll else FAILURE

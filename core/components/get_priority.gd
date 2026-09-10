@@ -60,6 +60,7 @@ func _process(delta: float) -> void:
 	_timer -= delta
 	if _timer > 0.0: return
 	_timer = scan_interval
+	if owner.is_ragdoll: return
 	_rescan()
 	
 func _rescan() -> void:

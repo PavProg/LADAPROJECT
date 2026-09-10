@@ -25,6 +25,7 @@ height = 0.33898926
 [node name="Vase_pig" type="RigidBody3D" unique_id=1572425250]
 collision_layer = 8
 collision_mask = 4111
+mass = 500.0
 can_sleep = false
 linear_damp_mode = 1
 angular_damp_mode = 1

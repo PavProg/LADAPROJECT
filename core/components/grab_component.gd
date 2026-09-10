@@ -4,7 +4,7 @@ class_name GrabComponent
 # Физика притягивания живёт в предмете (item_test.gd) и считается на хосте.
 
 @export var camera: Camera3D          # откуда пускаем луч (взгляд игрока)
-@export var reach: float = 5.0        # дальность захвата
+@export var reach: float = 2.0        # дальность захвата
 
 var _held_object: Node = null           # что держит этот игрок (имеет смысл только на сервере)
 var _hover_target: Node = null        # цель прошлого кадра
@@ -26,11 +26,13 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("grab"):
 		if item:
 			_request_grab.rpc_id(1, item.get_path())   # просим ХОСТА (id 1)
-
+			owner.set_grab_blend_amount(1.0)
+			
 			_grab_target = item
 			Events.local_item_held_changed.emit(item)
 	elif Input.is_action_just_released("grab"):
 		_request_release.rpc_id(1)
+		owner.set_grab_blend_amount(0.0)
 		if _grab_target:
 			_grab_target = null
 			Events.local_item_held_changed.emit(null)

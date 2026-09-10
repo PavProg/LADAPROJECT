@@ -5,7 +5,7 @@ var died_players: Array[int] = []
 ## квота которую нужно набрать за ТЕКУЩИЙ уровень
 var required_quote: int = 0
 ## квота которую нужно набрать за СЛЕДУЮЩИЙ уровень
-var required_quote_next_level: int = 100 # на первом уровне
+var required_quote_next_level: int = 20 # на первом уровне
 ## квота на текущий момент в уровне || сбрасывается в 0 каждый уровень
 var current_quote: int = 0
 ## квота, которую игроки могут тратить в хабе
@@ -18,7 +18,7 @@ enum quote_states {
 	PROCESS
 }
 ## процент на который увеличивается quote между уровнями
-var quote_raising: float = 0.2 # 20%
+var quote_raising: float = 0.5 # 20%
 
 # Закомментил чтобы движок каждый вызов не дергать
 #func _ready() -> void:

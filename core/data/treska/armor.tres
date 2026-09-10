@@ -8,6 +8,7 @@
 resource_local_to_scene = true
 script = ExtResource("2_1mbc4")
 distructed_scene = ExtResource("1_t7yd4")
+value = 20
 max_durability = 20
 durability = 20
 sound = ExtResource("3_y1ll2")

@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://07s54quk74k1"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_agpv8"]
+[ext_resource type="Resource" uid="uid://c2451afcrduns" path="res://core/data/treska/vasa_tutor.tres" id="2_6a1ee"]
+[ext_resource type="ArrayMesh" uid="uid://dn4rx65lum0rn" path="res://models/meshes/vase_01/Vase_01_Cube_001.res" id="3_4t4mf"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="4_duj7m"]
+[ext_resource type="Script" uid="uid://c5uuoj6nrniaf" path="res://ui/tutorialUI/tutorial_object_script.gd" id="5_6a1ee"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lds5s"]
+height = 1.9467773
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dbh8d"]
+height = 1.7661133
+
+[sub_resource type="Gradient" id="Gradient_6a1ee"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.09019608, 0.09019608, 0.09019608, 0.94509804)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lwck2"]
+gradient = SubResource("Gradient_6a1ee")
+width = 205
+height = 45
+
+[node name="vase_tutorial" type="RigidBody3D" unique_id=1572425250]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+collision_layer = 8
+collision_mask = 4111
+mass = 100.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_agpv8")
+filename = "vase_01"
+export_item_data = ExtResource("2_6a1ee")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
+transform = Transform3D(0.49, 0, 0, 0, -2.141858e-08, -0.49, 0, 0.49, -2.141858e-08, 0, -2.6146196e-11, 0.48159817)
+shape = SubResource("CylinderShape3D_lds5s")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1425624763]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 0, 0)
+mesh = ExtResource("3_4t4mf")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+process_mode = 3
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("4_duj7m")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.481)
+collision_layer = 512
+collision_mask = 523
+
+[node name="HurtBox" type="CollisionShape3D" parent="HurtArea" unique_id=442209875]
+transform = Transform3D(0.56, 0, 0, 0, -2.4478377e-08, -0.56, 0, 0.56, -2.4478377e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_dbh8d")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[node name="DurabilityLabel" type="Label3D" parent="." unique_id=1120845289]
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "123"
+font_size = 12
+outline_size = 4
+
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=1607676516]
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=2079563027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0948978e-08, 0.47925675)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
+font_size = 12
+outline_size = 4
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1899641381]
+
+[node name="TutorialScript" type="Node" parent="." unique_id=1788417927]
+script = ExtResource("5_6a1ee")
+
+[node name="prox_promt" type="Sprite3D" parent="." unique_id=1249777488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9595701e-08, 0.44829738)
+visible = false
+gi_mode = 0
+billboard = 1
+no_depth_test = true
+texture = SubResource("GradientTexture2D_lwck2")
+
+[node name="Label3D" type="Label3D" parent="prox_promt" unique_id=1734961422]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+sorting_offset = 0.05
+billboard = 1
+no_depth_test = true
+text = "Press Left Mouse to grab"
+
+[connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
+[connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

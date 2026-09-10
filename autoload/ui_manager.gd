@@ -22,3 +22,7 @@ func _local_player_spawned(player):
 		hint.visible = false
 		
 	hud.set_player(player)
+	
+func _show_quota() -> void:
+	var quota : MarginContainer = hud.get_node("./Quota")
+	quota.visible = true

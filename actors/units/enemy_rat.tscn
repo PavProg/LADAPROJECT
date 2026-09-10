@@ -14,7 +14,7 @@ health = 20.0
 damage_for_ragdoll = 5.0
 speed_walk = 2.0
 speed_sprint = 5.0
-radius_detection = 30.0
+radius_detection = 15.0
 damage_attack = 10.0
 cooldown_attack = 1.5
 range_attack = 1.3
@@ -22,14 +22,14 @@ ragdoll_time = 10.0
 metadata/_custom_type_script = "uid://dys246mjb4a3n"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l5kd"]
-radius = 1.1904297
-height = 4.2385254
+radius = 0.2475586
+height = 0.9624634
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2l5kd"]
-radius = 3.0
+radius = 0.52118516
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6fqur"]
-radius = 30.0
+radius = 15.461404
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_vs62c"]
 
@@ -42,17 +42,16 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_f67l4"]
-radius = 1.1224245
+radius = 0.2796437
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f67l4"]
-radius = 0.4399414
-height = 1.8039551
+radius = 0.18408203
+height = 0.48272705
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_pqej1"]
-radius = 0.933657
+radius = 0.2984979
 
 [node name="Rat" type="CharacterBody3D" unique_id=1053980717]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 collision_mask = 3
 script = ExtResource("1_vsiok")
 data = SubResource("Resource_7w5p4")
@@ -63,7 +62,7 @@ collision_layer = 32
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=1614355101]
-transform = Transform3D(-0.25736016, 0.014293374, -0.9662099, -0.96631557, -0.003806774, 0.257332, 0, 0.9998906, 0.014791621, -0.009149551, 1.047647, 0.045314133)
+transform = Transform3D(-0.25736016, 0.014293374, -0.9662099, -0.96631557, -0.003806774, 0.257332, 0, 0.9998906, 0.014791621, -0.027864676, 0.21069075, -0.025673062)
 shape = SubResource("CapsuleShape3D_2l5kd")
 
 [node name="HitBox" type="Area3D" parent="." unique_id=1899175341]
@@ -71,7 +70,7 @@ collision_layer = 128
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=1087315691]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0143966675, 1.7393138, 3.8699067)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021363735, 0.26266152, 0.6654864)
 shape = SubResource("SphereShape3D_2l5kd")
 
 [node name="FOV" type="Area3D" parent="." unique_id=356454422]
@@ -117,15 +116,15 @@ font_size = 60
 outline_size = 30
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1931290340]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1307305, -0.9402889)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21378425, -0.19408238)
 shape = SubResource("SphereShape3D_f67l4")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=1496694095]
-transform = Transform3D(1, 0, 0, 0, -0.17818405, -0.9839973, 0, 0.9839973, -0.17818405, 0, 1.2043418, 1.1842657)
+transform = Transform3D(1, 0, 0, 0, -0.17818405, -0.9839973, 0, 0.9839973, -0.17818405, 0, 0.20789988, 0.20014364)
 shape = SubResource("CapsuleShape3D_f67l4")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=927455243]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9160546, -0.017840393)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18900979, -0.017840393)
 shape = SubResource("SphereShape3D_pqej1")
 
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

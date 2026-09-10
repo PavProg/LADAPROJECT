@@ -1,12 +1,10 @@
-[gd_scene format=3 uid="uid://n0h60x7a3824"]
+[gd_scene format=3 uid="uid://bhbqewmet68bd"]
 
-[ext_resource type="MeshLibrary" uid="uid://d1moryexvlgrd" path="res://models/tile_sets/tres/floor_tiles.tres" id="1_f6udf"]
-[ext_resource type="PackedScene" uid="uid://bpxbdjkr3trll" path="res://actors/props/toilet.tscn" id="1_hc650"]
-[ext_resource type="MeshLibrary" uid="uid://clj8c52ak5r5n" path="res://models/tile_sets/tres/wall_tiles2.tres" id="3_r34rm"]
-[ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="4_vjyq5"]
-[ext_resource type="PackedScene" uid="uid://07s54quk74k1" path="res://items/vase_tutorial.tscn" id="5_hc650"]
-[ext_resource type="PackedScene" uid="uid://dwysa4ls6uoem" path="res://actors/props/button-on-hub.tscn" id="5_omfrw"]
-[ext_resource type="PackedScene" uid="uid://blbum820d17iu" path="res://ui/tutorialUI/tutorial.tscn" id="7_hc650"]
+[ext_resource type="MeshLibrary" uid="uid://d1moryexvlgrd" path="res://models/tile_sets/tres/floor_tiles.tres" id="1_a0t17"]
+[ext_resource type="MeshLibrary" uid="uid://clj8c52ak5r5n" path="res://models/tile_sets/tres/wall_tiles2.tres" id="2_qdjr8"]
+[ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="3_7tmfc"]
+[ext_resource type="PackedScene" uid="uid://by35nkgu3l8xy" path="res://items/vase_01.tscn" id="5_i2183"]
+[ext_resource type="PackedScene" uid="uid://dwysa4ls6uoem" path="res://actors/props/button-on-hub.tscn" id="6_irmxb"]
 
 [sub_resource type="Environment" id="Environment_tw1cs"]
 
@@ -15,15 +13,12 @@ size = Vector3(5.129883, 5.01001, 6.7021484)
 
 [node name="Hub" type="Node3D" unique_id=366666532]
 
-[node name="Toilet" parent="." unique_id=1654988634 instance=ExtResource("1_hc650")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5741787, 1.0674603, -18.743595)
-
 [node name="Floor" type="GridMap" parent="." unique_id=362108091]
-mesh_library = ExtResource("1_f6udf")
+mesh_library = ExtResource("1_a0t17")
 data = {
 "cells": PackedInt32Array(65534, 65532, 10, 0, 65532, 10, 2, 65532, 10, 4, 65532, 10, 6, 65532, 10, 6, 65534, 10, 4, 65534, 10, 4, 2, 10, 6, 0, 10, 6, 2, 10, 2, 2, 10, 0, 2, 10, 65534, 2, 10, 65532, 2, 10, 65532, 0, 10, 65530, 0, 10, 65530, 2, 10, 65528, 2, 10, 65528, 0, 10, 65527, 0, 10, 65527, 1, 10, 65527, 2, 10, 65527, 3, 10, 65535, 65531, 10, 65535, 65530, 10, 65535, 65529, 10, 65535, 65528, 10, 65535, 65527, 10, 65535, 65526, 10, 3, 65526, 10, 3, 65527, 10, 3, 65528, 10, 3, 65529, 10, 3, 65530, 10, 3, 65531, 10, 2, 65531, 10, 1, 65531, 10, 0, 65531, 10, 0, 65530, 10, 0, 65529, 10, 0, 65528, 10, 0, 65527, 10, 0, 65526, 10, 1, 65526, 10, 1, 65527, 10, 2, 65526, 10, 2, 65527, 10, 2, 65528, 10, 2, 65529, 10, 2, 65530, 10, 1, 65530, 10, 1, 65529, 10, 1, 65528, 10, 4, 0, 10, 65534, 1, 10, 65534, 0, 10, 65534, 65535, 10, 65534, 65534, 10, 65533, 65534, 10, 65533, 65535, 10, 65533, 65533, 10, 65533, 65532, 10, 3, 65534, 10, 3, 65535, 10, 3, 0, 10, 3, 1, 10, 65528, 1, 10, 65528, 3, 10, 65529, 0, 10, 65529, 1, 10, 65529, 2, 10, 65529, 3, 10, 65530, 1, 10, 65530, 3, 10, 65531, 0, 10, 65531, 1, 10, 65531, 2, 10, 65531, 3, 10, 65532, 1, 10, 65532, 3, 10, 65533, 0, 10, 65533, 1, 10, 65533, 2, 10, 65533, 3, 10, 65534, 65533, 10, 65534, 3, 10, 65535, 65532, 10, 65535, 65533, 10, 65535, 2, 10, 65535, 3, 10, 0, 65533, 10, 0, 3, 10, 1, 65532, 10, 1, 65533, 10, 1, 2, 10, 1, 3, 10, 2, 65533, 10, 2, 3, 10, 3, 65532, 10, 3, 65533, 10, 3, 2, 10, 3, 3, 10, 4, 65533, 10, 4, 65535, 10, 4, 1, 10, 4, 3, 10, 5, 65532, 10, 5, 65533, 10, 5, 65534, 10, 5, 65535, 10, 5, 0, 10, 5, 1, 10, 5, 2, 10, 5, 3, 10, 6, 65533, 10, 6, 65535, 10, 6, 1, 10, 6, 3, 10, 65535, 65534, 7, 7, 65532, 10, 7, 65533, 10, 7, 65534, 10, 7, 65535, 10, 7, 0, 10, 7, 1, 10, 7, 2, 10, 7, 3, 10)
 }
-metadata/_editor_floor_ = Vector3(0, 0, 0)
+metadata/_editor_floor_ = Vector3(0, 2, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1358683635]
 environment = SubResource("Environment_tw1cs")
@@ -36,7 +31,7 @@ light_color = Color(0.49630618, 0.33152208, 0.13116524, 1)
 transform = Transform3D(1, 0, 0, 0, 0.9787286, 0.20515943, 0, -0.20515943, 0.9787286, 14.818903, 4.1286306, 10.882963)
 
 [node name="Walls" type="GridMap" parent="." unique_id=440872592]
-mesh_library = ExtResource("3_r34rm")
+mesh_library = ExtResource("2_qdjr8")
 cell_center_z = false
 data = {
 "cells": PackedInt32Array(65531, 2, 1048579, 65529, 4, 655360, 65527, 4, 655362, 65527, 2, 1048576, 65529, 0, 0, 65527, 0, 1048578, 65531, 0, 5, 65533, 0, 1441794, 65533, 65532, 1048578, 65535, 65532, 1441794, 65531, 4, 655365, 65533, 4, 655360, 65535, 4, 655360, 1, 4, 655360, 3, 4, 655360, 5, 4, 655360, 7, 4, 1441794, 7, 2, 1441792, 7, 0, 1441792, 7, 65534, 1441792, 7, 65532, 2, 3, 65532, 655362, 5, 65532, 655360, 65533, 65534, 1048576, 3, 65530, 1048576, 65535, 65530, 1048576, 65535, 65528, 1048576, 3, 65528, 1048576, 3, 65526, 2, 65535, 65526, 1048578, 1, 65526, 0)
@@ -44,7 +39,7 @@ data = {
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="Roof" type="GridMap" parent="." unique_id=93353016]
-mesh_library = ExtResource("1_f6udf")
+mesh_library = ExtResource("1_a0t17")
 data = {
 "cells": PackedInt32Array(196599, 0, 15, 196599, 1, 15, 196599, 2, 15, 196599, 3, 15, 196600, 0, 15, 196600, 1, 15, 196600, 2, 15, 196600, 3, 15, 196601, 0, 15, 196601, 1, 15, 196601, 2, 15, 196601, 3, 15, 196602, 0, 15, 196602, 1, 15, 196602, 2, 15, 196602, 3, 15, 196603, 0, 15, 196603, 1, 15, 196603, 2, 15, 196603, 3, 15, 196604, 0, 15, 196604, 1, 15, 196604, 2, 15, 196604, 3, 15, 196605, 0, 15, 196605, 1, 15, 196605, 2, 15, 196605, 3, 15, 196606, 0, 15, 196606, 1, 15, 196606, 2, 15, 196606, 3, 15, 196607, 0, 15, 196607, 1, 15, 196607, 2, 15, 196607, 3, 15, 131072, 0, 15, 131072, 1, 15, 131072, 2, 15, 131072, 3, 15, 131073, 0, 15, 131073, 1, 15, 131073, 2, 15, 131073, 3, 15, 131074, 0, 15, 131074, 1, 15, 131074, 2, 15, 131074, 3, 15, 131075, 0, 15, 131075, 1, 15, 131075, 2, 15, 131075, 3, 15, 131076, 0, 15, 131076, 1, 15, 131076, 2, 15, 131076, 3, 15, 131077, 0, 15, 131077, 1, 15, 131077, 2, 15, 131077, 3, 15, 131078, 0, 15, 131078, 1, 15, 131078, 2, 15, 131078, 3, 15, 131079, 0, 15, 131079, 1, 15, 131079, 2, 15, 131079, 3, 15, 196605, 65532, 15, 196605, 65533, 15, 196605, 65534, 15, 196605, 65535, 15, 196606, 65532, 15, 196606, 65533, 15, 196606, 65534, 15, 196606, 65535, 15, 196607, 65532, 15, 196607, 65533, 15, 196607, 65534, 15, 196607, 65535, 15, 131072, 65532, 15, 131072, 65533, 15, 131072, 65534, 15, 131072, 65535, 15, 131073, 65532, 15, 131073, 65533, 15, 131073, 65534, 15, 131073, 65535, 15, 131074, 65532, 15, 131074, 65533, 15, 131074, 65534, 15, 131074, 65535, 15, 131075, 65532, 15, 131075, 65533, 15, 131075, 65534, 15, 131075, 65535, 15, 131076, 65532, 15, 131076, 65533, 15, 131076, 65534, 15, 131076, 65535, 15, 131077, 65532, 15, 131077, 65533, 15, 131077, 65534, 15, 131077, 65535, 15, 131078, 65532, 15, 131078, 65533, 15, 131078, 65534, 15, 131078, 65535, 15, 131079, 65532, 15, 131079, 65533, 15, 131079, 65534, 15, 131079, 65535, 15, 196607, 65526, 15, 196607, 65527, 15, 196607, 65528, 15, 196607, 65529, 15, 196607, 65530, 15, 196607, 65531, 15, 131072, 65526, 15, 131072, 65527, 15, 131072, 65528, 15, 131072, 65529, 15, 131072, 65530, 15, 131072, 65531, 15, 131073, 65526, 15, 131073, 65527, 15, 131073, 65528, 15, 131073, 65529, 15, 131073, 65530, 15, 131073, 65531, 15, 131074, 65526, 15, 131074, 65527, 15, 131074, 65528, 15, 131074, 65529, 15, 131074, 65530, 15, 131074, 65531, 15, 131075, 65526, 15, 131075, 65527, 15, 131075, 65528, 15, 131075, 65529, 15, 131075, 65530, 15, 131075, 65531, 15)
 }
@@ -52,14 +47,12 @@ metadata/_editor_floor_ = Vector3(0, 2, 0)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1495551110]
 transform = Transform3D(-0.05992408, 0.8073703, -0.58699435, 0.0526838, 0.5897896, 0.8058368, 0.9968118, 0.017363932, -0.07787793, -1.2480593, 4.6562405, -0.38859868)
-visible = false
 light_energy = 13.457
 spot_range = 12.555383
 spot_angle = 30.67281
 
 [node name="SpotLight3D4" type="SpotLight3D" parent="." unique_id=293073021]
 transform = Transform3D(0.9929253, 0.0550522, -0.105207756, 0.05268379, 0.58978945, 0.80583674, 0.10641351, -0.80567837, 0.5827165, 1.7696104, 4.6562405, 3.530532)
-visible = false
 light_energy = 13.457
 spot_range = 12.555383
 spot_angle = 30.67281
@@ -172,7 +165,7 @@ spot_range = 6.013
 spot_attenuation = 0.96
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=714159769]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5703495, 3.015745, -17.504559)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.786113, 2.509967, -17.487791)
 light_color = Color(0, 0.9726582, 0.97617656, 1)
 light_energy = 7.79
 shadow_enabled = true
@@ -187,18 +180,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.891161, 1.8875536, 4.1792
 [node name="ItemMarks" type="Node3D" parent="." unique_id=1982588296]
 
 [node name="ItemMark2" type="Marker3D" parent="ItemMarks" unique_id=693526203]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9776309, 1.1721021, -0.048312426)
-script = ExtResource("4_vjyq5")
-forced_item = ExtResource("5_hc650")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9776309, 1.2035251, -0.00660944)
+script = ExtResource("3_7tmfc")
+forced_item = ExtResource("5_i2183")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
-[node name="ButtonOnHub" parent="." unique_id=155695095 instance=ExtResource("5_omfrw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5741787, 1.5988693, -28.745111)
-
-[node name="Tutorial" parent="." unique_id=446686153 node_paths=PackedStringArray("tutorial_area", "items_list", "spot_lights") instance=ExtResource("7_hc650")]
-tutorial_area = NodePath("../TutorArea")
-items_list = NodePath("../Items")
-spot_lights = [NodePath("../SpotLight3D"), NodePath("../SpotLight3D4")]
+[node name="ButtonOnHub" parent="." unique_id=155695095 instance=ExtResource("6_irmxb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5741787, 1.5988693, -19.087206)
 
 [node name="TutorArea" type="Area3D" parent="." unique_id=1325167244]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.434457, 1.5145533, 3.7356787)

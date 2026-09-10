@@ -9,11 +9,14 @@ class_name Enemy
 @onready var attack: EnemyAttackComponent = $EnemyAttackComponent
 @onready var anim: AnimationPlayer = $"Root Scene/AnimationPlayer"
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+@onready var physical_bone_controller: PhysicalBoneSimulator3D = $"Root Scene/RootNode/RatArmature/Skeleton3D/PhysicalBoneSimulator3D"
 
 @onready var damage_label: Label3D = $"DamageLabel"
 @export var take_damage_recovery_time: float = 0.3   # секунд «неуязвимости» между ударами
 @export var speed_damage_scale: float = 0.2          # множитель перевода скорости удара в урон (20%)
 @export var max_damage_allowed: int = 100            # ограничение максимального урона
+
+@onready var collisions_array: Array[CollisionShape3D] = [$CollisionShape3D, $CollisionShape3D2, $CollisionShape3D3]
 
 ## Базовые имена анимаций. Реальные в AnimationPlayer могут иметь префикс
 ## арматуры ("RatArmature|Rat_Idle") - его снимает _resolve_anim.
@@ -28,7 +31,7 @@ var is_sprinting: bool = false
 var _current_anim: StringName = &""
 
 var _health: float = 100.0 # Боевое хп
-var _is_ragdolled: bool = false
+var is_ragdoll: bool = false
 
 ## Пока кулдаун больше 0 анимацию не перебираем
 var _anim_lock_left: float = 0.0
@@ -59,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	_attack_cd_left = maxf(0.0, _attack_cd_left - delta)
 	_anim_lock_left = maxf(0.0, _anim_lock_left - delta)
 	
-	if _is_ragdolled:
+	if is_ragdoll:
 		if not is_on_floor():
 			velocity.y -= gravity * delta
 		velocity.x = 0.0
@@ -102,7 +105,7 @@ func forward_dir() -> Vector3:
 func take_damage(amount: float) -> void:
 	if not multiplayer.is_server():
 		return
-	if _is_ragdolled:
+	if is_ragdoll:
 		return # лежачего не бьют
 
 	_health = maxf(0.0, _health - amount)
@@ -110,18 +113,26 @@ func take_damage(amount: float) -> void:
 	toggle_damage_label.rpc(amount)
 
 	if _health <= 0.0:
-		_is_ragdolled = true	# Оставил как заглушку, TODO гибкая настройка урона от velocity + смерть
+		is_ragdoll = true	# Оставил как заглушку, TODO гибкая настройка урона от velocity + смерть
 
 # Пока нет костей для рэгдола заглушка в виде отладки и анимации смерти
 # TODO Докинуть кости и делать через physical_bones_start_simulation
 func _enter_ragdoll() -> void:
 	if not multiplayer.is_server():
 		return
-	if not _is_ragdolled:
+	if not is_ragdoll:
 		return
 	
 	stop_moving()
-	play_anim(ANIM_DEATH, false)
+	#play_anim(ANIM_DEATH, false)
+	$HitBox.monitoring = false
+	$HitBox.monitorable = false
+	physical_bone_controller.active = true
+	physical_bone_controller.physical_bones_start_simulation()
+	for collision in collisions_array:
+		if collision != null and is_instance_valid(collision):
+			collision.set_deferred("disabled", true)
+	is_ragdoll = true
 	_anim_lock_left = INF
 	ragdolled_fx.rpc()
  
@@ -135,7 +146,11 @@ func recover_from_ragdoll() -> void:
 	
 	_health = data.health
 	_anim_lock_left = 0.0
-	_is_ragdolled = false
+	physical_bone_controller.physical_bones_stop_simulation()
+	for collision in collisions_array:
+		if collision != null and is_instance_valid(collision):
+			collision.set_deferred("disabled", false)
+	is_ragdoll = false
 	# play_anim(ANIM_IDLE, true)
 	_update_anim()
 	recover_fx.rpc()
@@ -211,7 +226,7 @@ func _on_hurtbox_body_entered(body: Node3D) -> void:
 #region Attack from Rat
 ## Функция хелпер. Проверяет поле _is_ragdolled.
 func is_ragdolled() -> bool:
-	return _is_ragdolled
+	return is_ragdoll
 
 func face_target(target_pos: Vector3, delta: float) -> void:
 	var to := target_pos - global_position
@@ -234,7 +249,7 @@ func _lock_anim(seconds: float) -> void:
 	_anim_lock_left = seconds
 
 func _update_anim() -> void:
-	if _anim_lock_left > 0 or _is_ragdolled:
+	if _anim_lock_left > 0 or is_ragdoll:
 		return
 	var horizontal := Vector2(velocity.x, velocity.z).length()
 	var want: StringName = ANIM_IDLE

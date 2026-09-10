@@ -8,7 +8,8 @@
 resource_local_to_scene = true
 script = ExtResource("1_e8ih5")
 distructed_scene = ExtResource("1_rmp4j")
-max_durability = 20
-durability = 20
+value = 4
+max_durability = 4
+durability = 4
 sound = ExtResource("3_l7svv")
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

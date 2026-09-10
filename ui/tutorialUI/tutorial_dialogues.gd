@@ -28,3 +28,4 @@ func show_third_dialogue() -> void:
 	hide_dialogues()
 	self.visible = true
 	third_dialogue.visible = true
+	
