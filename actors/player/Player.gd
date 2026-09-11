@@ -270,6 +270,38 @@ func movement(delta: float) -> void:
 
 #endregion
 
+#region Релей трансформа
+## Скорость подтягивания чужого игрока к принятой позиции
+@export var relay_smoothing: float = 18.0
+
+## Цель интерполяции, принятая от сервера через Net._apply_relay
+var _relay_pos: Vector3 = Vector3.ZERO
+var _relay_yaw: float = 0.0
+var _relay_pitch: float = 0.0
+var _has_relay: bool = false
+
+
+## Принять трансформ ЧУЖОГО игрока от сервера
+func set_relayed_transform(pos: Vector3, yaw: float, pitch: float) -> void:
+	_relay_pos = pos
+	_relay_yaw = yaw
+	_relay_pitch = pitch
+	_has_relay = true
+
+
+## Плавно подтянуть чужого игрока к последней принятой позиции
+func _relay_process(delta: float) -> void:
+	if not _has_relay: return
+	if is_multiplayer_authority(): return
+	if is_ragdoll: return		# в рэгдолле позицией владеет _push_ragdoll_root
+
+	var t := clampf(relay_smoothing * delta, 0.0, 1.0)
+	global_position = global_position.lerp(_relay_pos, t)
+	rotation.y = lerp_angle(rotation.y, _relay_yaw, t)
+	if camera_controller:
+		camera_controller.rotation.x = lerp_angle(camera_controller.rotation.x, _relay_pitch, t)
+#endregion
+
 #region RAGDOLL
 func is_held() -> bool:
 	return _hold_count > 0
@@ -289,6 +321,8 @@ func _set_hold_count(count: int) -> void:
 ## Труп пока несут чаще обновляется
 func _current_sync_rate() -> float:
 	return ragdoll_sync_rate_held if is_held() else ragdoll_sync_rate
+
+#endregion
 
 # unrelieable тк переотправлять нет смысла, через 50мс придет новый кадр позиции
 @rpc("any_peer", "unreliable_ordered")
@@ -452,7 +486,9 @@ func release_grab() -> void:
 func _process(delta: float) -> void:
 	if is_ragdoll:
 		ragdoll_process(delta)
-		
+
+	_relay_process(delta)
+
 	if endurance_recovering:
 		data.endurance = clamp(data.endurance + data.endurance_recovery_speed, 0, data.max_endurance)
 		if data.endurance == data.max_endurance: endurance_recovering = false

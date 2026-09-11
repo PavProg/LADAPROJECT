@@ -26,8 +26,8 @@ ThreadsRegistry="*uid://c6bsmchkphduy"
 
 [display]
 
-window/size/viewport_width=2600
-window/size/viewport_height=1600
+window/size/viewport_width=1800
+window/size/viewport_height=1000
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"

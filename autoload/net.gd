@@ -84,6 +84,103 @@ func _open_sync_for(node: Node, peer_id: int) -> bool:
 	return true
 #endregion
 
+#region Релей трансформов игроков
+## Как часто сервер рассылает батч трансформов (сек)
+const RELAY_RATE := 0.05
+## Порог неподвижности: ниже него игрок в батч не попадает
+const RELAY_POS_EPS := 0.01
+const RELAY_ANG_EPS := 0.01
+
+var _relay_t: float = 0.0
+## peer_id -> последнее отправленное [позиция, yaw, pitch]
+var _relay_last: Dictionary = {}
+
+## Счётчики для дампа по F3
+var _relay_sent: int = 0
+var _relay_recv: int = 0
+var _relay_batch: int = 0
+var _relay_recv_msec: int = 0
+
+
+func _process(delta: float) -> void:
+	_relay_tick(delta)
+	_probe_tick(delta)
+
+
+## Сервер собирает трансформы всех игроков и шлёт их клиентам одним пакетом
+func _relay_tick(delta: float) -> void:
+	if not multiplayer.is_server(): return
+	if not is_net_active(): return
+	if spawned_ids.is_empty(): return
+
+	_relay_t -= delta
+	if _relay_t > 0.0: return
+	_relay_t = RELAY_RATE
+
+	var ids := PackedInt32Array()
+	var data := PackedFloat32Array()
+
+	for raw_id in spawned_ids:
+		var pid := int(raw_id)
+		var p := get_player_node(pid)
+		if p == null: continue
+
+		var pos: Vector3 = p.global_position
+		var yaw: float = p.rotation.y
+		var pitch: float = 0.0
+		var cam := p.get_node_or_null("CameraController") as Node3D
+		if cam: pitch = cam.rotation.x
+
+		if not _relay_changed(pid, pos, yaw, pitch): continue
+		_relay_last[pid] = [pos, yaw, pitch]
+
+		ids.append(pid)
+		data.append(pos.x); data.append(pos.y); data.append(pos.z)
+		data.append(yaw);   data.append(pitch)
+
+	if ids.is_empty(): return
+	_relay_sent += 1
+	_relay_batch = ids.size()
+	_apply_relay.rpc(ids, data)
+
+
+## Сдвинулся ли игрок с прошлой отправки
+func _relay_changed(pid: int, pos: Vector3, yaw: float, pitch: float) -> bool:
+	if not _relay_last.has(pid): return true
+	var prev: Array = _relay_last[pid]
+	if (pos - (prev[0] as Vector3)).length() > RELAY_POS_EPS: return true
+	if absf(angle_difference(prev[1], yaw)) > RELAY_ANG_EPS: return true
+	if absf(angle_difference(prev[2], pitch)) > RELAY_ANG_EPS: return true
+	return false
+
+
+## Клиент принимает батч и ставит чужим игрокам цель интерполяции
+@rpc("authority", "unreliable_ordered")
+func _apply_relay(ids: PackedInt32Array, data: PackedFloat32Array) -> void:
+	if multiplayer.get_remote_sender_id() != 1: return
+	if multiplayer.is_server(): return
+
+	_relay_recv += 1
+	_relay_batch = ids.size()
+	_relay_recv_msec = Time.get_ticks_msec()
+
+	var me := _me()
+	for i in ids.size():
+		var pid := ids[i]
+		if pid == me: continue
+		var p := get_player_node(pid)
+		if p == null: continue
+		var o := i * 5
+		p.set_relayed_transform(
+			Vector3(data[o], data[o + 1], data[o + 2]), data[o + 3], data[o + 4])
+
+
+## Строка "давно ли приходил релей" для дампа
+func _relay_age_text() -> String:
+	if _relay_recv == 0: return "пакетов не принято"
+	return "последний %d мс назад" % (Time.get_ticks_msec() - _relay_recv_msec)
+#endregion
+
 ####### СПАВН ИГРОКА
 #region spawn player
 # ИДЕМПОТЕНТНАЯ СХЕМА.
@@ -509,6 +606,16 @@ func dump_state() -> void:
 		% [_count_in("Items"), spawned_items.size()])
 	print("  врагов в сцене   : %s (реестр сервера: %d)"
 		% [_count_in("EnemiesCont"), spawned_enemy.size()])
+
+	if multiplayer.is_server():
+		print("  релей: отправлено %d батчей, в последнем %d игроков"
+			% [_relay_sent, _relay_batch])
+	else:
+		print("  релей: принято %d батчей, в последнем %d игроков, %s"
+			% [_relay_recv, _relay_batch, _relay_age_text()])
+	var pp := multiplayer.multiplayer_peer
+	if pp:
+		print("  relay у транспорта: %s" % str(pp.is_server_relay_supported()))
 	print("=========================================\n")
 
 
@@ -614,6 +721,18 @@ func transport_report() -> void:
 	print("  класс пира    : %s" % (p.get_class() if p else "<пир не поднят>"))
 	print("  роль          : %s" % ("СЕРВЕР" if multiplayer.is_server() else "клиент"))
 	print("  соединённые   : %s" % str(multiplayer.get_peers()))
+	print("  ожидаем видеть: всех, кроме себя. Только [1] у клиента = пиры друг о друге не знают")
+
+	# Главный признак: server_relay сам по себе ничего не решает, если
+	# транспорт не заявляет поддержку пересылки.
+	if p == null:
+		print("  relay у пира  : <пир не поднят>")
+	else:
+		print("  relay у пира  : is_server_relay_supported() = %s"
+			% str(p.is_server_relay_supported()))
+		if not p.is_server_relay_supported():
+			print("  !! Транспорт НЕ умеет пересылку - клиент-клиент не поедет")
+			print("     даже при server_relay=true. Работает ручной релей в Net.")
 
 	# server_relay объявлен у SceneMultiplayer, а свойство multiplayer статически
 	# типизировано как MultiplayerAPI - отсюда приведение типа.
@@ -653,8 +772,8 @@ func start_transform_probe(duration: float = 5.0) -> void:
 		% [duration, str(_probe_start.keys())])
 
 
-## _process принадлежит тестовому региону: вне замера сразу выходит.
-func _process(delta: float) -> void:
+## Тик замера F5. Зовётся из _process, вне замера сразу выходит.
+func _probe_tick(delta: float) -> void:
 	if not _probe_active:
 		return
 

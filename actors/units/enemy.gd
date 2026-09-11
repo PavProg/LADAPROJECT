@@ -9,7 +9,10 @@ class_name Enemy
 @onready var attack: EnemyAttackComponent = $EnemyAttackComponent
 @onready var anim: AnimationPlayer = $"Root Scene/AnimationPlayer"
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-@onready var physical_bone_controller: PhysicalBoneSimulator3D = $"Root Scene/RootNode/RatArmature/Skeleton3D/PhysicalBoneSimulator3D"
+## get_node_or_null, а не $: костей в риге пока нет, и обычный $ сыпал бы
+## ошибку "Node not found" каждый раз при спавне крысы.
+@onready var physical_bone_controller: PhysicalBoneSimulator3D = get_node_or_null(
+	"Root Scene/RootNode/RatArmature/Skeleton3D/PhysicalBoneSimulator3D")
 
 @onready var damage_label: Label3D = $"DamageLabel"
 @export var take_damage_recovery_time: float = 0.3   # секунд «неуязвимости» между ударами
@@ -115,43 +118,56 @@ func take_damage(amount: float) -> void:
 	if _health <= 0.0:
 		is_ragdoll = true	# Оставил как заглушку, TODO гибкая настройка урона от velocity + смерть
 
-# Пока нет костей для рэгдола заглушка в виде отладки и анимации смерти
-# TODO Докинуть кости и делать через physical_bones_start_simulation
+# TODO Докинуть кости в rig-animation-rat.tscn. Пока их нет,
+# physical_bone_controller равен null и рэгдолл работает как заглушка:
+# крыса замирает и перестаёт бить, но физики костей ещё нет.
 func _enter_ragdoll() -> void:
 	if not multiplayer.is_server():
 		return
 	if not is_ragdoll:
 		return
-	
+
 	stop_moving()
-	#play_anim(ANIM_DEATH, false)
 	$HitBox.monitoring = false
 	$HitBox.monitorable = false
-	physical_bone_controller.active = true
-	physical_bone_controller.physical_bones_start_simulation()
+	if physical_bone_controller:
+		physical_bone_controller.active = true
+		physical_bone_controller.physical_bones_start_simulation()
 	for collision in collisions_array:
 		if collision != null and is_instance_valid(collision):
 			collision.set_deferred("disabled", true)
 	is_ragdoll = true
 	_anim_lock_left = INF
 	ragdolled_fx.rpc()
- 
+
 @rpc("authority", "call_local", "reliable")
 func ragdolled_fx() -> void:
-	print("------- [ENEMY/REPLICATION] Крыса в рэгдоле! -------")
+	# Анимацию глушим на КАЖДОМ пире, а не только на сервере.
+	# Причина: AnimationPlayer пишет позы костей каждый кадр и дерётся
+	# за один скелет с PhysicalBoneSimulator3D - это одна из причин,
+	# по которой рэгдолл трясёт. А у клиентов симуляция вообще не запущена,
+	# и без stop() крыса продолжит перебирать лапами лёжа.
+	if anim:
+		anim.stop()
+	# Сбрасываем кэш имени: play_anim отсекает повтор по _current_anim,
+	# и после вставания та же Idle просто не отправилась бы по сети.
+	_current_anim = &""
 
 func recover_from_ragdoll() -> void:
 	if not multiplayer.is_server():
 		return
-	
+
 	_health = data.health
 	_anim_lock_left = 0.0
-	physical_bone_controller.physical_bones_stop_simulation()
+	if physical_bone_controller:
+		physical_bone_controller.physical_bones_stop_simulation()
 	for collision in collisions_array:
 		if collision != null and is_instance_valid(collision):
 			collision.set_deferred("disabled", false)
+	$HitBox.monitoring = true
+	$HitBox.monitorable = true
 	is_ragdoll = false
-	# play_anim(ANIM_IDLE, true)
+	_current_anim = &""		# сброс ДО _update_anim, иначе Idle отфильтруется
 	_update_anim()
 	recover_fx.rpc()
 
