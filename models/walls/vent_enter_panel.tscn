@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cmf67t5x71p25"]
+
+[ext_resource type="PackedScene" uid="uid://bj3hxpi6iltdq" path="res://models/blend/vent_enter_panel.blend" id="1_lwkor"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="2_aqcoi"]
+
+[node name="vent_enter_panel" unique_id=109080602 instance=ExtResource("1_lwkor")]
+
+[node name="vent_enter_panel" parent="." index="0" unique_id=226951896]
+surface_material_override/0 = ExtResource("2_aqcoi")

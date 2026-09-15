@@ -130,28 +130,25 @@ func _enter_ragdoll() -> void:
 	stop_moving()
 	$HitBox.monitoring = false
 	$HitBox.monitorable = false
-	if physical_bone_controller:
-		physical_bone_controller.active = true
-		physical_bone_controller.physical_bones_start_simulation()
-	for collision in collisions_array:
-		if collision != null and is_instance_valid(collision):
-			collision.set_deferred("disabled", true)
+	play_anim(ANIM_DEATH, false)
+	#if physical_bone_controller:
+		#physical_bone_controller.active = true
+		#physical_bone_controller.physical_bones_start_simulation()
+	#for collision in collisions_array:
+		#if collision != null and is_instance_valid(collision):
+			#collision.set_deferred("disabled", true)
 	is_ragdoll = true
 	_anim_lock_left = INF
 	ragdolled_fx.rpc()
 
 @rpc("authority", "call_local", "reliable")
 func ragdolled_fx() -> void:
-	# Анимацию глушим на КАЖДОМ пире, а не только на сервере.
-	# Причина: AnimationPlayer пишет позы костей каждый кадр и дерётся
-	# за один скелет с PhysicalBoneSimulator3D - это одна из причин,
-	# по которой рэгдолл трясёт. А у клиентов симуляция вообще не запущена,
-	# и без stop() крыса продолжит перебирать лапами лёжа.
-	if anim:
-		anim.stop()
-	# Сбрасываем кэш имени: play_anim отсекает повтор по _current_anim,
-	# и после вставания та же Idle просто не отправилась бы по сети.
-	_current_anim = &""
+	# Анимацию глушим на КАЖДОМ пире
+	#if anim:
+		#anim.stop()
+	#_current_anim = &""
+	
+	pass
 
 func recover_from_ragdoll() -> void:
 	if not multiplayer.is_server():
@@ -159,15 +156,16 @@ func recover_from_ragdoll() -> void:
 
 	_health = data.health
 	_anim_lock_left = 0.0
-	if physical_bone_controller:
-		physical_bone_controller.physical_bones_stop_simulation()
-	for collision in collisions_array:
-		if collision != null and is_instance_valid(collision):
-			collision.set_deferred("disabled", false)
+	#if physical_bone_controller:
+		#physical_bone_controller.physical_bones_stop_simulation()
+	#for collision in collisions_array:
+		#if collision != null and is_instance_valid(collision):
+			#collision.set_deferred("disabled", false)
 	$HitBox.monitoring = true
 	$HitBox.monitorable = true
 	is_ragdoll = false
 	_current_anim = &""		# сброс ДО _update_anim, иначе Idle отфильтруется
+	play_anim(ANIM_IDLE, true)
 	_update_anim()
 	recover_fx.rpc()
 

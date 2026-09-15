@@ -57,7 +57,7 @@ func _apply_steam_availability() -> void:
 	host_button.disabled = not NetworkSteam.steam_ok
 	join_button.disabled = not NetworkSteam.steam_ok
 	if not NetworkSteam.steam_ok:
-		status_label.text = "Steam не запущен - доступна только одиночная игра" 
+		status_label.text = "Steam is not running – only single-player mode is available" 
 	
 
 func _show_entry() -> void:
@@ -94,8 +94,8 @@ func _refresh_player() -> void:
 	for pid in ids:
 		var row: Label = row_template.duplicate()
 		row.visible = true
-		var me := " (вы)" if pid == multiplayer.get_unique_id() else ""
-		var host := " - хост" if pid == 1 else ""
+		var me := " (you)" if pid == multiplayer.get_unique_id() else ""
+		var host := " - HOST" if pid == 1 else ""
 		row.text = "%d%s%s" % [pid, host, me]
 		players_list.add_child(row)
 
@@ -150,7 +150,7 @@ func _on_invite_button_pressed() -> void:
 ## Кнопка копирования кода группы
 func _on_copy_code_pressed() -> void:
 	DisplayServer.clipboard_set(code_value.text)
-	status_label.text = "Код скопирован"
+	status_label.text = "Code copied"
 
 ## Кнопка отмены присоединения
 func _on_cancel_join_pressed() -> void:
@@ -161,10 +161,10 @@ func _on_cancel_join_pressed() -> void:
 func _on_confirm_join_pressed() -> void:
 	var code := uid_box.text.strip_edges().to_upper()
 	if code.is_empty():
-		status_label.text = "Введите код группы"
+		status_label.text = "Enter group code"
 		return
 	join_popup.visible = false
-	status_label.text = "Ищем комнату..."
+	status_label.text = "Searching for a room..."
 	NetworkSteam._on_group_joined_by_uuid(code)
 
 ## Кнопка для перехода в сингл
@@ -174,7 +174,7 @@ func _on_single_pressed() -> void:
 
 ## Кнопка хоста
 func _on_host_pressed() -> void:
-	status_label.text = "Создаем комнату..."
+	status_label.text = "Creating a room..."
 	host_button.disabled = true
 	NetworkSteam.create_group()
 

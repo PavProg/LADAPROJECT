@@ -61,7 +61,7 @@ no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
 text = "123"
-font_size = 12
+font_size = 20
 outline_size = 4
 
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=666654317]
@@ -74,7 +74,7 @@ no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
 text = "0"
-font_size = 12
+font_size = 20
 outline_size = 4
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1220363808]

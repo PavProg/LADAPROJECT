@@ -30,6 +30,7 @@ func _update_freeze() -> void:
 	freeze = not is_multiplayer_authority()
 
 func _on_body_entered(body: Node) -> void:
+	#print(body.name + " ---> " + self.name)
 	enable_gravity(true)
 	is_on_floor = true
 

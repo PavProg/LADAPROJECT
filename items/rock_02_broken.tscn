@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://bdm45yte6mo5a"]
+
+[ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_jh86p"]
+[ext_resource type="ArrayMesh" uid="uid://bwl4vn57fxvyx" path="res://models/meshes/rock_02/broken/Rock_02_Broken_Sphere_cell_001.res" id="2_uam6c"]
+[ext_resource type="ArrayMesh" uid="uid://cm40m2cy5r1n1" path="res://models/meshes/rock_02/broken/Rock_02_Broken_Sphere_cell_003.res" id="3_ml3p1"]
+[ext_resource type="ArrayMesh" uid="uid://cmi000q7pe8ju" path="res://models/meshes/rock_02/broken/Rock_02_Broken_Sphere_cell_004.res" id="4_7bwr3"]
+[ext_resource type="ArrayMesh" uid="uid://d03x787x4ghs5" path="res://models/meshes/rock_02/broken/Rock_02_Broken_Torus.res" id="5_ynlsn"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_uam6c"]
+points = PackedVector3Array(-0.08431185, 0.1588086, 0.006344957, 0.012513518, 0.21579458, 0.006275859, 0.017800726, 0.21273144, 0.008943633, 0.060293995, 0.11153492, -0.037435263, 0.06614973, 0.13790664, 0.044590816, -0.06568677, 0.12033257, -0.03451314, -0.030988615, 0.19707522, -0.029106567, -0.06274973, 0.15550193, 0.044590816, 0.07811211, 0.16438863, -0.015513496, -0.050353568, 0.20821317, 0.006310717, 0.026007906, 0.17789735, -0.036946684, -0.0070744157, 0.11153492, -0.049165078, -0.086191, 0.13790664, 0.018219389, 0.004322161, 0.19620553, 0.030061817, 0.09546508, 0.123261586, 0.0064999037, 0.06321268, 0.15550193, 0.044590816, -0.07308685, 0.17820498, -0.015801242, 0.078749724, 0.17262039, 0.0008429336, 0.02302895, 0.20706117, -0.017749084, 0.010474414, 0.14377527, 0.053388175)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ml3p1"]
+points = PackedVector3Array(-0.06520149, 0.036470972, -0.0015193188, 0.0070715672, 0.14781666, 0.053597786, 0.0070715672, 0.14781666, 0.05068729, 0.09183203, 0.08644771, 0.003939463, -0.036736593, 0.11857957, -0.045729443, 0.00414248, 0.030931212, 0.04775563, -0.083492145, 0.14195162, 0.021455346, -0.010429729, 0.060168304, -0.042808365, 0.08890294, 0.11857957, -0.019429158, 0.059685297, 0.13904427, 0.04483455, -0.063025154, 0.13904427, 0.04483455, -0.036736593, 0.01923889, 0.03315024, -0.08640293, 0.12735195, -0.019429158, 0.059685297, 0.057235785, 0.04192406, -0.051345415, 0.03679625, -0.025281899, -0.0014763067, 0.061648685, 0.056035046, 0.0392183, 0.08352777, -0.042808365, -0.07647793, 0.077979505, 0.020653661, 0.08890294, 0.1302593, 0.0126921125, 0.06261438, 0.115672216, -0.03696621)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7bwr3"]
+points = PackedVector3Array(-0.030276824, 0.0013733087, -0.008039284, 0.08734605, 0.09545715, -0.011005268, 0.08388989, 0.09309507, -0.0148653425, 0.045321535, 0.001586014, 0.0075106663, -0.0047331005, 0.0316915, 0.045662414, -0.016540775, 0.062375225, -0.04171003, 0.027346449, 0.024259536, -0.027305529, 0.06845081, 0.067095794, 0.036214795, -0.05908096, 0.022240873, 0.007871939, 0.023095213, 0.0018882955, 0.027295722, 0.07678653, 0.04146319, 0.0075508873, 0.023572765, 0.081267, -0.039348125, -0.028088091, 0.0013281488, 0.018690832, 0.049795415, 0.025948789, 0.034158327, 0.055451144, 0.043798454, -0.022903163, -0.04962594, 0.041142125, -0.027538601, -0.0010002176, 0.0065429215, -0.021002484, 0.08734605, 0.08835733, 0.010233844, 0.036468253, 0.07920558, -0.03907905, 0.06501008, 0.028299985, -0.005734551)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ynlsn"]
+points = PackedVector3Array(-0.0015763136, 0.015675204, 0.04413168, 0.0061105466, 0.045819048, 0.047703255, 0.03145238, 0.030432427, 0.042277697, -0.020115502, 0.025015548, 0.037753887, -0.008354307, 0.03586525, 0.052227065, 0.026016723, 0.029533334, 0.04951278, 0.016970523, 0.015964031, 0.037753887, -0.021022389, 0.038578473, 0.042277697, -0.02192361, 0.026823299, 0.04860802, 0.023307398, 0.020488195, 0.046798494, -0.011976188, 0.015058561, 0.03865865, 0.02782483, 0.037673004, 0.04408722, 0.015638012, 0.041031025, 0.050697513, -0.0108714765, 0.042067133, 0.04996881, -0.010162413, 0.018677253, 0.046798494, 0.02782483, 0.023201417, 0.03956341, 0.013348642, 0.03586525, 0.052227065, -0.025078058, 0.027811391, 0.043246772, -0.02136003, 0.035497677, 0.048371714, -0.011976188, 0.044004917, 0.04498897)
+
+[node name="Vase_01_broken" type="Node3D" unique_id=326480734]
+script = ExtResource("1_jh86p")
+
+[node name="fragment" type="RigidBody3D" parent="." unique_id=782267921]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="fragment" unique_id=130769508]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("2_uam6c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment" unique_id=447097788]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_uam6c")
+
+[node name="fragment2" type="RigidBody3D" parent="." unique_id=1993701384]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="fragment2" unique_id=1046289537]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("3_ml3p1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment2" unique_id=1403283278]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_ml3p1")
+
+[node name="fragment3" type="RigidBody3D" parent="." unique_id=1893560337]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="fragment3" unique_id=1967012755]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("4_7bwr3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment3" unique_id=2099125507]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_7bwr3")
+
+[node name="fragment4" type="RigidBody3D" parent="." unique_id=1573858749]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="fragment4" unique_id=1752313037]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("5_ynlsn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment4" unique_id=1148076390]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_ynlsn")
+
+[node name="DisappearTimer" type="Timer" parent="." unique_id=921716153]
+wait_time = 10.0
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

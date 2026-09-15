@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://d35ug3pq7r7dl"]
+
+[ext_resource type="PackedScene" uid="uid://cbi4ih48riduo" path="res://models/blend/cross_vent.blend" id="1_lia14"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="2_cg5ay"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="3_15tte"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h4qxw"]
+size = Vector3(1.01, 0.075, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cg5ay"]
+size = Vector3(1.01, 1.3755127, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_15tte"]
+size = Vector3(0.075, 1.01, 0.075)
+
+[node name="cross_vent" unique_id=1243019555 instance=ExtResource("1_lia14")]
+
+[node name="cross_vent" parent="." index="0" unique_id=448428907]
+surface_material_override/0 = ExtResource("2_cg5ay")
+surface_material_override/1 = ExtResource("3_15tte")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="cross_vent" index="0" unique_id=632944832]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="cross_vent/StaticBody3D" index="0" unique_id=576864349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+shape = SubResource("BoxShape3D_h4qxw")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="cross_vent/StaticBody3D" index="1" unique_id=2068843027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6152563, 0)
+shape = SubResource("BoxShape3D_cg5ay")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="cross_vent/StaticBody3D" index="2" unique_id=459113317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465, 0.5, 0.465)
+shape = SubResource("BoxShape3D_15tte")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="cross_vent/StaticBody3D" index="3" unique_id=1579661897]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.465, 0.5, 0.465)
+shape = SubResource("BoxShape3D_15tte")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="cross_vent/StaticBody3D" index="4" unique_id=9645847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465, 0.5, -0.465)
+shape = SubResource("BoxShape3D_15tte")
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="cross_vent/StaticBody3D" index="5" unique_id=1296763720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.465, 0.5, -0.465)
+shape = SubResource("BoxShape3D_15tte")

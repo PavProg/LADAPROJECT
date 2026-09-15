@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://c8x08ny0m62vw"]
+
+[ext_resource type="Theme" uid="uid://cachw4rx6lxd1" path="res://ui/menus/menu_theme.tres" id="1_0vyd6"]
+
+[node name="GameTab" type="Control" unique_id=651199364]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0vyd6")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1908011646]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CenterContainer" unique_id=1088493421]
+layout_mode = 2
+text = "Game"

@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dmf5bc0p4g0le"]
+
+[ext_resource type="Theme" uid="uid://cachw4rx6lxd1" path="res://ui/menus/menu_theme.tres" id="1_burny"]
+[ext_resource type="Script" uid="uid://cteowveohyke5" path="res://ui/menus/settings-menu/tabs/audio_tab.gd" id="2_3k4dw"]
+
+[node name="AudioTab" type="VBoxContainer" unique_id=1161982744]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_burny")
+script = ExtResource("2_3k4dw")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1909302069]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1954661476]
+layout_mode = 2
+
+[node name="MasterVolumeRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1174102601]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MasterVolumeRow" unique_id=155657155]
+custom_minimum_size = Vector2(315, 0)
+layout_mode = 2
+text = "Master Volume"
+
+[node name="Slider" type="HSlider" parent="MarginContainer/VBoxContainer/MasterVolumeRow" unique_id=179109438]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Value" type="Label" parent="MarginContainer/VBoxContainer/MasterVolumeRow" unique_id=234525332]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
+horizontal_alignment = 2
+
+[node name="Percent" type="Label" parent="MarginContainer/VBoxContainer/MasterVolumeRow" unique_id=1513079256]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "%"
+
+[node name="SFXVolumeRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1897083399]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SFXVolumeRow" unique_id=1705021428]
+custom_minimum_size = Vector2(315, 0)
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="Slider" type="HSlider" parent="MarginContainer/VBoxContainer/SFXVolumeRow" unique_id=1869179383]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Value" type="Label" parent="MarginContainer/VBoxContainer/SFXVolumeRow" unique_id=1210585782]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
+horizontal_alignment = 2
+
+[node name="Percent" type="Label" parent="MarginContainer/VBoxContainer/SFXVolumeRow" unique_id=1547020923]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "%"
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/MasterVolumeRow/Slider" to="." method="_on_master_volume_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/SFXVolumeRow/Slider" to="." method="_on_sfx_volume_slider_value_changed"]

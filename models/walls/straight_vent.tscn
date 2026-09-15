@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://fujbk3t13ltu"]
+
+[ext_resource type="PackedScene" uid="uid://cwhx5copyupbb" path="res://models/blend/straight_vent.blend" id="1_pudrp"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="2_aq48m"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="3_ji0o4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7bn2l"]
+size = Vector3(1.01, 0.075, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aq48m"]
+size = Vector3(1.01, 1.1440674, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ji0o4"]
+size = Vector3(1.01, 1.01, 0.075)
+
+[node name="straight_vent" unique_id=1754439451 instance=ExtResource("1_pudrp")]
+
+[node name="straight_vent" parent="." index="0" unique_id=1735779251]
+layers = 3
+surface_material_override/0 = ExtResource("2_aq48m")
+surface_material_override/1 = ExtResource("3_ji0o4")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="straight_vent" index="0" unique_id=1574476368]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="straight_vent/StaticBody3D" index="0" unique_id=1822460389]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+shape = SubResource("BoxShape3D_7bn2l")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="straight_vent/StaticBody3D" index="1" unique_id=1687462610]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4995337, 0)
+shape = SubResource("BoxShape3D_aq48m")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="straight_vent/StaticBody3D" index="2" unique_id=782386140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.465)
+shape = SubResource("BoxShape3D_ji0o4")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="straight_vent/StaticBody3D" index="3" unique_id=941427138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.465)
+shape = SubResource("BoxShape3D_ji0o4")

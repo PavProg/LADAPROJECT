@@ -8,5 +8,6 @@ signal local_item_held_changed(item: Node) # состояние захвата �
 
 signal player_died(player_id: int, spectate_mode: bool)
 
+
 # Сигнал на будущее если нужна будет подсказка к нажатию на кнопку
 signal prompt_changed(text: String)

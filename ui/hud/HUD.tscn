@@ -6,8 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://4s7lkee6yvvd" path="res://models/crosshairs/crosshair-016.png" id="3_w75iv"]
 [ext_resource type="Texture2D" uid="uid://c46uyqvbv14tb" path="res://models/crosshairs/crosshair-011.png" id="5_imuuq"]
 [ext_resource type="PackedScene" uid="uid://blbum820d17iu" path="res://ui/tutorialUI/tutorial.tscn" id="6_kwc50"]
+[ext_resource type="PackedScene" uid="uid://wbqpqvauk2lv" path="res://ui/hud/damage_popup.tscn" id="6_o2lis"]
 
-[node name="Hud" type="Control" unique_id=1916678595]
+[node name="Hud" type="Control" unique_id=1916678595 node_paths=PackedStringArray("damageFeed")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,6 +21,9 @@ script = ExtResource("1_xmswo")
 hoverCrosshairTexture = ExtResource("3_w75iv")
 defaultCrosshairTexture = ExtResource("3_e0nub")
 grabCrosshairTexture = ExtResource("5_imuuq")
+damageFeed = NodePath("QuotaDamageFeed")
+damagePopupScene = ExtResource("6_o2lis")
+popup_mode = 1
 
 [node name="Stats" type="MarginContainer" parent="." unique_id=743771980]
 layout_mode = 1
@@ -77,6 +81,7 @@ layout_mode = 2
 
 [node name="Caption" type="Label" parent="Quota/HBoxContainer" unique_id=230858644]
 layout_mode = 2
+theme_override_colors/font_color = Color(7.941574e-07, 0.54072714, 0.03799711, 1)
 text = "QUOTA: "
 
 [node name="Value" type="Label" parent="Quota/HBoxContainer" unique_id=1287765924]
@@ -125,4 +130,19 @@ layout_mode = 2
 texture = ExtResource("3_e0nub")
 
 [node name="Tutorial" parent="." unique_id=136018050 instance=ExtResource("6_kwc50")]
+
+[node name="QuotaDamageFeed" type="Control" parent="." unique_id=1056827844]
+custom_minimum_size = Vector2(200, 60)
 layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -30.0
+offset_right = 100.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

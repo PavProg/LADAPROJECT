@@ -15,4 +15,5 @@ jump_velocity = 4.5
 endurance_recovery_time = 3.0
 endurance_recovery_speed = 0.1
 interaction_range = 10.0
+velocity_threshold = 0.1
 metadata/_custom_type_script = "uid://lvyabd1v4xvg"

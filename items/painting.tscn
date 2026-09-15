@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c0vdypopjbexd"]
 
 [ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_ig7iv"]
-[ext_resource type="Resource" uid="uid://cpauxdnrlj3ai" path="res://core/data/treska/vase_01.tres" id="2_qa6yq"]
+[ext_resource type="Resource" uid="uid://dtl68qw2qpxvk" path="res://core/data/treska/painting.tres" id="2_ftfwc"]
 [ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="4_df37k"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6e5e7"]
@@ -29,14 +29,14 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ig7iv")
 filename = "vase_01"
-export_item_data = ExtResource("2_qa6yq")
+export_item_data = ExtResource("2_ftfwc")
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
-transform = Transform3D(0.49, 0, 0, 0, -2.141858e-08, -0.49, 0, 0.49, -2.141858e-08, 0, 0, 0)
+transform = Transform3D(0.49, 0, 0, 0, -2.141858e-08, -0.49, 0, 0.49, -2.141858e-08, 0, -0.052481323, -2.2940314e-09)
 shape = SubResource("BoxShape3D_6e5e7")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1425624763]
-transform = Transform3D(1, 0, 0, 0, -5.2453668e-08, -0.5, 0, 1.2, -2.1855694e-08, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -5.2453668e-08, -0.5, 0, 1.2, -2.1855694e-08, 0, -0.052481323, -2.2940314e-09)
 mesh = SubResource("BoxMesh_qe5wm")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
@@ -44,9 +44,11 @@ process_mode = 3
 replication_config = SubResource("SceneReplicationConfig_f3rkq")
 
 [node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.052481323, -2.2940314e-09)
 script = ExtResource("4_df37k")
 
 [node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.052481323, -2.2940314e-09)
 collision_layer = 512
 collision_mask = 523
 
@@ -57,6 +59,7 @@ shape = SubResource("BoxShape3D_6e5e7")
 [node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
 
 [node name="DurabilityLabel" type="Label3D" parent="." unique_id=1120845289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08003518, -3.4984489e-09)
 visible = false
 billboard = 1
 no_depth_test = true
@@ -69,6 +72,7 @@ outline_size = 4
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=1607676516]
 
 [node name="DamageLabel" type="Label3D" parent="." unique_id=2079563027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08248925, -3.6057197e-09)
 visible = false
 billboard = 1
 no_depth_test = true
@@ -79,6 +83,7 @@ font_size = 12
 outline_size = 4
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1899641381]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.06424466, -2.8082232e-09)
 
 [connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
 [connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]

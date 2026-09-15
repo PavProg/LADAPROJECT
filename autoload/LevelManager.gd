@@ -80,8 +80,6 @@ func start_first_run() -> void:
 func next_level() -> void:
 	if not multiplayer.is_server():
 		return
-	if GameManager.current_state != GameManager.quote_states.FINISHED:
-		return
 	GameManager.on_level_end()
 	_run_index += 1
 	if _run_index >= RUNS.size():

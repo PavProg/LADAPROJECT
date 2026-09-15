@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://cwhucfskbmqlf"]
+
+[ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_knfxt"]
+[ext_resource type="ArrayMesh" uid="uid://kosljxmfu8cx" path="res://models/meshes/rock_01/broken/Rock_01_Broken_Sphere_cell_002.res" id="2_xstos"]
+[ext_resource type="ArrayMesh" uid="uid://sjekts2mklvi" path="res://models/meshes/rock_01/broken/Rock_01_Broken_Sphere_cell_003.res" id="3_knfxt"]
+[ext_resource type="ArrayMesh" uid="uid://dksj45m64ycaq" path="res://models/meshes/rock_01/broken/Rock_01_Broken_Torus_001.res" id="4_wbxga"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xstos"]
+points = PackedVector3Array(-0.03676283, 0.0041265353, 0.09339134, -0.042922065, 0.01622444, -0.09264105, -0.04242338, 0.034930807, -0.091518626, 0.09790658, 0.012949306, -0.001059469, 0.040984817, 0.13463962, -0.061408833, -0.095232725, 0.102968246, -0.0043970114, 0.07899393, 0.03010089, 0.081120715, 0.06730303, 0.00059999997, -0.08392108, -0.09487172, 0.0009259726, -0.016335562, 0.088501185, 0.109299794, -0.032902922, -0.08256963, 0.049109172, 0.07162526, -0.06051917, 0.12842481, -0.06132972, 0.07033924, 0.00063824834, 0.081710584, -0.06772576, 0.0005772672, -0.08396945, -0.08904539, 0.0007011247, 0.05098614, 0.06666508, 0.095468864, -0.07398376, -0.08821197, 0.0650842, -0.05262581, -0.00019999966, 0.02061722, 0.10331586, 0.09118694, 0.028528143, -0.052830637, 0.098008424, 0.08078054, 0.00824406, 0.0390917, 0.0379019, -0.09169668, -0.057223603, 0.13781904, -0.055078525, -0.06681811, 0.09536784, -0.0736975, 0.08891577, 0.00051056076, 0.051139276, -0.095232725, 0.074449, 0.03674997, -0.067581624, 0.00072143745, 0.084693536, -0.036501404, 0.10442597, -0.0736252, -0.08256963, 0.1251423, -0.036068074, 0.08880198, 0.0005968865, -0.050178953, 0.0395614, 0.0008248793, -0.09283486, -0.09189909, 0.025325026, -0.04996898, -0.09820753, 0.012991816, 0.0019860007)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_knfxt"]
+points = PackedVector3Array(-0.08330126, 0.097257264, 0.00014540977, 0.02675483, 0.19672582, 0.015577971, 0.026775489, 0.19679585, -0.0016917442, 0.076126315, 0.026350327, 0.07551694, 0.061232734, 0.13062857, -0.05911494, -0.059245728, 0.1305682, 0.075722806, -0.074326314, 0.03536947, 0.07853913, 0.06096703, 0.1305337, 0.075617135, -0.047683086, 0.16480213, -0.041569963, 0.0037472106, 0.05908746, 0.101331554, 0.087350756, 0.119168416, 0.0011587592, -0.04224856, 0.18817843, 0.021303575, -0.059657425, 0.13648428, -0.056552064, -0.08232356, 0.1334707, 0.012700697, -0.0048085325, 0.18761438, 0.04413004, 0.094047755, 0.066893235, 0.024211021, -0.013511228, 0.18833448, -0.030559305, 0.0038162898, 0.019806731, 0.100367785, 0.06688122, 0.16214752, 0.0012438386, -0.08869116, 0.07875244, 0.050205357, -0.0075650266, 0.12740828, 0.08333004, 0.06942321, 0.067690276, 0.084100075, 0.02679665, 0.16232537, -0.05064375, -0.06794513, 0.03880425, 0.08726716, 0.087368585, 0.09612693, 0.044352796, 0.00090000033, 0.079376675, 0.100544326, 0.035508834, 0.18551682, -0.024834748, -0.0769219, 0.13357607, -0.036336407, 0.08188691, 0.11630418, -0.03941693, 0.06047388, 0.16438249, 0.032615963, -0.025089556, 0.1971825, -0.0046718437, -0.091869906, 0.101851396, -0.0018623554)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wbxga"]
+points = PackedVector3Array(-0.022160564, 0.031938866, 0.098668, 0.003563766, 0.049067542, 0.096527405, 0.007852757, 0.04836136, 0.0965262, 0.011379169, 0.027210165, 0.10400158, 0.016688498, 0.024934791, 0.09489882, -0.013655954, 0.046170622, 0.092620626, -0.009862897, 0.046170622, 0.10172339, -0.012139682, 0.02190195, 0.095657475, 0.021242067, 0.0393445, 0.09338151, 0.018960528, 0.037826594, 0.10248204, -0.011379169, 0.02569523, 0.10400158, 0.0021455695, 0.020465175, 0.099385224, -0.021242067, 0.03858406, 0.09338151, -0.01744901, 0.040101968, 0.10248204, 0.009862897, 0.046170622, 0.10172339, 0.020033618, 0.02764159, 0.09938382)
+
+[node name="Vase_01_broken" type="Node3D" unique_id=326480734]
+script = ExtResource("1_knfxt")
+
+[node name="fragment" type="RigidBody3D" parent="." unique_id=782267921]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="fragment" unique_id=1410989504]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("2_xstos")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment" unique_id=2105368816]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_xstos")
+
+[node name="fragment2" type="RigidBody3D" parent="." unique_id=1993701384]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="fragment2" unique_id=1987501869]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("3_knfxt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment2" unique_id=827406547]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_knfxt")
+
+[node name="fragment3" type="RigidBody3D" parent="." unique_id=1893560337]
+collision_layer = 8
+collision_mask = 4111
+mass = 5.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="fragment3" unique_id=2077462869]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = ExtResource("4_wbxga")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fragment3" unique_id=1441862014]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_wbxga")
+
+[node name="DisappearTimer" type="Timer" parent="." unique_id=921716153]
+wait_time = 10.0
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]

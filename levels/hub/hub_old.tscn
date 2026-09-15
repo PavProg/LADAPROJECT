@@ -3,13 +3,10 @@
 [ext_resource type="MeshLibrary" uid="uid://d1moryexvlgrd" path="res://models/tile_sets/tres/floor_tiles.tres" id="1_a0t17"]
 [ext_resource type="MeshLibrary" uid="uid://clj8c52ak5r5n" path="res://models/tile_sets/tres/wall_tiles2.tres" id="2_qdjr8"]
 [ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="3_7tmfc"]
+[ext_resource type="PackedScene" uid="uid://bpxbdjkr3trll" path="res://actors/props/toilet.tscn" id="5_53k8d"]
 [ext_resource type="PackedScene" uid="uid://by35nkgu3l8xy" path="res://items/vase_01.tscn" id="5_i2183"]
-[ext_resource type="PackedScene" uid="uid://dwysa4ls6uoem" path="res://actors/props/button-on-hub.tscn" id="6_irmxb"]
 
 [sub_resource type="Environment" id="Environment_tw1cs"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_38saq"]
-size = Vector3(5.129883, 5.01001, 6.7021484)
 
 [node name="Hub" type="Node3D" unique_id=366666532]
 
@@ -185,12 +182,5 @@ script = ExtResource("3_7tmfc")
 forced_item = ExtResource("5_i2183")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
-[node name="ButtonOnHub" parent="." unique_id=155695095 instance=ExtResource("6_irmxb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5741787, 1.5988693, -19.087206)
-
-[node name="TutorArea" type="Area3D" parent="." unique_id=1325167244]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.434457, 1.5145533, 3.7356787)
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TutorArea" unique_id=176281743]
-shape = SubResource("BoxShape3D_38saq")
+[node name="Toilet" parent="." unique_id=1654988634 instance=ExtResource("5_53k8d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.066884, 1.0519023, -19.14545)

@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://cpauxdnrlj3ai" path="res://core/data/treska/vase_01.tres" id="2_lds5s"]
 [ext_resource type="ArrayMesh" uid="uid://dn4rx65lum0rn" path="res://models/meshes/vase_01/Vase_01_Cube_001.res" id="3_lds5s"]
 [ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="4_26djr"]
+[ext_resource type="FontFile" uid="uid://d2r0kiqpeaoha" path="res://models/fonts/Dangrek-Regular.ttf" id="5_dbh8d"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_lds5s"]
 height = 1.9467773
@@ -65,7 +66,8 @@ no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
 text = "123"
-font_size = 12
+font = ExtResource("5_dbh8d")
+font_size = 20
 outline_size = 4
 
 [node name="DamageLabelTimer" type="Timer" parent="." unique_id=1607676516]
@@ -78,7 +80,8 @@ no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0.2901961, 1)
 text = "0"
-font_size = 12
+font = ExtResource("5_dbh8d")
+font_size = 20
 outline_size = 4
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1899641381]

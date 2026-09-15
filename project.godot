@@ -21,13 +21,14 @@ Events="*uid://w0oukeejjxqh"
 GameManager="*uid://bolgnd8v275bh"
 NetworkSteam="*uid://dws2bxcv6w6wh"
 LevelManager="*uid://dds2woae27xet"
-UiManager="*uid://chajrqh2vftcf"
 ThreadsRegistry="*uid://c6bsmchkphduy"
+Settings="*uid://dytsy11namy3l"
+UiManager="*uid://chajrqh2vftcf"
 
 [display]
 
-window/size/viewport_width=1800
-window/size/viewport_height=1000
+window/size/viewport_width=2800
+window/size/viewport_height=1600
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
@@ -39,6 +40,10 @@ project/assembly_name="LADA"
 [global_group]
 
 tutorial_vase=""
+
+[gui]
+
+theme/custom_font="uid://d2r0kiqpeaoha"
 
 [input]
 
@@ -128,8 +133,6 @@ reloadHUB={
 [physics]
 
 3d/physics_engine="Jolt Physics"
-jolt_physics_3d/simulation/penetration_slop=0.2
-jolt_physics_3d/simulation/baumgarte_stabilization_factor=0.7
 jolt_physics_3d/collisions/collision_margin_fraction=0.01
 
 [rendering]

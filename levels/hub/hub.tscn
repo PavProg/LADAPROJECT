@@ -5,7 +5,6 @@
 [ext_resource type="MeshLibrary" uid="uid://clj8c52ak5r5n" path="res://models/tile_sets/tres/wall_tiles2.tres" id="3_r34rm"]
 [ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="4_vjyq5"]
 [ext_resource type="PackedScene" uid="uid://07s54quk74k1" path="res://items/vase_tutorial.tscn" id="5_hc650"]
-[ext_resource type="PackedScene" uid="uid://dwysa4ls6uoem" path="res://actors/props/button-on-hub.tscn" id="5_omfrw"]
 [ext_resource type="PackedScene" uid="uid://blbum820d17iu" path="res://ui/tutorialUI/tutorial.tscn" id="7_hc650"]
 
 [sub_resource type="Environment" id="Environment_tw1cs"]
@@ -191,9 +190,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9776309, 1.1721021, -0.0483
 script = ExtResource("4_vjyq5")
 forced_item = ExtResource("5_hc650")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
-
-[node name="ButtonOnHub" parent="." unique_id=155695095 instance=ExtResource("5_omfrw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5741787, 1.5988693, -28.745111)
 
 [node name="Tutorial" parent="." unique_id=446686153 node_paths=PackedStringArray("tutorial_area", "items_list", "spot_lights") instance=ExtResource("7_hc650")]
 tutorial_area = NodePath("../TutorArea")

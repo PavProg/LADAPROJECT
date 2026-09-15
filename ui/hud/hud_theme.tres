@@ -2,6 +2,45 @@
 
 [ext_resource type="FontFile" uid="uid://djf7shsj7ye48" path="res://models/fonts/RubikSprayPaint-Regular.ttf" id="1_ode5j"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lta3a"]
+bg_color = Color(0.5632439, 0.56324387, 0.56324387, 0.21568628)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ode5j"]
+bg_color = Color(0, 0, 0, 0.41568628)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ochnt"]
+bg_color = Color(0, 0, 0, 0.5764706)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67fxd"]
+bg_color = Color(0, 0, 0, 0.5411765)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
 [resource]
 default_font = ExtResource("1_ode5j")
 default_font_size = 100
+Button/styles/hover = SubResource("StyleBoxFlat_lta3a")
+Button/styles/normal = SubResource("StyleBoxFlat_ode5j")
+Button/styles/pressed = SubResource("StyleBoxFlat_ochnt")
+HBoxContainer/constants/separation = 20
+MarginContainer/constants/margin_bottom = 30
+MarginContainer/constants/margin_left = 30
+MarginContainer/constants/margin_right = 30
+MarginContainer/constants/margin_top = 30
+Panel/styles/panel = SubResource("StyleBoxFlat_67fxd")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_67fxd")
+VBoxContainer/constants/separation = 20

@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://d1g5sarp0866w"]
+
+[ext_resource type="Theme" uid="uid://cachw4rx6lxd1" path="res://ui/menus/menu_theme.tres" id="1_2lyxu"]
+[ext_resource type="Script" uid="uid://bgx2d26xl6h6" path="res://ui/menus/settings-menu/settings_menu.gd" id="2_uu1i0"]
+[ext_resource type="ButtonGroup" uid="uid://cygh4ipjlpoa1" path="res://ui/menus/settings-menu/setting_tab_group.tres" id="2_yjeg8"]
+[ext_resource type="PackedScene" uid="uid://c8x08ny0m62vw" path="res://ui/menus/settings-menu/tabs/game_tab.tscn" id="4_cfkra"]
+[ext_resource type="PackedScene" uid="uid://cyj0hr8g7dck5" path="res://ui/menus/settings-menu/tabs/video_tab.tscn" id="5_n40rr"]
+[ext_resource type="PackedScene" uid="uid://dmf5bc0p4g0le" path="res://ui/menus/settings-menu/tabs/audio_tab.tscn" id="6_j68o5"]
+[ext_resource type="PackedScene" uid="uid://cmlb3tm57spi" path="res://ui/menus/settings-menu/tabs/input_tab.tscn" id="7_4jl0p"]
+[ext_resource type="PackedScene" uid="uid://06yerg5ftbn4" path="res://ui/menus/settings-menu/tabs/access_tab.tscn" id="8_oxf04"]
+
+[node name="SettingsMenu" type="Control" unique_id=338702625]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_2lyxu")
+script = ExtResource("2_uu1i0")
+tab_group = ExtResource("2_yjeg8")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=2016527014]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="StatusLabel" type="Label" parent="Dim" unique_id=436949982]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -374.0
+offset_top = -92.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Settings not saved "
+
+[node name="CenterContainer" type="CenterContainer" parent="Dim" unique_id=1576368734]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Dim/CenterContainer" unique_id=622572687]
+custom_minimum_size = Vector2(1600, 1000)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Dim/CenterContainer/PanelContainer" unique_id=1410049354]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer" unique_id=1800164058]
+layout_mode = 2
+
+[node name="SettingsLabel" type="Label" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1538694559]
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="HBoxTop" type="HBoxContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1091932528]
+layout_mode = 2
+
+[node name="GameButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=546803859]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("2_yjeg8")
+text = "Game"
+
+[node name="VideoButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=112073597]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("2_yjeg8")
+text = "Video"
+
+[node name="AudioButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=451732526]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("2_yjeg8")
+text = "Audio"
+
+[node name="InputButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=402714217]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("2_yjeg8")
+text = "Input"
+
+[node name="AccessibilityButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=799803880]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("2_yjeg8")
+text = "Accessibility"
+
+[node name="TabContainer" type="TabContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1672642968]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+tabs_visible = false
+
+[node name="GameTab" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer" unique_id=651199364 instance=ExtResource("4_cfkra")]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VideoTab" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer" unique_id=882298838 instance=ExtResource("5_n40rr")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="AudioTab" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer" unique_id=1897732209 instance=ExtResource("6_j68o5")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="InputTab" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer" unique_id=1838518565 instance=ExtResource("7_4jl0p")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="AccessTab" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer" unique_id=1728722111 instance=ExtResource("8_oxf04")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="HBoxBot" type="HBoxContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=251868604]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot" unique_id=1221919169]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="ApplyButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot" unique_id=1463984578]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Apply"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot/ApplyButton" to="." method="_on_apply_button_pressed"]

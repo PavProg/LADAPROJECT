@@ -3,19 +3,23 @@
 [ext_resource type="PackedScene" uid="uid://dagi7d5t6m3qc" path="res://models/blend/plane_wall_turquois_body_corner.blend" id="1_4aj5d"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4aj5d"]
-size = Vector3(2, 4, 1)
+size = Vector3(2, 3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tw1cs"]
-size = Vector3(1, 4, 1)
+size = Vector3(1, 3, 1)
 
 [node name="plane_wall_turquois_body_corner" unique_id=1476748340 instance=ExtResource("1_4aj5d")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_body_corner" parent_id_path=PackedInt32Array(660050753) index="0" unique_id=1443506567]
+[node name="plane_wall_turqouis_body_corner" parent="." index="0" unique_id=1897613980]
+surface_material_override/0 = ExtResource("2_85w5k")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_body_corner" index="0" unique_id=1443506567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_body_corner/StaticBody3D" index="0" unique_id=449021804]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
 shape = SubResource("BoxShape3D_4aj5d")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouis_body_corner/StaticBody3D" index="1" unique_id=744375245]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 shape = SubResource("BoxShape3D_tw1cs")

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dwysa4ls6uoem"]
 
 [ext_resource type="Script" uid="uid://g50nn855emkd" path="res://actors/props/button_on_hub.gd" id="1_jguxg"]
+[ext_resource type="FontFile" uid="uid://d2r0kiqpeaoha" path="res://models/fonts/Dangrek-Regular.ttf" id="2_q03mb"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_f67l4"]
 
@@ -19,6 +20,8 @@ script = ExtResource("1_jguxg")
 shape = SubResource("BoxShape3D_pqej1")
 
 [node name="Label3D" type="Label3D" parent="MeshInstance3D" unique_id=1943235601]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06672433, 0.50400823)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.009852666, 0.020983793, 0.5045524)
 text = "Move to
 the level"
+font = ExtResource("2_q03mb")
+font_size = 45

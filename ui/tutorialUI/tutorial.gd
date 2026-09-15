@@ -79,25 +79,30 @@ func _notify_zone_entered(peer_id: int) -> void:
 	get_tree().current_scene.add_child(dialogues)
 	dialogues.show_first_dialogue()
 	dialogues_instance = dialogues
+	
 
 @rpc("any_peer", "call_local", "reliable")
 func _show_second_dialogue_rpc() -> void:
 	if dialogues_instance:
 		dialogues_instance.show_second_dialogue()
 		
+		
 @rpc("any_peer", "call_local", "reliable")
 func _show_third_dialogue_rpc() -> void:
 	if dialogues_instance:
 		dialogues_instance.show_third_dialogue()
 		
+		
 @rpc("any_peer", "call_local", "reliable")
 func _show_quota_rpc() -> void:
 	UiManager._show_quota()
+	
 
 @rpc("any_peer", "call_local", "reliable")
 func _toggle_vase_hint(value : bool) -> void:
 	find_vase(items_list)
 	vase.toogle_hint(value)
+	
 
 
 func find_vase(current_node) -> void:
@@ -106,8 +111,10 @@ func find_vase(current_node) -> void:
 		return
 	for child in current_node.get_children():
 		find_vase(child)
+		
 
 @rpc("any_peer", "call_local", "reliable")
 func _toogle_spot_lights(value : bool) -> void:
 	for light in spot_lights:
 		light.visible = value
+		

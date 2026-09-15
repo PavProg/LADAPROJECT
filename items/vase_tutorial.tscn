@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://07s54quk74k1"]
 
 [ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_agpv8"]
-[ext_resource type="Resource" uid="uid://c2451afcrduns" path="res://core/data/treska/vasa_tutor.tres" id="2_6a1ee"]
+[ext_resource type="Resource" uid="uid://c2451afcrduns" path="res://core/data/treska/vase_tutor.tres" id="2_6a1ee"]
 [ext_resource type="ArrayMesh" uid="uid://dn4rx65lum0rn" path="res://models/meshes/vase_01/Vase_01_Cube_001.res" id="3_4t4mf"]
 [ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="4_duj7m"]
 [ext_resource type="Script" uid="uid://c5uuoj6nrniaf" path="res://ui/tutorialUI/tutorial_object_script.gd" id="5_6a1ee"]
@@ -56,6 +56,9 @@ replication_config = SubResource("SceneReplicationConfig_f3rkq")
 
 [node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
 script = ExtResource("4_duj7m")
+take_damage_recovery_time = null
+speed_damage_scale = null
+max_damage_allowed = null
 
 [node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.481)

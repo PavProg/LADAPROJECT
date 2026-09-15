@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://bnv7xqogn66pr"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_508fu"]
+[ext_resource type="Resource" uid="uid://dbpbdo8bpjfvy" path="res://core/data/treska/rock_01.tres" id="2_0duuj"]
+[ext_resource type="ArrayMesh" uid="uid://47kamrh4ijor" path="res://models/meshes/rock_01/Rock_01_Sphere.res" id="3_0duuj"]
+[ext_resource type="ArrayMesh" uid="uid://ddnmmtsys8pe6" path="res://models/meshes/rock_01/Rock_01_Torus_001.res" id="4_3ftcj"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="4_e8iyg"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0duuj"]
+points = PackedVector3Array(0.051837713, 0.005029513, -0.089670494, 0.0028501512, 0.075740375, 0.101588495, -0.0031450922, 0.07580833, 0.10131665, 0.011979729, 0.19697914, -0.01607086, -0.089372754, 0.0013735864, -0.05023817, 0.088966936, 0.0015078747, 0.051221393, -0.07054418, 0.0019009758, 0.08166068, -0.075392485, 0.13897963, 0.035227954, -0.060640156, 0.12404959, -0.0644167, 0.08125329, 0.1360285, 0.0081349565, 0.05926562, 0.13251892, 0.0734848, 0.06639805, 0.09685511, -0.073513106, -0.033289872, 0.18720716, 0.035250377, 0.089338824, 0.001097503, -0.05039345, -0.04294192, 0.017313674, -0.092690706, 0.06726088, 0.0017727391, 0.08483296, -0.059568394, 0.13251856, 0.07346545, -0.097704574, 0.06633234, 0.0021133516, -0.05742377, 0.16917455, -0.021975363, 0.03302989, 0.18737148, 0.035325903)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_e8iyg"]
+
+[node name="Rock_01" type="RigidBody3D" unique_id=1572425250]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+collision_layer = 8
+collision_mask = 4111
+mass = 10.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_508fu")
+filename = "rock_01"
+export_item_data = ExtResource("2_0duuj")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1425624763]
+transform = Transform3D(2.5, 0, 0, 0, -1.09278474e-07, -2.5, 0, 2.5, -1.09278474e-07, 0, 0, 0)
+mesh = ExtResource("3_0duuj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1665644951]
+transform = Transform3D(2.5, 0, 0, 0, -1.09278474e-07, -2.5, 0, 2.5, -1.09278474e-07, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_0duuj")
+
+[node name="Mesh2" type="MeshInstance3D" parent="." unique_id=1608217817]
+transform = Transform3D(2.5, 0, 0, 0, -1.09278474e-07, -2.5, 0, 2.5, -1.09278474e-07, 0, 0, 0)
+mesh = ExtResource("4_3ftcj")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+process_mode = 3
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("4_e8iyg")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 4.659686e-10, 0.22533989)
+collision_layer = 512
+collision_mask = 523
+
+[node name="Collision" type="CollisionShape3D" parent="HurtArea" unique_id=1866050567]
+transform = Transform3D(0.49, 0, 0, 0, -2.141858e-08, -0.49, 0, 0.49, -2.141858e-08, 0, 0, 0)
+shape = SubResource("SphereShape3D_e8iyg")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[node name="DurabilityLabel" type="Label3D" parent="." unique_id=1120845289]
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "123"
+font_size = 12
+outline_size = 4
+
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=1607676516]
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=2079563027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9.832341e-09, 0.22493774)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
+font_size = 12
+outline_size = 4
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1899641381]
+
+[connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
+[connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

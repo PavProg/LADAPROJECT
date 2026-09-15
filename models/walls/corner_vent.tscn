@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://c7410v88s4hjr"]
+
+[ext_resource type="PackedScene" uid="uid://uf4aa0jtjkx7" path="res://models/blend/corner_vent.blend" id="1_mvjr4"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="2_sp28k"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="3_psjs5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cu775"]
+size = Vector3(1.01, 0.075, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_27e8n"]
+size = Vector3(1.01, 0.8518311, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sp28k"]
+size = Vector3(1.01, 1.01, 0.075)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_psjs5"]
+size = Vector3(0.075, 1.01, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_le67w"]
+size = Vector3(0.075, 1.01, 0.075)
+
+[node name="corner_vent" unique_id=410764441 instance=ExtResource("1_mvjr4")]
+
+[node name="corner_vent" parent="." index="0" unique_id=956096426]
+surface_material_override/0 = ExtResource("2_sp28k")
+surface_material_override/1 = ExtResource("3_psjs5")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="corner_vent" index="0" unique_id=1557148071]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="corner_vent/StaticBody3D" index="0" unique_id=687173111]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+shape = SubResource("BoxShape3D_cu775")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="corner_vent/StaticBody3D" index="1" unique_id=228584399]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3534155, 0)
+shape = SubResource("BoxShape3D_27e8n")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="corner_vent/StaticBody3D" index="2" unique_id=747386804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.465)
+shape = SubResource("BoxShape3D_sp28k")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="corner_vent/StaticBody3D" index="3" unique_id=1185795517]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.465, 0.5, 0)
+shape = SubResource("BoxShape3D_psjs5")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="corner_vent/StaticBody3D" index="4" unique_id=1643293533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465, 0.5, 0.465)
+shape = SubResource("BoxShape3D_le67w")

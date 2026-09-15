@@ -18,7 +18,7 @@ enum quote_states {
 	PROCESS
 }
 ## процент на который увеличивается quote между уровнями
-var quote_raising: float = 0.5 # 20%
+var quote_raising: float = 20.0 # 20%
 
 # Закомментил чтобы движок каждый вызов не дергать
 #func _ready() -> void:
@@ -40,7 +40,7 @@ var quote_raising: float = 0.5 # 20%
 
 
 # Точка входа для начисления квоты. Её вызывает BreakComponent — и только на сервере
-func on_quote_earned(quote: int) -> void:
+func on_quote_earned(quote: int, earner_peer_id: int = 0) -> void:
 	if not multiplayer.is_server():
 		return
 	current_quote += quote
@@ -48,7 +48,8 @@ func on_quote_earned(quote: int) -> void:
 		current_state = quote_states.FINISHED
 	# Рассылаем актуальную квоту ВСЕМ пирам (call_local => и самому серверу тоже).
 	_sync_quote.rpc(current_quote, current_state, required_quote)
-
+	# Отдельная рассылка для UI попапа (всем, с инфо об источнике)
+	_notify_quota_earned.rpc(quote, earner_peer_id)
 
 # Выполняется у ВСЕХ пиров. Отправить может только авторитет автолоада (сервер, id 1).
 # Клиенты просто присваивают присланные значения.
@@ -107,3 +108,10 @@ func _break_fx(fragments_scene_path: String, xform: Transform3D, fx_seed: int) -
 				rng.randf_range(-3, 3),
 				rng.randf_range(-1, 3),
 				rng.randf_range(-3, 3)))
+
+signal quota_earned(amount: int, earner_peer_id: int)
+
+@rpc("authority", "call_local", "reliable")
+func _notify_quota_earned(amount: int, earner_peer_id: int) -> void:
+	# print("Notifying quota earned, quota| amount = " + str(amount) + ", earner_peer_id = " + str(earner_peer_id))
+	quota_earned.emit(amount, earner_peer_id)

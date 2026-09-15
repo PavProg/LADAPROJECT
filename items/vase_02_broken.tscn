@@ -1,68 +1,63 @@
 [gd_scene format=3 uid="uid://b0rlbgx0kqye4"]
 
 [ext_resource type="Script" uid="uid://b2x56eu4g2ji4" path="res://items/fragments.gd" id="1_gf7nd"]
-[ext_resource type="ArrayMesh" uid="uid://b4anpfaopxbpb" path="res://models/meshes/vase_02/broken/Vase_02_Broken_Cylinder_cell_001.res" id="1_jw8xu"]
-[ext_resource type="ArrayMesh" uid="uid://b7o0pcgjn8y4v" path="res://models/meshes/vase_02/broken/Vase_02_Broken_Cylinder_cell_003.res" id="2_gf7nd"]
-[ext_resource type="ArrayMesh" uid="uid://bf6o3yjjjjid8" path="res://models/meshes/vase_02/broken/Vase_02_Broken_Cylinder_cell_004.res" id="3_0rivu"]
+[ext_resource type="ArrayMesh" uid="uid://b4anpfaopxbpb" path="res://models/meshes/vase_02/broken/Vase_02_Broken_Cylinder_cell_001.res" id="2_gf7nd"]
+[ext_resource type="ArrayMesh" uid="uid://b7o0pcgjn8y4v" path="res://models/meshes/vase_02/broken/Vase_02_Broken_Cylinder_cell_003.res" id="3_0rivu"]
+[ext_resource type="ArrayMesh" uid="uid://bf6o3yjjjjid8" path="res://models/meshes/vase_02/broken/Vase_02_Broken_Cylinder_cell_004.res" id="4_jnffx"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_jw8xu"]
-height = 1.280304
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gf7nd"]
+points = PackedVector3Array(0.5409209, 0.976768, -0.010257292, -0.53819215, 0.9363293, -0.010261673, -0.5354608, 0.9551721, -0.03039296, -0.008645147, 0.02098315, -0.4574805, -0.008650328, 0.02065029, 0.4574764, -0.008753275, 1.2878411, 0.5444263, 0.19802192, 1.2301285, -0.5069822, 0.41275793, 0.029529976, -0.1906118, -0.41425654, 0.022693466, 0.19243972, -0.3974362, 1.1420312, -0.37854895, 0.4167373, 1.2589631, 0.3542835, 0.41288108, 0.029337725, 0.19043076, -0.41522452, 1.2000084, 0.35552025, -0.41412035, 0.022906065, -0.19261469, 0.5034463, 1.2860906, -0.21517111, 0.21281795, 0.91317534, 0.4931748, -0.21053155, 0.9137012, -0.49474502, -0.1341962, 0.003167808, 0.4280442, 0.312794, 0.028738901, -0.33154708, 0.31292975, 0.028458582, 0.33145353, -0.31210643, 0.024385918, -0.33385658, 0.5023585, 1.3258754, 0.1939949, -0.21064973, 0.9138361, 0.49467784, 0.39331022, 0.9931623, -0.3718251, -0.5177049, 1.1601424, 0.17280209, -0.06961704, 1.1798465, -0.53894466, -0.312244, 0.024102, 0.33376494, -0.52052903, 1.1422796, -0.1535889, -0.13419169, 0.0031900136, -0.42826805, 0.19379751, 0.8537323, -0.49608785, -0.45446336, 0.023126097, 0.030165093, 0.49563712, 0.93369037, 0.21158744)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_gf7nd"]
-height = 1.2602539
-radius = 0.43164063
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0rivu"]
+points = PackedVector3Array(0.3664277, 1.5559157, -0.29397523, -0.5449019, 1.1570122, -0.035573706, -0.5477234, 1.1534715, 0.006854929, -0.21344422, 2.542234, -0.12508912, 0.21758251, 1.3301086, 0.49169737, 0.0068461164, 1.1967624, -0.5472733, -0.035423573, 2.448372, 0.19674002, -0.3830288, 1.3440909, 0.3754415, 0.52972966, 1.355013, 0.027540918, 0.14841682, 2.4247193, -0.15600413, -0.3828026, 1.3238448, -0.3828026, 0.1844943, 2.37107, 0.10514226, -0.20370941, 1.2679895, 0.51170117, -0.12519929, 2.542234, -0.21333405, 0.23728907, 1.2489768, -0.49653196, -0.2050704, 2.5140276, 0.027936783, 0.48715603, 1.355688, 0.21555352, -0.41196778, 1.1298659, -0.21333405, -0.5083164, 1.4654896, -0.014075351, 0.4914669, 1.3092178, -0.22506686, -0.20050675, 1.3806058, -0.4903562, -0.48771834, 1.3624325, 0.21241489, 0.19654816, 2.4263268, -0.014321341, 0.026827628, 1.4886725, 0.49706846, -0.12031728, 2.4713755, 0.17617296, -0.49037933, 1.3805842, -0.20041272, 0.1908251, 1.4879969, -0.46472207, -0.39057568, 1.1668764, -0.39057568, 0.3485026, 1.5140315, 0.3485026, 0.02683008, 2.4083974, 0.21087873, -0.013973116, 1.4654684, -0.50834525, -0.16926667, 1.151986, -0.41196778)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_0rivu"]
-height = 0.60705566
-radius = 0.31298828
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_jnffx"]
+points = PackedVector3Array(-0.2916783, 3.0703447, 0.21310088, -0.03251456, 2.9621153, -0.34745684, -0.0338072, 3.0723286, -0.36127022, 0.33663633, 3.070394, 0.14581951, 0.10066036, 2.4205596, 0.17902964, -0.21046099, 2.5346901, -0.05530412, 0.16672915, 2.4561052, -0.13329975, 0.0338072, 3.0723286, 0.36127022, 0.26918152, 3.070274, -0.24676146, -0.3366364, 3.070458, -0.14581953, -0.0880243, 2.4699984, 0.19796851, -0.08877997, 2.5231395, -0.19966802, 0.20977294, 2.424884, 0.03306016, 0.34745684, 2.9621153, -0.03251456, -0.32291198, 2.9603248, 0.13987458, 0.23671101, 2.960132, 0.2581444, -0.25063226, 2.9629798, -0.25063226, -0.13992098, 2.9602923, 0.32286343, 0.13985695, 2.9602365, -0.3228713, 0.044326235, 2.5011232, -0.21065381, -0.15477097, 2.490766, 0.15477097, -0.09197488, 3.0784, 0.34485176, -0.011203551, 2.4414742, 0.21364254, -0.34750432, 2.9622066, 0.032519, 0.13985564, 2.9602346, 0.32286826, 0.3366396, 3.0703974, -0.14582093, 0.15298058, 2.4280555, 0.15298058, -0.25063226, 2.9629798, 0.25063226, -0.20022327, 2.511485, 0.088926174, -0.14587547, 3.0704257, -0.33660322, 0.3228713, 2.9602365, 0.13985695, 0.32286826, 2.9602346, -0.13985564)
 
 [node name="Vase_02_broken" type="Node3D" unique_id=326480734]
 script = ExtResource("1_gf7nd")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=411397787]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 collision_layer = 8
 collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
-[node name="Collision" type="CollisionShape3D" parent="RigidBody3D" unique_id=1929417224]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.328331, 0)
-shape = SubResource("CylinderShape3D_jw8xu")
-
-[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D" unique_id=821519586]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = ExtResource("1_jw8xu")
-
-[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1876025268]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
-collision_layer = 8
-collision_mask = 4111
-linear_damp_mode = 1
-angular_damp_mode = 1
-
-[node name="Collision" type="CollisionShape3D" parent="RigidBody3D2" unique_id=1598181718]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.92758894, 0)
-shape = SubResource("CylinderShape3D_gf7nd")
-
-[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D2" unique_id=1672029592]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=890259265]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
 mesh = ExtResource("2_gf7nd")
 
-[node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=178018466]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=764524476]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_gf7nd")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1876025268]
 collision_layer = 8
 collision_mask = 4111
 linear_damp_mode = 1
 angular_damp_mode = 1
 
-[node name="Collision" type="CollisionShape3D" parent="RigidBody3D3" unique_id=797947339]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.3865662, 0)
-shape = SubResource("CylinderShape3D_0rivu")
-
-[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D3" unique_id=1610051592]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2" unique_id=1645378321]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
 mesh = ExtResource("3_0rivu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=980612150]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_0rivu")
+
+[node name="RigidBody3D3" type="RigidBody3D" parent="." unique_id=178018466]
+collision_layer = 8
+collision_mask = 4111
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D3" unique_id=964189492]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+mesh = ExtResource("4_jnffx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3" unique_id=1879741589]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_jnffx")
 
 [node name="DisappearTimer" type="Timer" parent="." unique_id=3514605]
 wait_time = 10.0

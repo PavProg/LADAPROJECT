@@ -15,7 +15,7 @@ var can_be_hitted: bool = true                       # можно ли удар�
 
 
 # Вызывается AttackComponent оружия. На всякий продублировал чтобы прям точно
-func take_damage(dmg: int) -> void:
+func take_damage(dmg: int, attacker_peer_id: int = 0) -> void:
 	#print("BREAK_COMPONENT -- take_damage -- ")
 	if not multiplayer.is_server(): return
 	if not can_be_hitted: return
@@ -32,7 +32,7 @@ func take_damage(dmg: int) -> void:
 	item.play_sound()
 
 	# Начисляем квоту. GameManager на сервере сам разошлёт новое значение всем.
-	GameManager.on_quote_earned(final_damage)
+	GameManager.on_quote_earned(final_damage, attacker_peer_id)
 
 	# Прочность кончилась — разрушаемся
 	if item.item_data.durability <= 0:

@@ -5,6 +5,9 @@ class_name EscapeToilet
 @export var escape_area : Area3D
 
 func on_interact() -> void:
+	if LevelManager._run_index != -1:
+		#print("Запрос перехода")
+		LevelManager.start_first_run()
 	if GameManager.current_quote >= GameManager.required_quote:
 		request_exit.rpc_id(1)
 

@@ -15,9 +15,13 @@ func _physics_process(_delta: float) -> void:
 	if not Net.is_net_active():
 		return
 	if not is_multiplayer_authority():
+		return                        # ввод читает ТОЛЬКО свой игрок
+	if UiManager.is_game_blocked():
+		if _grab_target:
+			_release_item()
 		return
-
 	var item := _aim_item()
+	
 	# шлём только при смене цели, а не каждый кадр
 	if item != _hover_target:
 		_hover_target = item
@@ -29,11 +33,13 @@ func _physics_process(_delta: float) -> void:
 			owner.set_grab_blend_amount(1.0)
 			
 			_grab_target = item
+			if _grab_target is RigidBody3D: _grab_target.set_durability_label_visibility(true)
 			Events.local_item_held_changed.emit(item)
 	elif Input.is_action_just_released("grab"):
 		_request_release.rpc_id(1)
 		owner.set_grab_blend_amount(0.0)
 		if _grab_target:
+			if _grab_target is RigidBody3D: _grab_target.set_durability_label_visibility(false)
 			_grab_target = null
 			Events.local_item_held_changed.emit(null)
 
@@ -47,6 +53,12 @@ func _player_of(node: Node) -> Node:
 		n = n.get_parent()
 	return null
 
+func _release_item():
+	_request_release.rpc_id(1)
+	if _grab_target:
+		_grab_target = null
+		Events.local_item_held_changed.emit(null)
+
 
 # Локальный рэйкаст из камеры — только чтобы выбрать предмет (для картинки/выбора)
 func _aim_item() -> Node:
@@ -56,11 +68,11 @@ func _aim_item() -> Node:
 	var from := camera.global_position
 	var to := from - camera.global_transform.basis.z * reach   # -Z камеры = вперёд
 	var query := PhysicsRayQueryParameters3D.create(from, to)
-	query.collision_mask = 4104          # слой item и рэгдол (чтобы не хватать стены/игроков)
+	query.collision_mask = 4105          # слой item и рэгдол (чтобы не хватать стены/игроков)
 	query.exclude = owner.exceptions
 	
 	var hit := space.intersect_ray(query)
-	if hit:
+	if hit and hit.collider is not StaticBody3D:
 		if hit.collider is RigidBody3D and hit.collider.is_in_group("item"):
 			#print("RigidBody3D")
 			return hit.collider

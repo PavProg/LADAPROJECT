@@ -15,6 +15,12 @@
 [ext_resource type="PackedScene" uid="uid://ble5jqfirw6ek" path="res://models/walls/plane_wall_turquois_bottom_t_cross.tscn" id="10_vsop3"]
 [ext_resource type="PackedScene" uid="uid://k8h53rcvhvay" path="res://models/walls/plane_wall_turquois_top_corner.tscn" id="13_d0pvw"]
 [ext_resource type="PackedScene" uid="uid://5vkp60hsb3kj" path="res://models/walls/plane_wall_turquois_top_t_cross.tscn" id="15_p2yqo"]
+[ext_resource type="PackedScene" uid="uid://c7410v88s4hjr" path="res://models/walls/corner_vent.tscn" id="16_d0pvw"]
+[ext_resource type="PackedScene" uid="uid://d35ug3pq7r7dl" path="res://models/walls/cross_vent.tscn" id="17_p2yqo"]
+[ext_resource type="PackedScene" uid="uid://db28fe1vhdf42" path="res://models/walls/enter_vent.tscn" id="18_p8t8c"]
+[ext_resource type="PackedScene" uid="uid://fujbk3t13ltu" path="res://models/walls/straight_vent.tscn" id="19_y3oqp"]
+[ext_resource type="PackedScene" uid="uid://brxuflsouw2y8" path="res://models/walls/t_cross_vent.tscn" id="20_ypmka"]
+[ext_resource type="PackedScene" uid="uid://b5eiwsg8n4njx" path="res://models/walls/straight_vent_up.tscn" id="21_p2yqo"]
 
 [node name="WallTiles" type="Node3D" unique_id=1448416471]
 
@@ -47,3 +53,15 @@
 [node name="plane_wall_turquois_bottom_corner" parent="." unique_id=1796052567 instance=ExtResource("8_s28r3")]
 
 [node name="plane_wall_turquois_top_corner" parent="." unique_id=1372355040 instance=ExtResource("13_d0pvw")]
+
+[node name="corner_vent" parent="." unique_id=410764441 instance=ExtResource("16_d0pvw")]
+
+[node name="cross_vent" parent="." unique_id=1243019555 instance=ExtResource("17_p2yqo")]
+
+[node name="enter_vent" parent="." unique_id=290658132 instance=ExtResource("18_p8t8c")]
+
+[node name="straight_vent" parent="." unique_id=1754439451 instance=ExtResource("19_y3oqp")]
+
+[node name="t_cross_vent" parent="." unique_id=213110602 instance=ExtResource("20_ypmka")]
+
+[node name="straight_vent_up" parent="." unique_id=1390378031 instance=ExtResource("21_p2yqo")]

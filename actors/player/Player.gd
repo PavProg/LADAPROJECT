@@ -11,7 +11,6 @@ var grabbed_object: Node3D = null
 @export var is_ragdoll: bool = false
 var exceptions: Array[RID] # RID костей который игнорирует игрок(свои кости собственно)
 #endregion
-
 #region Movement vars
 @onready var endurance_timer: Timer = $EnduranceTimer # таймер, по истечении которого начинает восстанавливаться выносливость
 var endurance_recovering: bool = false
@@ -22,7 +21,6 @@ var running: bool = false
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var gravity_scale: float = 1.5
 #endregion
-
 #region Camera vars
 @onready var camera_controller: Node3D = $CameraController
 @onready var ragdoll_camera_pos: Node3D = $RagdollSpringArm/RagdollCameraPos
@@ -39,7 +37,6 @@ var camera_main_global_transform: Transform3D
 	$Character/root/Skeleton3D/eyelash_up
 ]
 #endregion
-
 #region Sounds vars
 @onready var foot_step_player: AudioStreamPlayer3D = $FootStepPlayer
 @onready var jump_sound_player: AudioStreamPlayer3D = $JumpSoundPlayer
@@ -51,24 +48,20 @@ var run_step_volume: float = -15.0
 var foot_step_timer: float = 0.0
 var was_on_floor: bool = true
 #endregion
-
 #region Data vars
 @export var export_data: Resource
 var data: Resource
 #endregion
-
 #region Net vars
 @export var sync_rate: float = 0.05 # Как часто отправляем
 var _sync_t: float  = 0.0
 var _intent = {"move": Vector2.ZERO, "jump": false }
 #endregion
-
 #region Animations vars
 @onready var anim_player: AnimationPlayer = $Character/AnimationPlayer
 @onready var anim_tree: AnimationTree = $Character/AnimationTree
 @onready var anim_movement_state_machine: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/MovementStateMachine/playback")
 #endregion
-
 #region take damage vars
 var _health: float = 100.0
 
@@ -81,7 +74,6 @@ var _spectate_camera: SpectateMode = null
 
 var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
 #endregion
-
 #region vars for interpolations
 ## Частота рассылки корня, когда труп просто лежит
 @export var ragdoll_sync_rate: float = 0.08
@@ -147,8 +139,10 @@ func apply_intent(intent: Dictionary):
 
 func input():
 	input_movement_vector = Vector2.ZERO
-	need_jump = true
+	need_jump = false
 	running = false
+	if UiManager.is_game_blocked():
+		return
 	input_movement_vector = Input.get_vector("move_left", "move_right", "move_forward","move_backward")
 	need_jump = Input.is_action_just_pressed("jump")
 	running = Input.is_action_pressed("run")
@@ -158,6 +152,8 @@ func input():
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
+		return
+	if UiManager.is_game_blocked():
 		return
 	if event.is_action_pressed("interact"):
 		try_interact(4)
@@ -376,10 +372,27 @@ func _request_ragdoll(want: bool) -> void:
 	var sender := multiplayer.get_remote_sender_id()
 	# 0 - локальный вызов рэгдолла с хоста. Иначе просит только владелец узла
 	if sender != 0 and sender != get_multiplayer_authority():
+		# print("DEBUG", get_multiplayer_authority(), sender)
 		return
 	if _is_death and not want:
 		return
+	# print("DEBUG ", get_multiplayer_authority(), ", ", sender, ", ", want)
 	set_ragdoll_state(want)
+
+@rpc("any_peer", "call_local", "reliable")
+func _request_ragdoll_other(want: bool) -> void:
+	if not multiplayer.is_server(): return
+
+	# var sender := multiplayer.get_remote_sender_id()
+	# 0 - локальный вызов рэгдолла с хоста. Иначе просит только владелец узла
+	# if sender != 0 and sender != get_multiplayer_authority():
+	# 	# print("DEBUG", get_multiplayer_authority(), sender)
+	# 	return
+	if _is_death and not want:
+		return
+	# print("DEBUG ", get_multiplayer_authority(), ", ", sender, ", ", want)
+	set_ragdoll_state(want)
+
 
 ## Единая точка входа. ТОЛЬКО сервер
 func set_ragdoll_state(want: bool) -> void:
@@ -412,6 +425,7 @@ func synchronize_player_and_ragdoll() -> void:
 	pass
 
 func start_ragdoll() -> void:
+	print("ragdoll started")
 	is_ragdoll = true
 	camera_main_global_transform = camera_controller.transform
 	physical_bone_controller.physical_bones_start_simulation()
@@ -428,6 +442,7 @@ func _apply_ragdoll_collision_profile() -> void:
 			bone.collision_mask = mask
 
 func stop_ragdoll() -> void:
+	print("ragdoll ended")
 	is_ragdoll = false
 	_hold_count = 0
 	physical_bone_controller.physical_bones_stop_simulation()
@@ -523,7 +538,7 @@ func take_damage(amount: int, peer_id: int) -> void:
 	if alive_ids.is_empty():
 		await get_tree().create_timer(timer_to_death).timeout
 		GameManager.died_players.clear()
-		LevelManager.go_to_hub()
+		LevelManager.next_level()
 		return
 	
 	set_ragdoll_state(true)
@@ -545,7 +560,7 @@ func _death() -> void:
 	start_ragdoll()
 	death_label.visible = true
 	await get_tree().create_timer(timer_to_death).timeout
-	LevelManager.go_to_hub()
+	LevelManager.next_level()
 
 ## Смерть игрока в мультиплеере
 @rpc("any_peer", "call_local", "reliable")
@@ -687,101 +702,20 @@ func play_landing_sound() -> void:
 	landing_sound_player.play()
 #endregion
 
-#region DEBUG: проверка камеры наблюдателя без второго игрока
-# =============================================================================
-# КАК ПОЛЬЗОВАТЬСЯ
-#
-#   F9  - создать болванчика рядом с собой и начать за ним наблюдать.
-#         Каждое нажатие добавляет ещё одного болванчика, поэтому
-#         жми дважды, если хочешь проверить переключение целей.
-#   F10 - переключиться на следующего болванчика (нужно 2+).
-#   F8  - прекратить наблюдение и вернуть свою камеру.
-#
-# ЧТО ЭТИМ ПРОВЕРЯЕТСЯ
-#   - камера следует за движущейся целью (болванчик ездит по кругу);
-#   - орбита мышью работает (крути мышью во время наблюдения);
-#   - SpringArm3D подтягивает камеру, когда между ней и целью стена
-#     (встань так, чтобы болванчик уезжал за угол);
-#   - switch_target() и автоподхват следующей цели: удали болванчика
-#     из дерева в отладчике - камера должна сама перейти на другого.
-#
-# ЧЕГО ЭТИМ НЕ ПРОВЕРИТЬ
-#   Вся сетевая обвязка вокруг камеры: take_damage -> _multiplayer_death,
-#   Net.get_alive_peer_ids(), Net.spectate_retarget, переход в хаб
-#   после гибели последнего. Для этого нужен реальный второй пир
-#   (два экземпляра игры + ENet вместо Steam на время локального теста).
-#
-# ПЕРЕД РЕЛИЗОМ весь регион можно удалить - на игровую логику он не влияет.
-# =============================================================================
-
-const DEBUG_DUMMY := preload("res://actors/player/spectate_dummy.gd")
-
-var _debug_dummies: Array[Node3D] = []
-
-
-func _input(event: InputEvent) -> void:
-	# Отладка только в дебажной сборке и только у своего игрока.
-	if not OS.is_debug_build():
-		return
-	if not is_multiplayer_authority():
-		return
-	if not (event is InputEventKey) or not event.pressed or event.echo:
-		return
-
-	match event.keycode:
-		KEY_F9:
-			_debug_spawn_dummy()
-		KEY_F10:
-			if is_instance_valid(_spectate_camera):
-				_spectate_camera.switch_target()
-		KEY_F8:
-			_debug_stop_spectate()
-
-
-## Создаёт болванчика и (пере)запускает наблюдение по всем созданным.
-func _debug_spawn_dummy() -> void:
-	var dummy := Node3D.new()
-	dummy.set_script(DEBUG_DUMMY)
-	dummy.name = "SpectateDummy_%d" % (_debug_dummies.size() + 1)
-
-	var mesh := MeshInstance3D.new()
-	var capsule := CapsuleMesh.new()
-	capsule.height = 1.0
-	capsule.radius = 0.25
-	mesh.mesh = capsule
-	mesh.position = Vector3(0.0, 0.5, 0.0)
-	dummy.add_child(mesh)
-
-	get_tree().current_scene.add_child(dummy)
-	# Разносим болванчиков в стороны, чтобы они не ездили по одному кругу.
-	dummy.global_position = global_position + Vector3(3.0 + _debug_dummies.size() * 2.0, 0.0, 0.0)
-	_debug_dummies.append(dummy)
-
-	if not is_instance_valid(_spectate_camera):
-		_spectate_camera = SPECTATEMODE.instantiate()
-		get_tree().current_scene.add_child(_spectate_camera)
-		$CameraController/Camera3D.current = false
-
-	_spectate_camera.start_spectating(_debug_dummies)
-
-
-## Убирает камеру наблюдателя и болванчиков, возвращает управление игроку.
-func _debug_stop_spectate() -> void:
-	if is_instance_valid(_spectate_camera):
-		_spectate_camera.stop_spectating()
-		_spectate_camera.queue_free()
-	_spectate_camera = null
-
-	for d in _debug_dummies:
-		if is_instance_valid(d):
-			d.queue_free()
-	_debug_dummies.clear()
-
-	$CameraController/Camera3D.current = true
-#endregion
-
 #region AnimationTree
 func set_grab_blend_amount(amount: int) -> void:
 	anim_tree.set("parameters/GrabBlend/blend_amount", amount)
 	pass
 #endregion
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if not multiplayer.is_server(): return
+	if is_ragdoll: return
+
+	var hitted_object = body as RigidBody3D
+	# print(hitted_object.linear_velocity.length())
+	if hitted_object and hitted_object != $CameraController/GrabComponent._held_object and hitted_object.linear_velocity.length() >= data.velocity_threshold:
+		_request_ragdoll_other.rpc_id(1, true)
+		pass
+	pass

@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://b5eiwsg8n4njx"]
+
+[ext_resource type="PackedScene" uid="uid://cdoct5cjf8ass" path="res://models/blend/straight_vent_up.blend" id="1_hwp03"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="2_a05nr"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="3_u7w7f"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xyhxj"]
+points = PackedVector3Array(1, 1.07, 0.5, 1, 1.07, -0.5, 1, 1, 0.5, 1, 1, -0.5, -1, 0.05, 0.5, -1, 0.05, -0.5, -1, 0, 0.5, -1, 0, -0.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_a05nr"]
+points = PackedVector3Array(1, 1.5, 0.5, 1, 1.5, -0.5, 1, 1, 0.5, 1, 1, -0.5, -1, 0.5, 0.5, -1, 0.5, -0.5, -1, 0, 0.5, -1, 0, -0.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_uegck"]
+points = PackedVector3Array(1, 2, 0.075, 1, 2, 0, 1, 1, 0.075, 1, 1, 0, -1, 1, 0.075, -1, 1, 0, -1, 0, 0.075, -1, 0, 0)
+
+[node name="straight_vent_up" unique_id=1390378031 instance=ExtResource("1_hwp03")]
+
+[node name="straight_vent_up" parent="." index="0" unique_id=1040069468]
+surface_material_override/0 = ExtResource("2_a05nr")
+surface_material_override/1 = ExtResource("3_u7w7f")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="straight_vent_up" index="0" unique_id=2039546160]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="straight_vent_up/StaticBody3D" index="0" unique_id=1049539263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_xyhxj")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="straight_vent_up/StaticBody3D" index="1" unique_id=161056976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.925, 0)
+shape = SubResource("ConvexPolygonShape3D_a05nr")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="straight_vent_up/StaticBody3D" index="2" unique_id=849717189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.425)
+shape = SubResource("ConvexPolygonShape3D_uegck")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="straight_vent_up/StaticBody3D" index="3" unique_id=862194875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
+shape = SubResource("ConvexPolygonShape3D_uegck")

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c2451afcrduns"]
+
+[ext_resource type="PackedScene" uid="uid://drwvj3aj7jn02" path="res://items/vase_01_broken.tscn" id="1_rxgar"]
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="1_xbpgu"]
+[ext_resource type="AudioStream" uid="uid://dclxt6xpvxyqq" path="res://vfx-sfx-music/sounds/items/glass_hit.mp3" id="3_ajp12"]
+
+[resource]
+script = ExtResource("1_xbpgu")
+distructed_scene = ExtResource("1_rxgar")
+value = 20
+mass = 0.5
+max_durability = 20
+durability = 20
+sound = ExtResource("3_ajp12")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"

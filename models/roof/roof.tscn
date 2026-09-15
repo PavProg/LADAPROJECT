@@ -7,14 +7,15 @@
 albedo_texture = ExtResource("2_cj72c")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cj72c"]
-size = Vector3(1, 0.060017906, 1)
+size = Vector3(1, 2.2702434, 1)
 
 [node name="roof" unique_id=1929277530 instance=ExtResource("1_mqln6")]
 
-[node name="roof" parent="." index="0" unique_id=1179384131]
+[node name="roof" parent="." index="0" unique_id=464444059]
 surface_material_override/0 = SubResource("StandardMaterial3D_tcymi")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="roof" index="0" unique_id=1472975839]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roof/StaticBody3D" index="0" unique_id=645036932]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1051127, 0)
 shape = SubResource("BoxShape3D_cj72c")

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://db28fe1vhdf42"]
+
+[ext_resource type="PackedScene" uid="uid://bowv765i1sdoi" path="res://models/blend/enter_vent.blend" id="1_t34r5"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="2_ktbei"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="3_qkub6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3tg2c"]
+size = Vector3(0.7850586, 0.075, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ktbei"]
+size = Vector3(0.8997168, 0.6799561, 1.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qkub6"]
+size = Vector3(0.9002051, 1.01, 0.075)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_38saq"]
+points = PackedVector3Array(0.12, 0.075, 0.5, 0.12, 0.075, -0.5, 0, 0, -0.5, 0, 0, 0.5, 0, 0, -0.5, 0, 0, 0.5, 0.12, 0, 0.5, 0.12, 0, -0.5)
+
+[node name="enter_vent" unique_id=290658132 instance=ExtResource("1_t34r5")]
+
+[node name="enter_vent" parent="." index="0" unique_id=590970605]
+surface_material_override/0 = ExtResource("3_qkub6")
+surface_material_override/1 = ExtResource("2_ktbei")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="enter_vent" index="0" unique_id=1698364372]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="enter_vent/StaticBody3D" index="0" unique_id=146935015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.112, 0.03, 0)
+shape = SubResource("BoxShape3D_3tg2c")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="enter_vent/StaticBody3D" index="1" unique_id=1892554904]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055141598, 1.267478, 0)
+shape = SubResource("BoxShape3D_ktbei")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="enter_vent/StaticBody3D" index="2" unique_id=709496090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055, 0.5, -0.465)
+shape = SubResource("BoxShape3D_qkub6")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="enter_vent/StaticBody3D" index="3" unique_id=1143452758]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.054897457, 0.5, 0.465)
+shape = SubResource("BoxShape3D_qkub6")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="enter_vent/StaticBody3D" index="4" unique_id=1717872109]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, -0.007648552, 0)
+shape = SubResource("ConvexPolygonShape3D_38saq")

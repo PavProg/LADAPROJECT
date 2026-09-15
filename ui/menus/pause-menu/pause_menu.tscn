@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://beb1c6hcxah5e"]
+
+[ext_resource type="Theme" uid="uid://cachw4rx6lxd1" path="res://ui/menus/menu_theme.tres" id="1_xyfg0"]
+[ext_resource type="Script" uid="uid://c174wx74qhagv" path="res://ui/menus/pause-menu/pause_menu.gd" id="2_xyfg0"]
+
+[node name="PauseMenu" type="Control" unique_id=1648805768]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_xyfg0")
+script = ExtResource("2_xyfg0")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=473229556]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.42745098)
+
+[node name="CenterContainer" type="CenterContainer" parent="Dim" unique_id=950433009]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Dim/CenterContainer" unique_id=724173290]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Dim/CenterContainer/PanelContainer" unique_id=151834339]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer" unique_id=836734681]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1277253050]
+layout_mode = 2
+text = "MENU"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=933794969]
+layout_mode = 2
+text = "Resume"
+
+[node name="SettingsButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1273460041]
+layout_mode = 2
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1203770688]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

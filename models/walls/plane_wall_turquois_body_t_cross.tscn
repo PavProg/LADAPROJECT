@@ -2,20 +2,23 @@
 
 [ext_resource type="PackedScene" uid="uid://b8hduxban4cvx" path="res://models/blend/plane_wall_turquois_body_T-cross.blend" id="1_hvkoj"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tw1cs"]
-size = Vector3(3, 4, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_w8xqs"]
+size = Vector3(3, 3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hvkoj"]
-size = Vector3(1, 4, 1)
+size = Vector3(1, 3, 1)
 
 [node name="plane_wall_turquois_body_T-cross" unique_id=680147732 instance=ExtResource("1_hvkoj")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouise_body_T-cross" parent_id_path=PackedInt32Array(1874435382) index="0" unique_id=1295892758]
+[node name="plane_wall_turqouise_body_T-cross" parent="." index="0" unique_id=1983677047]
+surface_material_override/0 = ExtResource("2_c7cw8")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouise_body_T-cross" index="0" unique_id=1295892758]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouise_body_T-cross/StaticBody3D" index="0" unique_id=820670577]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-shape = SubResource("BoxShape3D_tw1cs")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_w8xqs")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouise_body_T-cross/StaticBody3D" index="1" unique_id=804191027]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1)
 shape = SubResource("BoxShape3D_hvkoj")

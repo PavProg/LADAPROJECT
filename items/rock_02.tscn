@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://bmibot2tj2f2v"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_wbhsi"]
+[ext_resource type="Resource" uid="uid://bsarxjxpn6hpv" path="res://core/data/treska/rock_02.tres" id="2_wbhsi"]
+[ext_resource type="ArrayMesh" uid="uid://le5s643bgmt6" path="res://models/meshes/rock_02/Rock_02_Sphere_002.res" id="3_wbhsi"]
+[ext_resource type="ArrayMesh" uid="uid://dm36sr0x0s33n" path="res://models/meshes/rock_02/Rock_02_Torus.res" id="4_ixg6s"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="5_m35g0"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wbhsi"]
+points = PackedVector3Array(0.08478918, 0.16289178, -0.0036723504, -0.08806751, 0.10307987, -0.0003379484, -0.08428582, 0.10311392, -0.010223865, 0.044987764, 0.0030184253, 0.012959017, -0.014492615, 0.15167944, 0.051454935, -0.011311976, 0.17784372, -0.039156232, 0.0048977355, 0.038317416, -0.035930127, -0.038528807, 0.2135119, 0.0062999744, -0.037708256, 0.014564038, 0.02595684, 0.06793488, 0.13758926, 0.044747014, 0.008130023, 0.060972624, 0.05499284, -0.064605325, 0.13758926, 0.044747014, 0.08290057, 0.09670925, -0.016482688, -0.034781136, 0.003649501, -0.0069516706, 0.018192332, 0.2123207, 0.009595984, 0.037371337, 0.14541578, -0.04245573, -0.06353861, 0.1455456, -0.032842424, 0.07742491, 0.05700838, 0.02274801, -0.0784305, 0.179795, -0.0003602459, -0.030543307, 0.067825146, -0.038836114)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wbhsi"]
+height = 0.115234375
+radius = 0.119140625
+
+[node name="Rock_01" type="RigidBody3D" unique_id=1572425250]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+collision_layer = 8
+collision_mask = 4111
+mass = 10.0
+can_sleep = false
+continuous_cd = true
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_wbhsi")
+filename = "rock_01"
+export_item_data = ExtResource("2_wbhsi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=859813302]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, 0)
+mesh = ExtResource("3_wbhsi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=787808903]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_wbhsi")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=775310440]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, 0)
+mesh = ExtResource("4_ixg6s")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+process_mode = 3
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("5_m35g0")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 4.659686e-10, 0.22533989)
+collision_layer = 512
+collision_mask = 523
+
+[node name="Collision" type="CollisionShape3D" parent="HurtArea" unique_id=1866050567]
+transform = Transform3D(1, 0, 0, 0, 1, -5.222489e-13, 0, 5.222489e-13, 1, 0, -0.003831029, 0)
+shape = SubResource("CylinderShape3D_wbhsi")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[node name="DurabilityLabel" type="Label3D" parent="." unique_id=1120845289]
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "123"
+font_size = 12
+outline_size = 4
+
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=1607676516]
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=2079563027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.587461e-09, 0.10494888)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
+font_size = 12
+outline_size = 4
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1899641381]
+
+[connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
+[connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]

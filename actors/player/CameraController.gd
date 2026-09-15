@@ -10,7 +10,7 @@ func _ready() -> void:
 	if not is_multiplayer_authority():
 		return                       # чужой камерой не управляем
 	camera.make_current()            # активной делаем ТОЛЬКО свою камеру
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
 
 func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): 
@@ -30,6 +30,9 @@ func _input(event: InputEvent) -> void:
 			pass
 		return
 		
+	if UiManager.is_game_blocked():
+		return
+	if player.is_ragdoll:  return
 	if event is InputEventMouseMotion:
 		player.rotate_y(-event.relative.x * mouse_sensitivity)   # yaw (вращение по вертикали) — на теле игрока (реплицируется через Player.rotation)
 		rotate_x(-event.relative.y * mouse_sensitivity)          # pitch (вращение по горизонтали) — на камере (реплицируется через CameraController.rotation)

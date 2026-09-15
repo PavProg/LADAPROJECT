@@ -14,3 +14,5 @@ class_name PlayerData
 @export var endurance_recovery_speed: float = 0
 ## для действия interact (по стандарту 'e')
 @export var interaction_range : float = 0
+## значение силы с которой нужно ударить для рэгдола
+@export var velocity_threshold: float
