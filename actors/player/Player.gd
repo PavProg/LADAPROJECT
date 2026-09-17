@@ -11,6 +11,7 @@ var grabbed_object: Node3D = null
 @export var is_ragdoll: bool = false
 var exceptions: Array[RID] # RID костей который игнорирует игрок(свои кости собственно)
 #endregion
+
 #region Movement vars
 @onready var endurance_timer: Timer = $EnduranceTimer # таймер, по истечении которого начинает восстанавливаться выносливость
 var endurance_recovering: bool = false
@@ -21,12 +22,14 @@ var running: bool = false
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var gravity_scale: float = 1.5
 #endregion
+
 #region Camera vars
 @onready var camera_controller: Node3D = $CameraController
 @onready var ragdoll_camera_pos: Node3D = $RagdollSpringArm/RagdollCameraPos
 @onready var ragdoll_spring_arm: SpringArm3D = $RagdollSpringArm
 var camera_main_global_transform: Transform3D
 #endregion
+
 #region Meshes / Collisions vars
 @onready var collision: CollisionShape3D = $Collision
 @onready var meshes_to_unsee: Array[MeshInstance3D] = [
@@ -37,6 +40,7 @@ var camera_main_global_transform: Transform3D
 	$Character/root/Skeleton3D/eyelash_up
 ]
 #endregion
+
 #region Sounds vars
 @onready var foot_step_player: AudioStreamPlayer3D = $FootStepPlayer
 @onready var jump_sound_player: AudioStreamPlayer3D = $JumpSoundPlayer
@@ -48,20 +52,24 @@ var run_step_volume: float = -15.0
 var foot_step_timer: float = 0.0
 var was_on_floor: bool = true
 #endregion
+
 #region Data vars
 @export var export_data: Resource
 var data: Resource
 #endregion
+
 #region Net vars
 @export var sync_rate: float = 0.05 # Как часто отправляем
 var _sync_t: float  = 0.0
 var _intent = {"move": Vector2.ZERO, "jump": false }
 #endregion
+
 #region Animations vars
 @onready var anim_player: AnimationPlayer = $Character/AnimationPlayer
 @onready var anim_tree: AnimationTree = $Character/AnimationTree
 @onready var anim_movement_state_machine: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/MovementStateMachine/playback")
 #endregion
+
 #region take damage vars
 var _health: float = 100.0
 
@@ -74,6 +82,7 @@ var _spectate_camera: SpectateMode = null
 
 var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
 #endregion
+
 #region vars for interpolations
 ## Частота рассылки корня, когда труп просто лежит
 @export var ragdoll_sync_rate: float = 0.08
@@ -100,6 +109,31 @@ var _rag_sync_t: float = 0.0
 var _hold_count: int = 0
 #endregion
 
+#region vars for raplication-Animation
+
+enum Loco { IDLE, RUN, RUN_FAST }
+
+const LOCO_STATE := ["Idle", "Running_forward", "Running_forward_fast"]
+
+## Состояние бега. Пишет владелец, подтягивается синхронайзером и релеем
+@export var anim_loco: int = Loco.IDLE
+## Поза захвата включена
+@export var anim_grab: bool = false
+## Счетчик прыжков: приемник играет ваншот при приземлении
+@export var anim_jump_count: int = 0
+
+## Скорость плавного включения позы захвата
+@export var grab_blend_speed: float = 0.0
+
+
+# По applied приемник определяет смену
+var _applied_loco: int = -1
+var _applied_jump_count: int = 0
+var _anim_sync_once: bool = false
+var _grab_blend_now: float = 0.0
+
+#endregion
+
 func _ready() -> void:
 	data = export_data
 	_health = data.max_health
@@ -113,7 +147,7 @@ func _ready() -> void:
 	pin_joint.node_a = NodePath("")
 	pin_joint.node_b = NodePath("")
 	if is_ragdoll: start_ragdoll()
-	anim_movement_state_machine.start("Idle")
+	_set_loco(Loco.IDLE)
 	pass
 
 func set_physical_bones_ignore() -> void:
@@ -132,6 +166,129 @@ func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 		for mesh in meshes_to_unsee:
 			mesh.visible = is_active
 	pass
+
+#region animation + movement
+
+## Приемник (не владелец). Догоняет дерево до текущего реплицированного состояния
+func _applied_remote_anim() -> void:
+	if is_multiplayer_authority(): return
+	if is_ragdoll: return
+
+	if not _anim_sync_once:
+		_anim_sync_once = true
+		_applied_jump_count = anim_jump_count
+	
+	if anim_loco != _applied_loco and anim_loco >= 0 and anim_loco < LOCO_STATE.size():
+		_applied_loco = anim_loco
+		anim_movement_state_machine.travel(LOCO_STATE[anim_loco])
+
+	if anim_jump_count != _applied_jump_count:
+		_applied_jump_count = anim_jump_count
+		anim_tree.set("parameters/JumpOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+## Владелец: включить/выключить позу захвата
+func set_grab_blend_amount(amount: float) -> void:
+	# anim_tree.set("parameters/GrabBlend/blend_amount", amount)
+	anim_grab = amount > 0.5
+
+## Все пиры: плавно подвести GrabBlend к состоянию anim_grab
+func _update_grab_blend(delta: float) -> void:
+	var target := 1.0 if anim_grab else 0.0
+	_grab_blend_now = move_toward(_grab_blend_now, target, grab_blend_speed * delta)
+	print("DEBUG. Попытка обновить состояние grab")
+	anim_tree.set("parameters/GrabBlend/blend_amount", _grab_blend_now)
+
+## Владелец: сменить состояние бега и проиграть локально СРАЗУ
+func _set_loco(state: int) -> void:
+	anim_loco = state
+	if _applied_loco != state:
+		_applied_loco = state
+		anim_movement_state_machine.travel(LOCO_STATE[state])
+
+
+## Владелец: прыжок - счетчик + локальный ваншот
+func _fire_jump_local() -> void:
+	anim_jump_count += 1
+	_applied_jump_count = anim_jump_count
+	anim_tree.set("parameters/JumpOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+func movement(delta: float) -> void:
+	
+	if is_ragdoll: return
+	
+	#print(data.endurance)
+	if is_on_floor():
+		# хождение на земле
+		if input_movement_vector != Vector2.ZERO:
+			input_movement_vector = Vector3(input_movement_vector.x, 0, input_movement_vector.y)
+			input_movement_vector = (global_transform.basis * input_movement_vector).normalized()
+			if !running or data.endurance <= 0.0:
+				velocity = input_movement_vector * data.speed
+				_set_loco(Loco.RUN)
+			# бег
+			else:
+				velocity = input_movement_vector * data.run_speed
+				data.endurance = clamp(data.endurance - 0.2, 0.0, data.max_endurance)
+				endurance_recovering = false
+				# перезапуска таймера
+				endurance_timer.stop()
+				endurance_timer.wait_time = data.endurance_recovery_time
+				endurance_timer.start()
+				_set_loco(Loco.RUN_FAST)
+		else:
+			velocity.x = 0
+			velocity.z = 0
+			_set_loco(Loco.IDLE)
+
+		# прыжок
+		if need_jump:
+			velocity.y = data.jump_velocity
+			jump_sound_player.play()
+			_fire_jump_local()	# ваншот прыжка
+		
+	# перемещение в воздухе 
+	else:
+		# в воздухе игрок не управляет персонажем, просто летит туда куда прыгнул
+		var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
+		var speed_h = horizontal_velocity.length()
+		if speed_h > 0.0:
+			speed_h = move_toward(speed_h, 0, air_speed_reduction)
+			horizontal_velocity = horizontal_velocity.normalized() * speed_h
+			pass
+		velocity.x = horizontal_velocity.x
+		velocity.z = horizontal_velocity.z
+		# падение
+		velocity.y -= gravity * gravity_scale * delta
+		
+	# Защита от катапультирования игрока в ебеня
+	var velocity_before_slide = velocity
+		
+	move_and_slide()
+	
+	# Защита от катапультирования игрока в ебеня
+	# P.S от сетевого разраба, НАФИГА ЭТО НАДО?????????? ЛУЧШИЙ МОМЕНТ ГЕЙМ-ЛУПА
+	var delta_v = velocity - velocity_before_slide
+	var max_delta_v: float = 2.0  # максимально допустимое изменение скорости за кадр
+	if delta_v.length() > max_delta_v:
+		velocity = velocity_before_slide + delta_v.limit_length(max_delta_v)
+	
+	# столкновения
+	for i in get_slide_collision_count():
+		var item_collision = get_slide_collision(i)
+		var item_body = item_collision.get_collider() as RigidBody3D
+		if item_body:
+			#print("Collision pos: ", item_collision.get_position(), " Body pos: ", item_body.global_position, " Diff: ", item_collision.get_position() - item_body.global_position)
+			var horizontal_velocity := Vector3(velocity.x, 0.0, velocity.z)
+			var push_dir = -item_collision.get_normal()
+			push_dir.y = 0.0
+			var push_speed = clamp(horizontal_velocity.length(), 0.0, 6.0)
+			if push_speed <= 0.01 and push_dir.length_squared() <= 0.001: continue
+			var push_strength = push_speed  * item_body.mass * 0.15
+			#print("Direction: %s \nStrength: %f " % [push_dir, push_strength])
+			var relative_pos = item_collision.get_position() - item_body.global_position
+			item_body.apply_impulse(push_strength * push_dir, relative_pos)
+
+#endregion
 
 #region INPUTS + PhysicProcess
 func apply_intent(intent: Dictionary):
@@ -188,82 +345,6 @@ func _physics_process(delta: float) -> void:
 		else:
 			_correct_ragdoll_root(delta)
 
-func movement(delta: float) -> void:
-	
-	if is_ragdoll: return
-	
-	#print(data.endurance)
-	if is_on_floor():
-		# хождение на земле
-		if input_movement_vector != Vector2.ZERO:
-			input_movement_vector = Vector3(input_movement_vector.x, 0, input_movement_vector.y)
-			input_movement_vector = (global_transform.basis * input_movement_vector).normalized()
-			if !running or data.endurance <= 0.0:
-				velocity = input_movement_vector * data.speed
-				anim_movement_state_machine.travel("Running_forward")
-			# бег
-			else:
-				velocity = input_movement_vector * data.run_speed
-				data.endurance = clamp(data.endurance - 0.2, 0.0, data.max_endurance)
-				endurance_recovering = false
-				# перезапуска таймера
-				endurance_timer.stop()
-				endurance_timer.wait_time = data.endurance_recovery_time
-				endurance_timer.start()
-				anim_movement_state_machine.travel("Running_forward_fast")
-		else:
-			velocity.x = 0
-			velocity.z = 0
-			anim_movement_state_machine.travel("Idle")
-
-		# прыжок
-		if need_jump:
-			velocity.y = data.jump_velocity
-			jump_sound_player.play()
-			anim_tree.set("parameters/JumpOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-		
-	# перемещение в воздухе 
-	else:
-		# в воздухе игрок не управляет персонажем, просто летит туда куда прыгнул
-		var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
-		var speed_h = horizontal_velocity.length()
-		if speed_h > 0.0:
-			speed_h = move_toward(speed_h, 0, air_speed_reduction)
-			horizontal_velocity = horizontal_velocity.normalized() * speed_h
-			pass
-		velocity.x = horizontal_velocity.x
-		velocity.z = horizontal_velocity.z
-		# падение
-		velocity.y -= gravity * gravity_scale * delta
-		
-	# Защита от катапультирования игрока в ебеня
-	var velocity_before_slide = velocity
-		
-	move_and_slide()
-	
-	# Защита от катапультирования игрока в ебеня
-	# P.S от сетевого разраба, НАФИГА ЭТО НАДО?????????? ЛУЧШИЙ МОМЕНТ ГЕЙМ-ЛУПА
-	var delta_v = velocity - velocity_before_slide
-	var max_delta_v: float = 2.0  # максимально допустимое изменение скорости за кадр
-	if delta_v.length() > max_delta_v:
-		velocity = velocity_before_slide + delta_v.limit_length(max_delta_v)
-	
-	# столкновения
-	for i in get_slide_collision_count():
-		var item_collision = get_slide_collision(i)
-		var item_body = item_collision.get_collider() as RigidBody3D
-		if item_body:
-			#print("Collision pos: ", item_collision.get_position(), " Body pos: ", item_body.global_position, " Diff: ", item_collision.get_position() - item_body.global_position)
-			var horizontal_velocity := Vector3(velocity.x, 0.0, velocity.z)
-			var push_dir = -item_collision.get_normal()
-			push_dir.y = 0.0
-			var push_speed = clamp(horizontal_velocity.length(), 0.0, 6.0)
-			if push_speed <= 0.01 and push_dir.length_squared() <= 0.001: continue
-			var push_strength = push_speed  * item_body.mass * 0.15
-			#print("Direction: %s \nStrength: %f " % [push_dir, push_strength])
-			var relative_pos = item_collision.get_position() - item_body.global_position
-			item_body.apply_impulse(push_strength * push_dir, relative_pos)
-
 #endregion
 
 #region Релей трансформа
@@ -317,8 +398,6 @@ func _set_hold_count(count: int) -> void:
 ## Труп пока несут чаще обновляется
 func _current_sync_rate() -> float:
 	return ragdoll_sync_rate_held if is_held() else ragdoll_sync_rate
-
-#endregion
 
 # unrelieable тк переотправлять нет смысла, через 50мс придет новый кадр позиции
 @rpc("any_peer", "unreliable_ordered")
@@ -450,7 +529,10 @@ func stop_ragdoll() -> void:
 	# вернуть коллизию
 	collision.set_deferred("disabled", false)
 	camera_controller.transform = camera_main_global_transform
+
 	anim_movement_state_machine.start("Idle")
+	_set_loco(Loco.IDLE)
+	
 	if is_on_floor() or is_on_wall():
 		#print("floor")
 		global_position += Vector3(0.0, 0.3, 0.0)
@@ -503,6 +585,8 @@ func _process(delta: float) -> void:
 		ragdoll_process(delta)
 
 	_relay_process(delta)
+	_applied_remote_anim()
+	_update_grab_blend(delta)
 
 	if endurance_recovering:
 		data.endurance = clamp(data.endurance + data.endurance_recovery_speed, 0, data.max_endurance)
@@ -702,13 +786,7 @@ func play_landing_sound() -> void:
 	landing_sound_player.play()
 #endregion
 
-#region AnimationTree
-func set_grab_blend_amount(amount: int) -> void:
-	anim_tree.set("parameters/GrabBlend/blend_amount", amount)
-	pass
-#endregion
-
-
+## Сигнал о том что в хартбокс игрока вошло инородное тело. Подсчет ускорения и запуск рэгдолла.
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if not multiplayer.is_server(): return
 	if is_ragdoll: return
