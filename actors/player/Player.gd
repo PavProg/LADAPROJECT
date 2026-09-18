@@ -169,6 +169,11 @@ func set_unseen_meshes_visibiliy(is_active: bool) -> void:
 
 #region animation + movement
 
+func set_relayed_anim(loco: int, grab: bool, jumps: int) -> void:
+	anim_loco = loco
+	anim_grab = grab
+	anim_jump_count = jumps
+
 ## Приемник (не владелец). Догоняет дерево до текущего реплицированного состояния
 func _applied_remote_anim() -> void:
 	if is_multiplayer_authority(): return
@@ -195,7 +200,6 @@ func set_grab_blend_amount(amount: float) -> void:
 func _update_grab_blend(delta: float) -> void:
 	var target := 1.0 if anim_grab else 0.0
 	_grab_blend_now = move_toward(_grab_blend_now, target, grab_blend_speed * delta)
-	print("DEBUG. Попытка обновить состояние grab")
 	anim_tree.set("parameters/GrabBlend/blend_amount", _grab_blend_now)
 
 ## Владелец: сменить состояние бега и проиграть локально СРАЗУ
@@ -447,15 +451,13 @@ func _current_snap_treshold() -> float:
 @rpc("any_peer", "call_local", "reliable")
 func _request_ragdoll(want: bool) -> void:
 	if not multiplayer.is_server(): return
-
+	# print("_request_ragdoll")
 	var sender := multiplayer.get_remote_sender_id()
+	# print(sender)
+	# print(get_multiplayer_authority())
 	# 0 - локальный вызов рэгдолла с хоста. Иначе просит только владелец узла
-	if sender != 0 and sender != get_multiplayer_authority():
-		# print("DEBUG", get_multiplayer_authority(), sender)
-		return
-	if _is_death and not want:
-		return
-	# print("DEBUG ", get_multiplayer_authority(), ", ", sender, ", ", want)
+	if sender != 0 and sender != get_multiplayer_authority() and sender != 1: return
+	if _is_death and not want: return
 	set_ragdoll_state(want)
 
 @rpc("any_peer", "call_local", "reliable")
@@ -479,7 +481,7 @@ func set_ragdoll_state(want: bool) -> void:
 		return
 	if is_ragdoll == want:
 		return
-	
+
 	# чтоб рассинхрона не было сразу шлем позицию вместе с состоянием 
 	var at := physical_bone_spine.global_position if is_ragdoll else global_position
 	apply_ragdoll.rpc(want, at)
@@ -490,6 +492,8 @@ func apply_ragdoll(want: bool, at: Vector3) -> void:
 	var sender := multiplayer.get_remote_sender_id()
 	if sender != 0 and sender != 1:
 		return
+		
+	# print("apply_ragdoll")
 	if want:
 		global_position = at
 		start_ragdoll()
@@ -504,7 +508,6 @@ func synchronize_player_and_ragdoll() -> void:
 	pass
 
 func start_ragdoll() -> void:
-	print("ragdoll started")
 	is_ragdoll = true
 	camera_main_global_transform = camera_controller.transform
 	physical_bone_controller.physical_bones_start_simulation()
@@ -521,7 +524,6 @@ func _apply_ragdoll_collision_profile() -> void:
 			bone.collision_mask = mask
 
 func stop_ragdoll() -> void:
-	print("ragdoll ended")
 	is_ragdoll = false
 	_hold_count = 0
 	physical_bone_controller.physical_bones_stop_simulation()
@@ -733,7 +735,7 @@ func try_interact(max_search_depth : int = 5) -> void:
 			if target is Node3D:
 				if target.has_method("on_interact"):
 					target.on_interact()
-					print(target.name)
+					# print(target.name)
 					return
 				else:
 					target = target.get_parent()

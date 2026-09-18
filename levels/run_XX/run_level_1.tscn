@@ -6,6 +6,7 @@
 [ext_resource type="MeshLibrary" uid="uid://cnotu2oo48isn" path="res://models/tile_sets/tres/lvl_obj_tiles.tres" id="4_gw4uf"]
 [ext_resource type="MeshLibrary" uid="uid://djckg1p3tomi1" path="res://models/tile_sets/tres/roof_tiles.tres" id="5_gv00n"]
 [ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="7_6qrfd"]
+[ext_resource type="PackedScene" uid="uid://ds0mb1ti4hkc" path="res://items/armor2.tscn" id="7_tvs3f"]
 [ext_resource type="PackedScene" uid="uid://c0vdypopjbexd" path="res://items/painting.tscn" id="8_8g47p"]
 [ext_resource type="PackedScene" uid="uid://c82pmhlwoq434" path="res://models/lvl_objects/ceiling_light.tscn" id="8_82iv3"]
 [ext_resource type="PackedScene" uid="uid://by35nkgu3l8xy" path="res://items/vase_01.tscn" id="8_pn0yg"]
@@ -14,7 +15,6 @@
 [ext_resource type="Script" uid="uid://4n5pw1nmxp16" path="res://levels/enemy_mark.gd" id="9_hdccr"]
 [ext_resource type="PackedScene" uid="uid://dqvpton34n4nr" path="res://models/lvl_objects/bench.tscn" id="10_53ppc"]
 [ext_resource type="PackedScene" uid="uid://b74ne3agklkt0" path="res://items/box.tscn" id="10_j7stf"]
-[ext_resource type="PackedScene" uid="uid://dwxonkdcuxtws" path="res://items/armor.tscn" id="10_ohrup"]
 [ext_resource type="PackedScene" uid="uid://csxy3jda7v5tf" path="res://actors/units/enemy_rat.tscn" id="10_qws6t"]
 [ext_resource type="PackedScene" uid="uid://ds3hm0fafve1j" path="res://models/lvl_objects/pedestal_02.tscn" id="11_pn0yg"]
 [ext_resource type="PackedScene" uid="uid://du3cv2yeqejk8" path="res://items/vase_pig.tscn" id="11_pscyn"]
@@ -41,16 +41,6 @@ agent_height = 0.5
 size = Vector3(0.5136719, 0.19946289, 0.125)
 
 [sub_resource type="SystemFont" id="SystemFont_siltq"]
-
-[sub_resource type="Resource" id="Resource_tvs3f"]
-resource_local_to_scene = true
-script = ExtResource("23_8g47p")
-distructed_scene = ExtResource("22_ugsr7")
-value = 4
-max_durability = 4
-durability = 4
-sound = ExtResource("24_e24jb")
-metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 
 [sub_resource type="Resource" id="Resource_nyebc"]
 resource_local_to_scene = true
@@ -115,9 +105,11 @@ metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 [sub_resource type="Resource" id="Resource_ribjd"]
 resource_local_to_scene = true
 script = ExtResource("23_8g47p")
-display_name = "hummer"
-damage = 8
-sound = ExtResource("28_nyebc")
+distructed_scene = ExtResource("22_ugsr7")
+value = 4
+max_durability = 4
+durability = 4
+sound = ExtResource("24_e24jb")
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 
 [sub_resource type="Resource" id="Resource_4k0u5"]
@@ -129,6 +121,14 @@ sound = ExtResource("28_nyebc")
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 
 [sub_resource type="Resource" id="Resource_1tss1"]
+resource_local_to_scene = true
+script = ExtResource("23_8g47p")
+display_name = "hummer"
+damage = 8
+sound = ExtResource("28_nyebc")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="Resource" id="Resource_5b6nk"]
 resource_local_to_scene = true
 script = ExtResource("23_8g47p")
 display_name = "hummer"
@@ -216,7 +216,7 @@ metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 [node name="Armor" type="Marker3D" parent="ItemMarks" unique_id=1144796585]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 1.0052261, -4)
 script = ExtResource("7_6qrfd")
-forced_item = ExtResource("10_ohrup")
+forced_item = ExtResource("7_tvs3f")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
 [node name="Painting" type="Marker3D" parent="ItemMarks" unique_id=1059252947]
@@ -477,43 +477,43 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10, 
 [node name="EnemyMarkCont" type="Node3D" parent="." unique_id=1022792314]
 
 [node name="EnemyMark" type="Marker3D" parent="EnemyMarkCont" unique_id=1907457145]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.985863, 0.98318064, -12.510272)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.985863, -1.0168194, -12.510272)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
 [node name="EnemyMark2" type="Marker3D" parent="EnemyMarkCont" unique_id=937053743]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.54086, 1.0232904, -1.2884194)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.54086, -0.9767096, -1.2884194)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
 [node name="EnemyMark3" type="Marker3D" parent="EnemyMarkCont" unique_id=703237361]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.516575, 1.0232904, -3.790897)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.516575, -0.9767096, -3.790897)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
 [node name="EnemyMark4" type="Marker3D" parent="EnemyMarkCont" unique_id=1133625041]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.620308, 1.0232904, -16.09095)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.620308, -0.9767096, -16.09095)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
 [node name="EnemyMark5" type="Marker3D" parent="EnemyMarkCont" unique_id=1396299915]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.735558, 1.0232904, -6.7209744)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.735558, -0.9767096, -6.7209744)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
 [node name="EnemyMark6" type="Marker3D" parent="EnemyMarkCont" unique_id=1414511264]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.582184, 1.0232904, -6.6316023)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.582184, -0.9767096, -6.6316023)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
 [node name="EnemyMark7" type="Marker3D" parent="EnemyMarkCont" unique_id=1140227418]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.436176, 1.0232904, 14.151538)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.436176, -0.9767096, 14.151538)
 script = ExtResource("9_hdccr")
 forced_enemy = ExtResource("10_qws6t")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
@@ -526,31 +526,31 @@ shadow_enabled = true
 
 [node name="vent_entry" parent="Vent_panels" unique_id=1572425250 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, -21.5, 0, 4)
-export_item_data = SubResource("Resource_tvs3f")
+export_item_data = SubResource("Resource_nyebc")
 
 [node name="vent_entry2" parent="Vent_panels" unique_id=285516269 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -36.5, 0, -6)
-export_item_data = SubResource("Resource_nyebc")
+export_item_data = SubResource("Resource_1b41j")
 
 [node name="vent_entry3" parent="Vent_panels" unique_id=76547891 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, -50.5, 4, 10.1)
-export_item_data = SubResource("Resource_1b41j")
+export_item_data = SubResource("Resource_cc0xj")
 
 [node name="vent_entry4" parent="Vent_panels" unique_id=1678642051 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1.1924881e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, -1.1924881e-08, -5.2125306e-16, -18.1, 4, 10.5)
-export_item_data = SubResource("Resource_cc0xj")
+export_item_data = SubResource("Resource_hqwgk")
 
 [node name="vent_entry5" parent="Vent_panels" unique_id=1869297041 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 37.9, 4, -16.5)
-export_item_data = SubResource("Resource_hqwgk")
+export_item_data = SubResource("Resource_b3iu4")
 
 [node name="vent_entry6" parent="Vent_panels" unique_id=1595382437 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 14.5, 4, -15.1)
-export_item_data = SubResource("Resource_b3iu4")
+export_item_data = SubResource("Resource_c17db")
 
 [node name="vent_entry7" parent="Vent_panels" unique_id=1125990047 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -14.5, 4, -15.1)
-export_item_data = SubResource("Resource_c17db")
+export_item_data = SubResource("Resource_ribjd")
 
 [node name="shelfs" type="Node" parent="." unique_id=594419284]
 
@@ -610,12 +610,12 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -17.
 
 [node name="SignStandig" parent="." unique_id=1336073646 instance=ExtResource("27_tvs3f")]
 transform = Transform3D(-0.9177546, 0, -0.3971479, 0, 1, 0, 0.3971479, 0, -0.9177546, 4, 0.05727893, 8)
-export_item_data = SubResource("Resource_ribjd")
+export_item_data = SubResource("Resource_4k0u5")
 
 [node name="SignStandig2" parent="." unique_id=1336511344 instance=ExtResource("27_tvs3f")]
 transform = Transform3D(0.68454707, 0, -0.72896856, 0, 1, 0, 0.72896856, 0, 0.68454707, 22, 0.05727893, -5)
-export_item_data = SubResource("Resource_4k0u5")
+export_item_data = SubResource("Resource_1tss1")
 
 [node name="SignStandig3" parent="." unique_id=722862016 instance=ExtResource("27_tvs3f")]
 transform = Transform3D(0.68454707, 0, -0.72896856, 0, 1, 0, 0.72896856, 0, 0.68454707, 36, 0.05727893, -10)
-export_item_data = SubResource("Resource_1tss1")
+export_item_data = SubResource("Resource_5b6nk")

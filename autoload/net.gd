@@ -90,6 +90,8 @@ const RELAY_RATE := 0.05
 ## Порог неподвижности: ниже него игрок в батч не попадает
 const RELAY_POS_EPS := 0.01
 const RELAY_ANG_EPS := 0.01
+## Чисел на игрока в батче: pos.xyz, yaw, pitch, loco, grab, jump_count
+const RELAY_STRIDE := 8
 
 var _relay_t: float = 0.0
 ## peer_id -> последнее отправленное [позиция, yaw, pitch]
@@ -128,15 +130,21 @@ func _relay_tick(delta: float) -> void:
 		var pos: Vector3 = p.global_position
 		var yaw: float = p.rotation.y
 		var pitch: float = 0.0
+		var loco: int = p.anim_loco
+		var grab: float = 1.0 if p.anim_grab else 0.0
+		var jump: int = p.anim_jump_count
+
 		var cam := p.get_node_or_null("CameraController") as Node3D
+
 		if cam: pitch = cam.rotation.x
 
-		if not _relay_changed(pid, pos, yaw, pitch): continue
-		_relay_last[pid] = [pos, yaw, pitch]
+		if not _relay_changed(pid, pos, yaw, pitch, loco, grab, jump): continue
+		_relay_last[pid] = [pos, yaw, pitch, loco, grab, jump]
 
 		ids.append(pid)
 		data.append(pos.x); data.append(pos.y); data.append(pos.z)
 		data.append(yaw);   data.append(pitch)
+		data.append(float(loco)); data.append(grab); data.append(float(jump))
 
 	if ids.is_empty(): return
 	_relay_sent += 1
@@ -145,12 +153,13 @@ func _relay_tick(delta: float) -> void:
 
 
 ## Сдвинулся ли игрок с прошлой отправки
-func _relay_changed(pid: int, pos: Vector3, yaw: float, pitch: float) -> bool:
+func _relay_changed(pid: int, pos: Vector3, yaw: float, pitch: float, loco: int, grab: float, jump: int) -> bool:
 	if not _relay_last.has(pid): return true
 	var prev: Array = _relay_last[pid]
 	if (pos - (prev[0] as Vector3)).length() > RELAY_POS_EPS: return true
 	if absf(angle_difference(prev[1], yaw)) > RELAY_ANG_EPS: return true
 	if absf(angle_difference(prev[2], pitch)) > RELAY_ANG_EPS: return true
+	if loco != prev[3] or grab != prev[4] or jump != prev[5]: return true
 	return false
 
 
@@ -170,9 +179,10 @@ func _apply_relay(ids: PackedInt32Array, data: PackedFloat32Array) -> void:
 		if pid == me: continue
 		var p := get_player_node(pid)
 		if p == null: continue
-		var o := i * 5
+		var o := i * RELAY_STRIDE
 		p.set_relayed_transform(
 			Vector3(data[o], data[o + 1], data[o + 2]), data[o + 3], data[o + 4])
+		p.set_relayed_anim(int(data[o + 5]), data[o + 6] > 0.5, int(data[o + 7]))
 
 
 ## Строка "давно ли приходил релей" для дампа

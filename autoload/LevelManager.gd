@@ -164,7 +164,7 @@ func _sync_all_peers() -> void:
 func _give_starting_gear(peer_id: int) -> void:
 	if _equipped.has(peer_id): return
 	_equipped.append(peer_id)
-	Net.give_hammer_to(peer_id)
+	#Net.give_hammer_to(peer_id)
 	_dbg("выдан стартовый инвентарь пиру %d" % peer_id)
 
 func _broadcast_state() -> void:

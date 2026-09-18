@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://ds0mb1ti4hkc"]
+
+[ext_resource type="Script" uid="uid://bltwyst2fwhpo" path="res://items/items.gd" id="1_lopla"]
+[ext_resource type="Resource" uid="uid://mwaiwrobbqc8" path="res://core/data/treska/armor2.tres" id="2_lopla"]
+[ext_resource type="ArrayMesh" uid="uid://b3sbpnq5msqah" path="res://models/meshes/armor2/Armor2_Cube.res" id="3_lopla"]
+[ext_resource type="Script" uid="uid://drwufqx2pyh0" path="res://core/components/break_component.gd" id="4_ei0m3"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p3ng6"]
+radius = 0.1015625
+height = 0.2685547
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vo1o4"]
+size = Vector3(0.6591797, 0.3630371, 0.24316406)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ov24w"]
+size = Vector3(0.453125, 0.2578125, 0.25219727)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kfnj3"]
+size = Vector3(0.28222656, 0.57714844, 0.11328125)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f3rkq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lfp4g"]
+size = Vector3(0.30566406, 0.6107788, 0.13476563)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lopla"]
+size = Vector3(0.50683594, 0.30706787, 0.26586914)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c2njw"]
+size = Vector3(0.6816406, 0.39672852, 0.28295898)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lopla"]
+radius = 0.12060547
+height = 0.33691406
+
+[node name="Armor" type="RigidBody3D" unique_id=1572425250]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+collision_layer = 8
+collision_mask = 4111
+mass = 1000.0
+can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_lopla")
+filename = "break_item"
+export_item_data = ExtResource("2_lopla")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1571951147]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 5.603939, -0.005697012)
+shape = SubResource("CapsuleShape3D_p3ng6")
+
+[node name="Collision2" type="CollisionShape3D" parent="." unique_id=1773223054]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 4.1822615, -0.089524135)
+shape = SubResource("BoxShape3D_vo1o4")
+
+[node name="Collision3" type="CollisionShape3D" parent="." unique_id=329596222]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 2.936448, -0.0013940334)
+shape = SubResource("BoxShape3D_ov24w")
+
+[node name="Collision4" type="CollisionShape3D" parent="." unique_id=1136682705]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 1.1572564, -0.14914292)
+shape = SubResource("BoxShape3D_kfnj3")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1009657675]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+mesh = ExtResource("3_lopla")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=76197769]
+replication_config = SubResource("SceneReplicationConfig_f3rkq")
+
+[node name="BreakComponent" type="Node3D" parent="." unique_id=16032102]
+script = ExtResource("4_ei0m3")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=98437864]
+collision_layer = 512
+collision_mask = 523
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtArea" unique_id=1488430903]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 1.1482954, -0.14990738)
+shape = SubResource("BoxShape3D_lfp4g")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="HurtArea" unique_id=1689051544]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 2.9290178, 0)
+shape = SubResource("BoxShape3D_lopla")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="HurtArea" unique_id=497458723]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 4.1841664, -0.02121985)
+shape = SubResource("BoxShape3D_c2njw")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="HurtArea" unique_id=1071834113]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 5.6133943, 0)
+shape = SubResource("CapsuleShape3D_lopla")
+
+[node name="TakeDamageTimer" type="Timer" parent="." unique_id=1802856467]
+
+[node name="DurabilityLabel" type="Label3D" parent="." unique_id=548319953]
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "123"
+font_size = 20
+outline_size = 4
+
+[node name="DamageLabelTimer" type="Timer" parent="." unique_id=419338301]
+
+[node name="DamageLabel" type="Label3D" parent="." unique_id=1826303043]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8561054, 0)
+visible = false
+billboard = 1
+no_depth_test = true
+fixed_size = true
+modulate = Color(1, 0, 0.2901961, 1)
+text = "0"
+font_size = 20
+outline_size = 4
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1222331017]
+
+[connection signal="area_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_area_entered"]
+[connection signal="body_entered" from="HurtArea" to="BreakComponent" method="_on_hurt_area_body_entered"]
+[connection signal="timeout" from="TakeDamageTimer" to="BreakComponent" method="_on_take_damage_timer_timeout"]
