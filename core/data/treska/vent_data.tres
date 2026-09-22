@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dn8yqb5o3c342"]
+
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="1_cywq4"]
+[ext_resource type="AudioStream" uid="uid://n4l6drrtvp7a" path="res://vfx-sfx-music/sounds/items/item_equip.wav" id="2_bhkii"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_cywq4")
+display_name = "hummer"
+mass = 5.0
+damage = 8
+sound = ExtResource("2_bhkii")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"

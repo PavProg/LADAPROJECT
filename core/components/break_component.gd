@@ -14,7 +14,6 @@ extends Node3D
 var can_be_hitted: bool = true                       # можно ли ударить прямо сейчас (только на сервере)
 
 
-# Вызывается AttackComponent оружия. На всякий продублировал чтобы прям точно
 func take_damage(dmg: int, attacker_peer_id: int = 0) -> void:
 	#print("BREAK_COMPONENT -- take_damage -- ")
 	if not multiplayer.is_server(): return
@@ -100,7 +99,7 @@ func _on_hurt_area_body_entered(body: Node3D) -> void:
 	if other_body is RigidBody3D and other_body.is_in_group("item"):
 		#print("RigidBody3D damaging")
 		other_velocity_length = other_body.linear_velocity.length()
-		other_body_damage = other_body.item_data.damage
+		other_body_damage = other_body.item_data.damage if "item_data" in other_body else 1.0
 	
 	# только велосити нашего объекта тк другой объект статичен
 	var self_velocity_length = item.linear_velocity.length()

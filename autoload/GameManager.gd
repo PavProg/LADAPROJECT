@@ -1,6 +1,11 @@
 extends Node
 
 var died_players: Array[int] = []
+var alives: Array[int] = Net.get_alive_peer_ids()
+## Флаг для того чтобы понимать умирали ли игроки или нет. Нужен для просчета квоты
+## тк она пересчитывается перед загрузкой уровня.
+## Например, игроки умерли квота не меняется, но изменится тк на хабе игроки живые и на хабе перед загрузкой уровня она посчитается.
+var flag_is_death = false
 
 ## квота которую нужно набрать за ТЕКУЩИЙ уровень
 var required_quote: int = 0
@@ -18,7 +23,11 @@ enum quote_states {
 	PROCESS
 }
 ## процент на который увеличивается quote между уровнями
-var quote_raising: float = 20.0 # 20%
+var quote_raising: float = 300 # + квота 
+
+## общее кол-во возраждений на уровень дял ВСЕХ игроков
+var revive_amount: int = 5
+
 
 # ВАЖНО ПРО СЕТЬ.
 # GameManager — это autoload, а значит у КАЖДОГО пира (хоста и всех клиентов)
@@ -31,6 +40,21 @@ var quote_raising: float = 20.0 # 20%
 #   клиенты ничего не считают сами — только принимают присланное значение.
 # Так у всех пиров всегда одна и та же квота.
 
+func check_if_revive() -> bool:
+	if revive_amount <= 0.0: 
+		print("Revive attempts are over")
+		return false
+	elif current_quote < 100:
+		print("Not enough quote")
+		return false
+
+	return true
+
+# выполняется у всех (и хоста и клиентов)
+@rpc("authority", "call_local", "reliable")
+func use_attempt() -> void:
+	revive_amount -= 1
+	pass
 
 # Точка входа для начисления квоты. Её вызывает BreakComponent — и только на сервере
 func on_quote_earned(quote: int, earner_peer_id: int = 0) -> void:
@@ -43,6 +67,7 @@ func on_quote_earned(quote: int, earner_peer_id: int = 0) -> void:
 	_sync_quote.rpc(current_quote, current_state, required_quote)
 	# Отдельная рассылка для UI попапа (всем, с инфо об источнике)
 	_notify_quota_earned.rpc(quote, earner_peer_id)
+
 
 # Выполняется у ВСЕХ пиров. Отправить может только авторитет автолоада (сервер, id 1).
 # Клиенты просто присваивают присланные значения.
@@ -63,10 +88,16 @@ func on_level_start(new_req_quote: int) -> void:
 	required_quote = new_req_quote
 
 # Итоги уровня. Считает сервер 
-# следующую квоту тоже нцжно рассылать клиентам
 func on_level_end() -> void:
-	earned_quote += max(current_quote - required_quote, 0) # к остатку с прошлого уровня добавляем разницу текущего уровня
-	required_quote_next_level = int(required_quote * (1.0 + quote_raising))
+	# if not died_players.is_empty() and flag_is_death:
+	# 	flag_is_death = false
+	# 	print_rich("[color=red] [DEBUG] required quate: ", required_quote, "; current_quate: ", current_quote, "; ALIVES: ", alives)
+	# 	return
+	if not flag_is_death:
+		earned_quote += max(current_quote - required_quote, 0) # к остатку с прошлого уровня добавляем разницу текущего уровня
+		required_quote_next_level = int(required_quote + quote_raising)
+	else:
+		flag_is_death = false
 
 
 # Осколки. в будующем можно закинуть в FX autoload.
@@ -97,6 +128,7 @@ func _break_fx(fragments_scene_path: String, xform: Transform3D, fx_seed: int) -
 	for child in fragments.get_children():
 		if child is RigidBody3D:
 			#print("[ГЕЙ МЕНЕДЖЕР] Нода осколка: ", child)
+			child.add_to_group("item")
 			child.apply_central_impulse(Vector3(
 				rng.randf_range(-3, 3),
 				rng.randf_range(-1, 3),

@@ -29,4 +29,4 @@ func value_by(peer: int) -> int:
 	var item = _taken.get(peer)
 	if item == null or not is_instance_valid(item) or item is PhysicalBone3D:
 		return 0
-	return item.item_data.value
+	return item.item_data.value if "item_data" in item else 0.0

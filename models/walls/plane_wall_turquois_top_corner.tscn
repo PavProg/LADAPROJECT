@@ -1,23 +1,25 @@
 [gd_scene format=3 uid="uid://k8h53rcvhvay"]
 
 [ext_resource type="PackedScene" uid="uid://c6hm031ljk3mn" path="res://models/blend/plane_wall_turquois_top_corner.blend" id="1_22xdd"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="2_ck7vd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_22xdd"]
-size = Vector3(2, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ck7vd"]
+size = Vector3(2, 1, 1)
 
-[node name="plane_wall_turquois_top_corner" unique_id=1372355040 instance=ExtResource("1_22xdd")]
+[node name="plane_wall_turquois_top_corner" unique_id=1706539224 instance=ExtResource("1_22xdd")]
 
-[node name="plane_wall_turqouis_top_corner" parent="." index="0" unique_id=307427669]
+[node name="plane_wall_turqouis_top_corner" parent="." index="0" unique_id=2005785148]
 surface_material_override/0 = ExtResource("2_ck7vd")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_top_corner" index="0" unique_id=1353535426]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_top_corner" index="0" unique_id=1283051783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_top_corner/StaticBody3D" index="0" unique_id=421461115]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_top_corner/StaticBody3D" index="0" unique_id=165031886]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
 shape = SubResource("BoxShape3D_22xdd")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouis_top_corner/StaticBody3D" index="1" unique_id=1022379407]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouis_top_corner/StaticBody3D" index="1" unique_id=543132564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 shape = SubResource("BoxShape3D_ck7vd")

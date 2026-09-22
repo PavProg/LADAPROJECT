@@ -21,7 +21,7 @@ var need_jump: bool = false
 var running: bool = false
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var gravity_scale: float = 1.5
-#endregion
+
 
 #region Camera vars
 @onready var camera_controller: Node3D = $CameraController
@@ -72,15 +72,20 @@ var _intent = {"move": Vector2.ZERO, "jump": false }
 
 #region take damage vars
 var _health: float = 100.0
-
 var _spectate_mode: bool = false
-var _is_death: bool = false
+@export var _is_death: bool = false
 var _spectate_camera: SpectateMode = null
 
 @onready var death_label: Label3D = $DeathLabel
 @export var timer_to_death: float = 5.0
 
 var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
+
+# revive
+@export var revive_target: CharacterBody3D = null
+@onready var revive_hold_timer: float = 0.0
+@export var revive_hold_time: float = 3.0
+@export var death_penalty: float = 0.4 # пусть 40% пока что
 #endregion
 
 #region vars for interpolations
@@ -137,7 +142,7 @@ var _grab_blend_now: float = 0.0
 func _ready() -> void:
 	data = export_data
 	_health = data.max_health
-
+	self.add_to_group("player")
 	if is_multiplayer_authority():
 		Events.local_player_spawned.emit(self)
 	
@@ -147,6 +152,7 @@ func _ready() -> void:
 	pin_joint.node_a = NodePath("")
 	pin_joint.node_b = NodePath("")
 	if is_ragdoll: start_ragdoll()
+	if _is_death: _death()
 	_set_loco(Loco.IDLE)
 	pass
 
@@ -331,6 +337,7 @@ func _physics_process(delta: float) -> void:
 			"jump": need_jump
 		})
 		movement(delta)
+		process_revive_hold(delta)
 		handle_footsteps(delta)
 		handle_landing()
 	
@@ -604,15 +611,18 @@ func _on_endurance_timer_timeout() -> void:
 
 #region TAKEDAMAGE
 func take_damage(amount: int, peer_id: int) -> void:
+	#print("take_damage")
 	if not multiplayer.is_server(): return
 	if _is_death: return
-
+	
 	_health = maxf(0.0, _health - amount)
 	_health_update.rpc(_health)
 	if _health > 0.0:
 		return
 	
 	_is_death = true
+	set_ragdoll_state(true)
+
 	if not GameManager.died_players.has(peer_id):
 		GameManager.died_players.append(peer_id)
 	
@@ -622,12 +632,12 @@ func take_damage(amount: int, peer_id: int) -> void:
 	
 	var alive_ids: Array[int] = Net.get_alive_peer_ids()
 	if alive_ids.is_empty():
+		GameManager.flag_is_death = true
 		await get_tree().create_timer(timer_to_death).timeout
+		LevelManager.go_to_hub()
 		GameManager.died_players.clear()
-		LevelManager.next_level()
 		return
 	
-	set_ragdoll_state(true)
 	_multiplayer_death.rpc_id(peer_id, alive_ids)
 	
 	for dead_id in GameManager.died_players:
@@ -641,12 +651,13 @@ func _health_update(value: float) -> void:
 		return
 	_health = value
 
-## Смерть в синглплеере
+## Смерть в синглплеере (нищете)
 func _death() -> void:
 	start_ragdoll()
 	death_label.visible = true
 	await get_tree().create_timer(timer_to_death).timeout
-	LevelManager.next_level()
+	GameManager.flag_is_death = true
+	LevelManager.go_to_hub()
 
 ## Смерть игрока в мультиплеере
 @rpc("any_peer", "call_local", "reliable")
@@ -714,10 +725,10 @@ func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
 	# Параметры запроса: включаем области (Area3D) и тела (CollisionObject3D)
 	var query := PhysicsRayQueryParameters3D.create(from, to)
 	
-	query.collision_mask = 1 | 256	# Маску здесь ставим тк хардкодим рэйкаст
+	query.collision_mask = 1 | 256 | 4096	# Маску здесь ставим тк хардкодим рэйкаст
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
-	query.exclude = [get_rid()]
+	query.exclude = [get_rid()] + exceptions
 
 	# Выполняем рейкаст
 	#if not space_state: return
@@ -727,18 +738,112 @@ func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
 		
 	return result.collider
 
+func player_of(node: Node) -> Node:
+	var n: Node = node
+	while n != null:
+		if n.is_in_group("player"):
+			return n
+		n = n.get_parent()
+	return null
+
 func try_interact(max_search_depth : int = 5) -> void:
 	var target = raycast_from_camera(data.interaction_range)
-	
-	if(target != null):
+	if(target):
 		for i in range(max_search_depth):
 			if target is Node3D:
-				if target.has_method("on_interact"):
+				var revived = player_of(target)
+				if target is PhysicalBone3D and revived and revived.has_method("start_revive_hold"):
+					start_revive_hold(revived)
+					#revived.request_revive.rpc_id(1, str(revived.name).to_int())
+					return
+				elif target.has_method("on_interact"):
 					target.on_interact()
 					# print(target.name)
 					return
 				else:
 					target = target.get_parent()
+
+func start_revive_hold(revived: CharacterBody3D) -> void:
+	print("REVIVE ---- start_revive_hold")
+	
+	if !GameManager.check_if_revive() or !GameManager.died_players.has(str(revive_target.name).to_int()) or !revive_target.is_death: # порверяем что попытки есть еще (попытки синхронизируются в момент изменения с сервером)
+		print("Unable to revive")
+		return
+
+	if revive_target == revived:
+		return # уже держим именно этого игрока
+
+	revive_target = revived
+	revive_hold_timer = 0.0
+	# Включить какой-то UI для ревайва # TODO UI
+
+func cancel_revive_hold() -> void:
+	print("REVIVE ---- cancel_revive_hold")
+	if revive_target == null:
+		return
+	revive_target = null
+	revive_hold_timer = 0.0
+	# Выключить отключить UI для ревайва # TODO UI
+
+# каждый физ кадр
+func process_revive_hold(delta: float) -> void:
+	if revive_target == null: return
+	
+	print("REVIVE -- Processing")
+	
+	if UiManager.is_game_blocked():
+		print("REVIVE -- UiManager.is_game_blocked")
+		cancel_revive_hold()
+		return
+ 
+	# отпустили кнопку
+	if not Input.is_action_pressed("interact"):
+		print("REVIVE -- is_action_pressed FALSE")
+		cancel_revive_hold()
+		return
+
+	# прицел увели с цели - тоже сбрасываем (перепроверка рейкастом)
+	var current_target = raycast_from_camera(data.interaction_range)
+	if  !current_target and player_of(current_target) != revive_target:
+		print("REVIVE -- raycast_from_camera FALSE")
+		cancel_revive_hold()
+		return
+ 
+	revive_hold_timer += delta
+ 
+	if revive_hold_timer >= revive_hold_time:
+		var revived = revive_target as CharacterBody3D
+		print("REVIVE -- Revive ended - player alive")
+		cancel_revive_hold()
+		revived.request_revive.rpc_id(1, str(revived.name).to_int())
+
+@rpc("any_peer", "call_local", "reliable")
+func request_revive(peer_id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	_is_death = false
+	if GameManager.died_players.has(peer_id):
+		GameManager.died_players.erase(peer_id)
+		print("GameManager.died_players.erase")
+	_health_update.rpc(data.max_health * death_penalty)
+	set_ragdoll_state(false)
+	GameManager.on_quote_earned(-100, peer_id)
+	GameManager.use_attempt.rpc()
+	multiplayer_revive.rpc_id(peer_id)
+
+@rpc("any_peer", "call_local", "reliable")
+func multiplayer_revive() -> void:
+	
+	print("_multiplayer_revive")
+	if not is_instance_valid(_spectate_camera): return
+	
+	print("_spectate_camera instance is valid")
+	$CameraController/Camera3D.current = true
+	death_label.visible = false
+	_spectate_camera.stop_spectating()
+	_spectate_camera.queue_free()
+	_spectate_camera = null
+	_spectate_mode = false
 
 #endregion
 
@@ -782,7 +887,7 @@ func play_footstep() -> void:
 func handle_landing() -> void:
 	if !was_on_floor and is_on_floor():
 		play_landing_sound()
-		
+
 func play_landing_sound() -> void:
 	landing_sound_player.pitch_scale = randf_range(0.97, 1.03)
 	landing_sound_player.play()

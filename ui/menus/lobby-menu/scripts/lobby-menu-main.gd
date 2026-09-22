@@ -49,7 +49,6 @@ func _ready() -> void:
 	_apply_steam_availability()
 	_show_entry()
 
-	_enet_test_autostart()	# см. регион "ТЕСТ: ENet" в конце файла
 #endregion
 
 #region КЛЮЧЕВОЕ: 3 состояния экрана
@@ -111,8 +110,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			join_popup.visible = false
 			join_button.grab_focus()
 
-	# Отладочный запуск на ENet. Реализация - в регионе "ТЕСТ: ENet" в конце файла.
-	_enet_test_input(event)
 
 func _on_group_created(code: String) -> void:
 	code_value.text = code
@@ -139,7 +136,7 @@ func _on_leave_button_pressed() -> void:
 func _on_start_button_pressed() -> void:
 	if not multiplayer.is_server():
 		return
-	LevelManager.go_to_hub()
+	LevelManager.go_to_tutor()
 
 ## Кнопка приглашения стим
 func _on_invite_button_pressed() -> void:
@@ -170,7 +167,7 @@ func _on_confirm_join_pressed() -> void:
 ## Кнопка для перехода в сингл
 func _on_single_pressed() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-	LevelManager.go_to_hub()
+	LevelManager.go_to_tutor()
 
 ## Кнопка хоста
 func _on_host_pressed() -> void:
@@ -187,56 +184,4 @@ func _on_join_pressed() -> void:
 ## Кнопка выхода
 func _on_exit_pressed() -> void:
 	get_tree().quit()
-#endregion
-
-
-#region ТЕСТ: ENet - точка входа
-# =============================================================================
-# Обвязка запуска для теста транспорта. Вся содержательная часть - в
-# autoload/net.gd, регион "ТЕСТ: ENet вместо Steam". Там же полная инструкция.
-#
-# Почему здесь, а не в main/main.gd: главная сцена проекта - lobby-menu.tscn
-# (project.godot -> run/main_scene). Файл main/main.gd ни к одной сцене не
-# подключён, его _ready и _unhandled_input не выполняются никогда.
-#
-# КЛАВИШИ (работают только в главном меню, пока не ушли в хаб)
-#   F1 - поднять ENet-хост и сразу уйти в хаб
-#   F2 - подключиться к 127.0.0.1
-# Дальше, уже в игре: F3 снимок, F4 транспорт, F5 замер трансформов.
-#
-# ЧЕРЕЗ КОМАНДНУЮ СТРОКУ (для нескольких экземпляров сразу)
-#   -- --server   поднять хост и уйти в хаб
-#   -- --client   подключиться к 127.0.0.1
-#
-# ПЕРЕД РЕЛИЗОМ регион удаляется целиком вместе с вызовом
-# _enet_test_autostart() в _ready.
-# =============================================================================
-
-func _enet_test_autostart() -> void:
-	if not OS.is_debug_build():
-		return
-	# Двойное "--" обязательно при запуске из консоли, иначе Godot
-	# разберёт аргументы сам и до нас они не дойдут.
-	var args := OS.get_cmdline_args()
-	if "--server" in args:
-		Net.host_game_enet()
-		# Без загрузки уровня никто не пришлёт _ack_ready и спавна не будет.
-		# В боевом сценарии это делает кнопка "Начать игру".
-		LevelManager.go_to_hub()
-	elif "--client" in args:
-		Net.join_game_enet("127.0.0.1")
-
-
-## Зовётся из основного _unhandled_input выше - отдельного объявления
-## лайфсайкл-метода здесь быть не должно, он в файле уже есть.
-func _enet_test_input(event: InputEvent) -> void:
-	if not OS.is_debug_build():
-		return
-	if event.is_action_pressed("host"):		# F1
-		status_label.text = "ENet: поднимаем хост..."
-		Net.host_game_enet()
-		LevelManager.go_to_hub()
-	elif event.is_action_pressed("join"):	# F2
-		status_label.text = "ENet: подключаемся к 127.0.0.1..."
-		Net.join_game_enet("127.0.0.1")
 #endregion

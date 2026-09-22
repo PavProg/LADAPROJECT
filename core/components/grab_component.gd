@@ -29,17 +29,18 @@ func _physics_process(_delta: float) -> void:
 
 	if Input.is_action_just_pressed("grab"):
 		if item:
+			#print(item)
 			_request_grab.rpc_id(1, item.get_path())   # просим ХОСТА (id 1)
 			owner.set_grab_blend_amount(1.0)
 			
 			_grab_target = item
-			if _grab_target is RigidBody3D: _grab_target.set_durability_label_visibility(true)
+			if _grab_target is RigidBody3D and _grab_target.has_method("set_durability_label_visibility"): _grab_target.set_durability_label_visibility(true)
 			Events.local_item_held_changed.emit(item)
 	elif Input.is_action_just_released("grab"):
 		_request_release.rpc_id(1)
 		owner.set_grab_blend_amount(0.0)
 		if _grab_target:
-			if _grab_target is RigidBody3D: _grab_target.set_durability_label_visibility(false)
+			if _grab_target is RigidBody3D and _grab_target.has_method("set_durability_label_visibility"): _grab_target.set_durability_label_visibility(false)
 			_grab_target = null
 			Events.local_item_held_changed.emit(null)
 
@@ -78,8 +79,9 @@ func _aim_item() -> Node:
 			return hit.collider
 			
 		elif hit.collider is PhysicalBone3D:
+			#print("PhysicalBone3D")
 			var victim := _player_of(hit.collider)
-			if victim == null or not victim.is_ragdoll:
+			if victim == null:
 				return null
 			return hit.collider
 
@@ -94,10 +96,10 @@ func _request_grab(item_path: NodePath) -> void:
 	var who := get_multiplayer_authority()   # id владельца этого GrabComponent = кто просит
 	# если хватаем объект
 	if grabbed_object and grabbed_object.is_in_group("item"):
-		grabbed_object.enable_gravity(true)
+		if grabbed_object.has_method("enable_gravity"): grabbed_object.enable_gravity(true)
 		owner.try_grab(grabbed_object)
 		_held_object = grabbed_object
-		grabbed_object.play_sound()
+		if grabbed_object.has_method("play_sound"): grabbed_object.play_sound()
 		Events.item_grabbed.emit(grabbed_object, who)
 		pass
 	# если хватаем рэгдол игрока
@@ -105,8 +107,9 @@ func _request_grab(item_path: NodePath) -> void:
 		var victim := _player_of(grabbed_object)
 		# Состояние проверяет СЕРВЕР. Проверка в _aim_item клиентская
 		# и нужна для прицеливания, а не для доверия.
-		if victim == null or not victim.is_ragdoll: return
-		if victim == owner: return
+		if victim == null or victim == owner: return
+
+		victim.set_ragdoll_state(true)
 		owner.try_grab(grabbed_object)
 		_held_object = grabbed_object
 		_held_victim = victim

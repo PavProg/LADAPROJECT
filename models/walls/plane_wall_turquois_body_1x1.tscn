@@ -1,17 +1,18 @@
 [gd_scene format=3 uid="uid://b4tph26jf7o13"]
 
 [ext_resource type="PackedScene" uid="uid://dft6ku46qsrk3" path="res://models/blend/plane_wall_turquois_body_1x1.blend" id="1_21joe"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="2_7n6p4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rns16"]
-size = Vector3(1, 3, 1)
+size = Vector3(0.99999994, 3, 1)
 
-[node name="plane_wall_turquois_body_1x1" unique_id=1092900510 instance=ExtResource("1_21joe")]
+[node name="plane_wall_turquois_body_1x1" unique_id=1163236507 instance=ExtResource("1_21joe")]
 
-[node name="plane_wall_turqouis_body_1x1" parent="." index="0" unique_id=2001587598]
+[node name="plane_wall_turqouis_body_1x1" parent="." index="0" unique_id=167894748]
 surface_material_override/0 = ExtResource("2_7n6p4")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_body_1x1" index="0" unique_id=34175693]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_body_1x1" index="0" unique_id=751626126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4999999, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_body_1x1/StaticBody3D" index="0" unique_id=1512493097]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_body_1x1/StaticBody3D" index="0" unique_id=1341594766]
 shape = SubResource("BoxShape3D_rns16")

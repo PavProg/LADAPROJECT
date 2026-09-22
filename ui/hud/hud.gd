@@ -49,6 +49,7 @@ func _process(_delta: float) -> void:
 		staminaValue.text = "%d " % player.data.endurance
 		staminaSuffix.text = "/ %d" % player.data.max_endurance
 		prevStamina = int(player.data.endurance)
+
 func set_player(new_player):
 	player = new_player
 	is_holding = false

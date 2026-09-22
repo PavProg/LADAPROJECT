@@ -1,9 +1,9 @@
 extends Node
 
-const HUB := "res://levels/hub/hub.tscn"
+const HUB := "res://levels/hub/hub_old.tscn"
+const TUTORIAL := "res://levels/hub/hub.tscn"
 const RUNS := [
-	"res://levels/run_XX/run_level_1.tscn",
-	"res://levels/hub/hub_old.tscn"
+	"res://levels/run_XX/run_level_1.tscn"	# Первый уровень
 ]
 
 ## Отладочные принты
@@ -15,6 +15,9 @@ const STATE_HEARTBEAT := 3.0
 var current_scene_path: String = ""
 var _run_index: int = -1
 var _content_spawned: bool = false
+
+## Флаг текущего уровня туториала
+var is_tutor: bool = false
 
 ## Номер загрузки уровня, растёт на каждый _load
 var epoch: int = 0
@@ -69,19 +72,29 @@ func go_to_hub() -> void:
 	if not multiplayer.is_server():
 		return
 	_run_index = -1
+	is_tutor = false
 	_load(HUB)
 
-func start_first_run() -> void:
+func go_to_tutor() -> void:
 	if not multiplayer.is_server():
 		return
-	_run_index = 0
-	_load(RUNS[0])
+	is_tutor = true
+	_load(TUTORIAL)
+
+# func start_first_run() -> void:
+# 	if not multiplayer.is_server():
+# 		return
+# 	_run_index = 0
+# 	_load(RUNS[0])
 
 func next_level() -> void:
 	if not multiplayer.is_server():
 		return
-	GameManager.on_level_end()
+	if _run_index != 0:
+		GameManager.on_level_end()
+	print_rich("[color=red] [DEBUG] requared_quate_next_level: ", GameManager.required_quote_next_level, "; death flag: ", GameManager.flag_is_death)
 	_run_index += 1
+	is_tutor = false
 	if _run_index >= RUNS.size():
 		go_to_hub()
 	else:
@@ -134,6 +147,7 @@ func _ack_ready(peer_id: int) -> void:
 		_dbg("ack от %d принят, но сервер ещё грузится - рассылка отложена" % peer_id)
 		return
 
+	GameManager.on_level_start(GameManager.required_quote_next_level)
 	_sync_all_peers()
 
 func _spawn_level_content() -> void:
@@ -141,7 +155,7 @@ func _spawn_level_content() -> void:
 	Net.spawn_content()
 	if _run_index >= 0:
 		Net.spawn_enemies()
-	GameManager.on_level_start(GameManager.required_quote_next_level)
+	# GameManager.on_level_start(GameManager.required_quote_next_level)
 	_dbg("контент уровня заспавнен (run_index=%d)" % _run_index)
 
 ## Приводит ВСЕХ к текущему состоянию.

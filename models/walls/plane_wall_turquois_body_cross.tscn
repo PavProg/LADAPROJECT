@@ -1,24 +1,25 @@
 [gd_scene format=3 uid="uid://c6vsvb88l7myo"]
 
 [ext_resource type="PackedScene" uid="uid://bgmpd08rddghq" path="res://models/blend/plane_wall_turquois_body_cross.blend" id="1_fxjlp"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_tw1cs"]
-size = Vector3(3, 3, 1)
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="2_j355d"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fxjlp"]
-size = Vector3(3, 3, 1)
+size = Vector3(2.9999993, 3, 1)
 
-[node name="plane_wall_turquois_body_cross" unique_id=1035730940 instance=ExtResource("1_fxjlp")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_j355d"]
+size = Vector3(1, 3, 3)
 
-[node name="plane_wall_turqouis_body_cross" parent="." index="0" unique_id=1184968744]
+[node name="plane_wall_turquois_body_cross" unique_id=624990002 instance=ExtResource("1_fxjlp")]
+
+[node name="plane_wall_turqouis_body_cross" parent="." index="0" unique_id=413718939]
 surface_material_override/0 = ExtResource("2_j355d")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_body_cross" index="0" unique_id=552454149]
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouis_body_cross" index="0" unique_id=1529274571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4999999, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_body_cross/StaticBody3D" index="0" unique_id=828298949]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-shape = SubResource("BoxShape3D_tw1cs")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouis_body_cross/StaticBody3D" index="1" unique_id=1032586480]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.5, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouis_body_cross/StaticBody3D" index="0" unique_id=2095553298]
 shape = SubResource("BoxShape3D_fxjlp")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouis_body_cross/StaticBody3D" index="1" unique_id=1520153452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5762787e-07, 0, 0)
+shape = SubResource("BoxShape3D_j355d")

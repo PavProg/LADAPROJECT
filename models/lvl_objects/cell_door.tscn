@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b5gnh8a8yyhju"]
+
+[ext_resource type="PackedScene" uid="uid://62722b2utm2q" path="res://models/blend/cell-door.blend" id="1_yl4x0"]
+[ext_resource type="Material" uid="uid://dt02cfj7j6upb" path="res://models/materials/walls/steel.tres" id="2_26k5g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_26k5g"]
+size = Vector3(2, 4, 0.2)
+
+[node name="cell-door" unique_id=2028243744 instance=ExtResource("1_yl4x0")]
+
+[node name="VerticalRod" parent="." index="0" unique_id=663540506]
+surface_material_override/0 = ExtResource("2_26k5g")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="VerticalRod" index="0" unique_id=970294874]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9743524, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VerticalRod/StaticBody3D" index="0" unique_id=453283759]
+shape = SubResource("BoxShape3D_26k5g")

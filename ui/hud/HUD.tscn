@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://wbqpqvauk2lv" path="res://ui/hud/damage_popup.tscn" id="6_o2lis"]
 [ext_resource type="Texture2D" uid="uid://dn4jpqumbbu00" path="res://ui/icons/hp-heart-icon-512.png" id="7_aixkq"]
 [ext_resource type="Texture2D" uid="uid://b1fnihlw0l4qa" path="res://ui/icons/stamina-icon-512.png" id="8_cxhb7"]
+[ext_resource type="Texture2D" uid="uid://23cyc7uyo07u" path="res://ui/icons/explosion-icon-512-dollar.png" id="9_cxhb7"]
 
 [node name="Hud" type="Control" unique_id=1916678595 node_paths=PackedStringArray("damageFeed")]
 layout_mode = 3
@@ -105,11 +106,19 @@ theme_override_constants/margin_right = 50
 [node name="HBoxContainer" type="HBoxContainer" parent="Quota" unique_id=1297509015]
 layout_mode = 2
 
+[node name="TextureRect" type="TextureRect" parent="Quota/HBoxContainer" unique_id=1657901904]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("9_cxhb7")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Caption" type="Label" parent="Quota/HBoxContainer" unique_id=230858644]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0.20392157, 1)
 theme_override_constants/outline_size = 12
-text = "QUOTA: "
+text = ": "
 
 [node name="Value" type="Label" parent="Quota/HBoxContainer" unique_id=1287765924]
 custom_minimum_size = Vector2(215, 0)

@@ -1,20 +1,25 @@
 [gd_scene format=3 uid="uid://5vkp60hsb3kj"]
 
 [ext_resource type="PackedScene" uid="uid://qbd5oq6pwcjt" path="res://models/blend/plane_wall_turquois_top_T-cross.blend" id="1_356u6"]
+[ext_resource type="Material" uid="uid://dehfeiiji6js2" path="res://models/materials/walls/wall.tres" id="2_ucfey"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_356u6"]
 size = Vector3(3, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ucfey"]
 
-[node name="plane_wall_turquois_top_T-cross" unique_id=1605752393 instance=ExtResource("1_356u6")]
+[node name="plane_wall_turquois_top_T-cross" unique_id=316372282 instance=ExtResource("1_356u6")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouise_top_T-cross" parent_id_path=PackedInt32Array(789463821) index="0" unique_id=1457277091]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+[node name="plane_wall_turqouise_top_T-cross" parent="." index="0" unique_id=652955620]
+surface_material_override/0 = ExtResource("2_ucfey")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouise_top_T-cross/StaticBody3D" index="0" unique_id=225248102]
+[node name="StaticBody3D" type="StaticBody3D" parent="plane_wall_turqouise_top_T-cross" index="0" unique_id=1178296558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.40000004)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane_wall_turqouise_top_T-cross/StaticBody3D" index="0" unique_id=513191023]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4)
 shape = SubResource("BoxShape3D_356u6")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouise_top_T-cross/StaticBody3D" index="1" unique_id=688496606]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="plane_wall_turqouise_top_T-cross/StaticBody3D" index="1" unique_id=815817244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
 shape = SubResource("BoxShape3D_ucfey")
