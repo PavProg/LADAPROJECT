@@ -3,7 +3,7 @@ extends BTAction
 
 ## РПадиус блуждания вокруг текущей позиции врага. 0 - всяф карта, точка ставится рандомно на навмеше.
 ## Если нужно поставить врагов в комнат, меняется wander_radius > 0
-@export var wander_radius: float = 0.0
+@export var wander_radius: float = 0.5
 ## Пауза на достигнутой точке
 @export var idle_time: float = 1.5
 
@@ -46,10 +46,25 @@ func _pick_point(e : Enemy) -> Vector3:
 	if not map.is_valid():
 		return Vector3.INF
 	
+	var zone: CollisionShape3D = blackboard.get_var("patrol_zone", null, false)
+
+	if zone:
+		var point := _random_point_in_shape(zone)
+		return NavigationServer3D.map_get_closest_point(map, point)
+
+	# print_rich("[color=red] [DEBUG] Точка патруля по зоне не выбрана!")
+	
 	# Если радиус нулевой спавним рандомно по ВСЕЙ карте
-	if wander_radius <= 0.0:
+	if wander_radius <= 0.0 or zone != null:
 		return NavigationServer3D.map_get_random_point(map, e.agent.navigation_layers, true)
 	
 	# Точка в радиусе врага + смещение
 	var offset := Vector3(randf_range(-wander_radius, wander_radius), 0.0, randf_range(-wander_radius, wander_radius))
 	return NavigationServer3D.map_get_closest_point(map, e.global_position + offset)
+
+func _random_point_in_shape(zone: CollisionShape3D) -> Vector3:
+	var shape := zone.shape as BoxShape3D
+	var rad_shape: Vector3 = shape.size * 0.5
+	var local_point := Vector3(randf_range(-rad_shape.x, rad_shape.x), 0.0, randf_range(-rad_shape.z, rad_shape.z))
+
+	return zone.global_transform * local_point

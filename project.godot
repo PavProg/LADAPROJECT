@@ -28,7 +28,7 @@ UiManager="*uid://chajrqh2vftcf"
 [display]
 
 window/size/viewport_width=2800
-window/size/viewport_height=1600
+window/size/viewport_height=1800
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"

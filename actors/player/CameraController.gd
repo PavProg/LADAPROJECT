@@ -16,8 +16,8 @@ func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): 
 		return                       # мышь обрабатываем только у своего игрока
 		
-	if event.is_action_pressed("mouse_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	#if event.is_action_pressed("mouse_cancel"):
+		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
 	if player.is_ragdoll:
 		if player.is_spectating():

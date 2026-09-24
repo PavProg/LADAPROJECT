@@ -6,6 +6,7 @@ extends Control
 @onready var join_button: Button = $EntryPanel/MenuButtonsContainer/JoinButton
 @onready var exit_button: Button = $EntryPanel/MenuButtonsContainer/ExitButton
 @onready var single_button: Button = $EntryPanel/MenuButtonsContainer/SinglePlayer
+@onready var tutorial_button: Button = $EntryPanel/MenuButtonsContainer/Tutorial
 
 @onready var join_popup: Panel = $JoinGamePopup
 @onready var uid_box: LineEdit = $JoinGamePopup/VBoxContainer/MarginContainer/UIDEnterBox
@@ -30,6 +31,7 @@ func _ready() -> void:
 	join_button.pressed.connect(_on_join_pressed)
 	exit_button.pressed.connect(_on_exit_pressed)
 	single_button.pressed.connect(_on_single_pressed)
+	tutorial_button.pressed.connect(_on_tutor_pressed)
 	
 	confirm_join.pressed.connect(_on_confirm_join_pressed)
 	cancel_join.pressed.connect(_on_cancel_join_pressed)
@@ -136,7 +138,8 @@ func _on_leave_button_pressed() -> void:
 func _on_start_button_pressed() -> void:
 	if not multiplayer.is_server():
 		return
-	LevelManager.go_to_tutor()
+	Net.is_peer_active = false
+	LevelManager.go_to_hub()
 
 ## Кнопка приглашения стим
 func _on_invite_button_pressed() -> void:
@@ -167,6 +170,14 @@ func _on_confirm_join_pressed() -> void:
 ## Кнопка для перехода в сингл
 func _on_single_pressed() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	Net.is_peer_active = false
+	LevelManager.go_to_hub()
+
+## Кнопка нажатия на тутор. Пока что на туториал можно перейти ТОЛЬКО по кнопке.
+## При старте игры игрок попадает в хаб!!
+func _on_tutor_pressed() -> void:
+	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	Net.is_peer_active = false
 	LevelManager.go_to_tutor()
 
 ## Кнопка хоста

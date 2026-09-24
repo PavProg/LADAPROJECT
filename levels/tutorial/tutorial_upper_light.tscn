@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://2x66fxk3lrrj"]
+
+[node name="SpotLight3D" type="SpotLight3D" unique_id=1831568246]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_color = Color(0.9999998, 0.8385138, 0.70596105, 1)
+light_energy = 2.797
+spot_range = 6.013
+spot_attenuation = 0.96

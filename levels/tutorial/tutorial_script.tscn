@@ -1,0 +1,323 @@
+[gd_scene format=3 uid="uid://cf72vx2fpi2gf"]
+
+[ext_resource type="Script" uid="uid://bf0ws080540f5" path="res://levels/tutorial/tutorial_script.gd" id="1_wtoek"]
+[ext_resource type="Script" uid="uid://d0euuyp4ebkod" path="res://levels/tutorial/TutorialSteps/tutorial_WASD.gd" id="2_7uutg"]
+[ext_resource type="Theme" uid="uid://cikpbqcqce4x7" path="res://ui/hud/hud_theme.tres" id="2_bcggs"]
+[ext_resource type="Script" uid="uid://lsjdotw6pled" path="res://levels/tutorial/TutorialSteps/tutorial_step.gd" id="2_pfrm3"]
+[ext_resource type="Script" uid="uid://ck1qovtgnwfcc" path="res://ui/tutorialUI/NewTutorialUI/tutorial_dialogue.gd" id="2_say44"]
+[ext_resource type="Script" uid="uid://bbubkrnccimhx" path="res://ui/AutoSizedLabel.gd" id="3_bcggs"]
+[ext_resource type="Script" uid="uid://ddfdynjd5utuv" path="res://levels/tutorial/TutorialSteps/tutorial_initial.gd" id="5_lsovw"]
+[ext_resource type="Script" uid="uid://bni7mkf47w27x" path="res://levels/tutorial/TutorialSteps/tutorial_move_to_next_zone.gd" id="7_5ekf0"]
+[ext_resource type="Script" uid="uid://sx4yupstk4na" path="res://levels/tutorial/TutorialSteps/tutorial_shift.gd" id="8_nn7sf"]
+[ext_resource type="Script" uid="uid://deujhg30akwcf" path="res://levels/tutorial/TutorialSteps/tutorial_space.gd" id="9_kguwj"]
+[ext_resource type="Script" uid="uid://q570jmloxcoj" path="res://levels/tutorial/TutorialSteps/tutorial_r.gd" id="10_wcwc0"]
+[ext_resource type="Script" uid="uid://ij65ntmy5vas" path="res://levels/tutorial/TutorialSteps/tutorial_grab_item.gd" id="11_gn7ym"]
+[ext_resource type="Script" uid="uid://c22klsddtir1g" path="res://levels/tutorial/TutorialSteps/tutorial_break_item.gd" id="13_w8bqu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38saq"]
+bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tw1cs"]
+bg_color = Color(1, 0.49803922, 0, 1)
+
+[node name="TutorialScript" type="Node" unique_id=1061703928 node_paths=PackedStringArray("steps", "dialogue", "area_sens_steps")]
+script = ExtResource("1_wtoek")
+steps = [NodePath("Steps/Initial"), NodePath("Steps/WASD"), NodePath("Steps/MoveToNextZone"), NodePath("Steps/Shift"), NodePath("Steps/Space"), NodePath("Steps/R"), NodePath("Steps/MoveToNextZone2"), NodePath("Steps/GrabItem"), NodePath("Steps/MoveToNextZone3"), NodePath("Steps/BreakItem"), NodePath("Steps/MoveToNextZone4"), NodePath("Steps/Escape")]
+dialogue = NodePath("TutorialDialogue")
+area_sens_steps = [NodePath("Steps/MoveToNextZone"), NodePath("Steps/MoveToNextZone2"), NodePath("Steps/MoveToNextZone3"), NodePath("Steps/MoveToNextZone4")]
+metadata/_custom_type_script = "uid://bf0ws080540f5"
+
+[node name="TutorialDialogue" type="Control" parent="." unique_id=959935020 node_paths=PackedStringArray("dialogues", "task_progress_bar")]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_bcggs")
+script = ExtResource("2_say44")
+dialogues = [NodePath("DialoguePanel/Dialogues/Initial"), NodePath("DialoguePanel/Dialogues/MoveToNextZone"), NodePath("DialoguePanel/Dialogues/WASD"), NodePath("DialoguePanel/Dialogues/Shift"), NodePath("DialoguePanel/Dialogues/Space"), NodePath("DialoguePanel/Dialogues/R"), NodePath("DialoguePanel/Dialogues/GrabItem"), NodePath("DialoguePanel/Dialogues/GrabPlayer"), NodePath("DialoguePanel/Dialogues/BreakItem"), NodePath("DialoguePanel/Dialogues/Escape")]
+task_progress_bar = NodePath("DialoguePanel/Progress/ProgressBar")
+metadata/_custom_type_script = "uid://ck1qovtgnwfcc"
+
+[node name="DialoguePanel" type="Panel" parent="TutorialDialogue" unique_id=1612532008]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1758572
+anchor_top = 0.70092595
+anchor_right = 0.8241428
+anchor_bottom = 0.915
+offset_left = -0.40014648
+offset_right = 0.39990234
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Dialogues" type="Control" parent="TutorialDialogue/DialoguePanel" unique_id=35891649]
+layout_mode = 1
+anchor_left = 0.025
+anchor_top = 0.2
+anchor_right = 0.975
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Initial" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=1408612341]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Finaly! You are alive. Now, you will help me to bring my revenge."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="MoveToNextZone" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=728635209]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Go to the next room."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="WASD" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=1300354678]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Try to move around, using WASD."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Shift" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=1741105377]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Press Shift to run faster."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Space" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=539037501]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Press Space to jump."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="R" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=1040077640]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Use R to fall into relaxed form."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="GrabItem" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=1172009288]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 74
+text = "You can grab other items, using Left Mouse. Go and move this vase to another platform."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="GrabPlayer" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=1113530675]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "You can also grab your brothers. Bring this one to the platform."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="BreakItem" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=2136321248]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 82
+text = "I've created you to destroy all there art. Try to break this \"art\" by throwing it."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Escape" type="Label" parent="TutorialDialogue/DialoguePanel/Dialogues" unique_id=575969312]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Now its time to bring them destruction for my sake!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("3_bcggs")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Progress" type="Panel" parent="TutorialDialogue/DialoguePanel" unique_id=371461597]
+clip_children = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.12705427
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_38saq")
+metadata/_edit_use_anchors_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="TutorialDialogue/DialoguePanel/Progress" unique_id=1183014391]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_tw1cs")
+value = 55.0
+show_percentage = false
+
+[node name="Steps" type="Node" parent="." unique_id=641047748]
+
+[node name="Initial" type="Node" parent="Steps" unique_id=1747256553 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("5_lsovw")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/Initial")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="WASD" type="Node" parent="Steps" unique_id=1549931001 node_paths=PackedStringArray("dialougue", "step_dialogue")]
+script = ExtResource("2_7uutg")
+dialougue = NodePath("../../TutorialDialogue")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/WASD")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="MoveToNextZone" type="Node" parent="Steps" unique_id=1254381685 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("7_5ekf0")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/MoveToNextZone")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="Shift" type="Node" parent="Steps" unique_id=1361006565 node_paths=PackedStringArray("dialougue", "step_dialogue")]
+script = ExtResource("8_nn7sf")
+dialougue = NodePath("../../TutorialDialogue")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/Shift")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="Space" type="Node" parent="Steps" unique_id=1690905042 node_paths=PackedStringArray("dialougue", "step_dialogue")]
+script = ExtResource("9_kguwj")
+dialougue = NodePath("../../TutorialDialogue")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/Space")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="R" type="Node" parent="Steps" unique_id=1102459555 node_paths=PackedStringArray("dialougue", "step_dialogue")]
+script = ExtResource("10_wcwc0")
+dialougue = NodePath("../../TutorialDialogue")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/R")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="MoveToNextZone2" type="Node" parent="Steps" unique_id=1375878828 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("7_5ekf0")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/MoveToNextZone")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="GrabItem" type="Node" parent="Steps" unique_id=197983854 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("11_gn7ym")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/GrabItem")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="GrabPlayer" type="Node" parent="Steps" unique_id=1611440555 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("2_pfrm3")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/GrabPlayer")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="MoveToNextZone3" type="Node" parent="Steps" unique_id=694166533 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("7_5ekf0")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/MoveToNextZone")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="BreakItem" type="Node" parent="Steps" unique_id=1609678995 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("13_w8bqu")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/BreakItem")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="MoveToNextZone4" type="Node" parent="Steps" unique_id=1767211173 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("7_5ekf0")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/MoveToNextZone")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="Escape" type="Node" parent="Steps" unique_id=492783963 node_paths=PackedStringArray("step_dialogue")]
+script = ExtResource("2_pfrm3")
+step_dialogue = NodePath("../../TutorialDialogue/DialoguePanel/Dialogues/Escape")
+metadata/_custom_type_script = "uid://lsjdotw6pled"
+
+[node name="Timer" type="Timer" parent="." unique_id=1071917874]
+one_shot = true

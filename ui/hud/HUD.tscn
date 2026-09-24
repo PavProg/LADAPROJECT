@@ -35,6 +35,8 @@ offset_bottom = 100.0
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 
+[node name="Tutorial" parent="Stats" unique_id=136018050 instance=ExtResource("6_kwc50")]
+
 [node name="VBoxContainer" type="VBoxContainer" parent="Stats" unique_id=407975416]
 layout_mode = 2
 
@@ -166,8 +168,6 @@ pivot_offset = Vector2(20, 20)
 [node name="CrosshairTexture" type="TextureRect" parent="Crosshair" unique_id=1308377777]
 layout_mode = 2
 texture = ExtResource("3_e0nub")
-
-[node name="Tutorial" parent="." unique_id=136018050 instance=ExtResource("6_kwc50")]
 
 [node name="QuotaDamageFeed" type="Control" parent="." unique_id=1056827844]
 custom_minimum_size = Vector2(200, 60)

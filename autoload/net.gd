@@ -103,6 +103,9 @@ var _relay_recv: int = 0
 var _relay_batch: int = 0
 var _relay_recv_msec: int = 0
 
+## Флаг для релея. Должен ли быть пир активным.
+## Чтобы не считывать каждый тик пустые значения.
+var is_peer_active: bool = false
 
 func _process(delta: float) -> void:
 	_relay_tick(delta)
@@ -111,6 +114,7 @@ func _process(delta: float) -> void:
 
 ## Сервер собирает трансформы всех игроков и шлёт их клиентам одним пакетом
 func _relay_tick(delta: float) -> void:
+	if is_peer_active: return
 	if not multiplayer.is_server(): return
 	if not is_net_active(): return
 	if spawned_ids.is_empty(): return
@@ -410,9 +414,15 @@ func spawn_enemies() -> void:
 	for m in marks.get_children():
 		if m is EnemyMark:
 			var scene: PackedScene = m.forced_enemy if m.forced_enemy else ENEMY_RAT
-			_server_spawn_enemies(scene.resource_path, m.global_position, m.global_rotation.y)
+			var enemy_node := _server_spawn_enemies(scene.resource_path, m.global_position, m.global_rotation.y)
+			if enemy_node == null:
+				continue
+			if m.patrol_zone != null:
+				enemy_node._setup_blackboard_vars(m.patrol_zone)
+			else:
+				print_rich("[color=yellow] [Warning] Отсутсвует зона патруля!!!")
 
-## сервер спавнит врагов
+## сервер спавнит врага
 func _server_spawn_enemies(scene_path: String, pos: Vector3, yaw: float = 0.0) -> Node:
 	if not multiplayer.is_server(): return
 	
@@ -539,7 +549,13 @@ func spectate_retarget(alive_ids: Array) -> void:
 	me.retarget_spectate(alive_ids)
 #endregion
 
-
+## Функция для чистки игровых пиров, чтобы не наслаивать их друг на друга.
+## Речь о пире формата SteamMultiplayerPeer и тп.
+## Используется ТОЛЬКО в одном месте в туториале, для выхода в меню.
+func clear_peer_for_exit() -> void:
+	is_peer_active = true
+	multiplayer.multiplayer_peer = null
+	peer = null
 
 #region debug
 func _players_cont() -> Node:
@@ -565,15 +581,6 @@ func _input(event: InputEvent) -> void:
 		KEY_F5: start_transform_probe()		# см. регион ТЕСТ ENET ниже
 
 ## F3 - полный локальный снимок. Жать НА КАЖДОЙ машине и сравнивать вывод.
-##
-## Как читать результат:
-##  - Списки spawned_ids разошлись между машинами -> проблема в СПАВНЕ,
-##    смотри строки "ОТБРОШЕН"/"ОТЛОЖЕН" выше по логу.
-##  - Списки совпали, узлы у всех есть, но pos чужого игрока НЕ МЕНЯЕТСЯ
-##    от дампа к дампу -> спавн исправен, не доезжают ТРАНСФОРМЫ.
-##    Это уже вопрос транспорта, а не этого файла (тест на ENet).
-##  - "моя видимость для" короче spawned_ids -> гейт видимости закрыл
-##    синхронизатор от того, кого в списке нет.
 func dump_state() -> void:
 	var me := _me()
 	print("\n========== [NET DUMP] пир %d ==========" % me)
@@ -642,23 +649,7 @@ func _count_in(container_name: String) -> String:
 #endregion
 
 
-#region ТЕСТ: ENet вместо Steam + проверка доставки трансформов
-# =============================================================================
-# ЗАЧЕМ ЭТО НУЖНО
-#
-#   Steam-транспорт у нас звезда: клиенты соединены ТОЛЬКО с хостом, между
-#   собой - нет. Чтобы пакет от клиента А дошёл до клиента Б, сервер обязан
-#   его ПЕРЕСЛАТЬ (за это отвечает SceneMultiplayer.server_relay).
-#
-#   Если пересылки нет, симптом маскируется под баг спавна: узлы у всех есть,
-#   состав сходится, а чужие игроки стоят на месте. И проявляется это ТОЛЬКО
-#   с третьего пира - при двоих пары "клиент-клиент" просто не существует,
-#   поэтому вдвоём всё выглядит рабочим.
-#
-#   ENet пересылку умеет гарантированно. Значит он здесь - КОНТРОЛЬНЫЙ ОБРАЗЕЦ:
-#   если на ENet трое видят друг друга, а на Steam нет, то виноват транспорт,
-#   и переписывать игровой код бессмысленно.
-#
+#region ТЕСТ: проверка доставки трансформов
 # КАК ПОЛЬЗОВАТЬСЯ
 #
 #   F1 - поднять ENet-хост и уйти в хаб   (обработка в main/main.gd)
@@ -675,54 +666,15 @@ func _count_in(container_name: String) -> String:
 #   4. На КЛИЕНТЕ Б нажать F5 и в эти 5 секунд побегать КЛИЕНТОМ А.
 #   5. Прочитать вердикт замера.
 #
-# ЧТО ЗНАЧИТ РЕЗУЛЬТАТ
-#
-#   Двигаются все            -> транспорт исправен, трансформы ходят.
-#   Хост двигается, клиент нет -> НЕ РАБОТАЕТ ПЕРЕСЫЛКА между клиентами.
-#                                 Это и есть искомая причина, дальше F4.
-#   Не двигается никто       -> пир не соединён либо сцена другая, смотри F3.
-#
 # ЧЕГО ЭТИМ НЕ ПРОВЕРИТЬ
 #   Устойчивость к потерям пакетов: три экземпляра на одной машине общаются
 #   через loopback, где потерь и задержек нет. Замер отвечает только на вопрос
 #   "доходит ли в принципе".
-#
-# ПЕРЕД РЕЛИЗОМ весь регион можно удалить - на игровую логику он не влияет.
-# Вместе с ним удаляются ветки F1/F2 в main/main.gd.
-# =============================================================================
-
-## Порт для отладочного ENet. Steam использует NetworkSteam.VIRTUAL_PORT и его не трогаем.
-const ENET_PORT := 7777
 
 var _probe_active: bool = false
 var _probe_left: float = 0.0
 var _probe_start: Dictionary = {}	# peer_id -> Vector3 в начале замера
 var _probe_max: Dictionary = {}		# peer_id -> максимальное отклонение за замер
-
-
-## ОТЛАДКА. Поднять хост на ENet вместо Steam.
-func host_game_enet(max_clients: int = 4) -> Error:
-	var p := ENetMultiplayerPeer.new()
-	var err := p.create_server(ENET_PORT, max_clients)
-	if err != OK:
-		push_error("[ENET] Сервер не поднялся: %s" % error_string(err))
-		return err
-	multiplayer.multiplayer_peer = p
-	transport_report()
-	return OK
-
-
-## ОТЛАДКА. Подключиться к ENet-хосту.
-func join_game_enet(host_ip: String = "127.0.0.1") -> Error:
-	var p := ENetMultiplayerPeer.new()
-	var err := p.create_client(host_ip, ENET_PORT)
-	if err != OK:
-		push_error("[ENET] Клиент не создан: %s" % error_string(err))
-		return err
-	multiplayer.multiplayer_peer = p
-	transport_report()
-	return OK
-
 
 ## F4. Какой транспорт поднят и умеет ли он пересылку между клиентами.
 func transport_report() -> void:

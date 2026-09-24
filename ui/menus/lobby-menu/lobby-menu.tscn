@@ -45,6 +45,10 @@ theme_override_constants/separation = 8
 layout_mode = 2
 text = "Lobby"
 
+[node name="Tutorial" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=942576857]
+layout_mode = 2
+text = "Tutorial"
+
 [node name="SinglePlayer" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=296002533]
 layout_mode = 2
 text = "Single Player"

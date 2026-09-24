@@ -1,10 +1,11 @@
 extends Node
 
 const HUB := "res://levels/hub/hub_old.tscn"
-const TUTORIAL := "res://levels/hub/hub.tscn"
+const TUTORIAL := "res://levels/tutorial/tutorial_lvl.tscn"
 const RUNS := [
 	"res://levels/run_XX/run_level_1.tscn"	# Первый уровень
 ]
+const MAIN_MENU: String = "res://ui/menus/lobby-menu/lobby-menu.tscn"
 
 ## Отладочные принты
 const DEBUG := true
@@ -117,16 +118,21 @@ func _load(path: String) -> void:
 func change_scene(path: String, new_epoch: int) -> void:
 	epoch = new_epoch
 	Net.begin_epoch(new_epoch)	# локальные реестры обнуляются ДО загрузки сцены
-
+	
+	if path == MAIN_MENU:
+		UiManager.clear_game_ui()
+	
 	get_tree().change_scene_to_file(path)
 
 	# Гоняем цикл пока ВСЕ не будет загружено на уровень
 	while get_tree().current_scene == null or get_tree().current_scene.scene_file_path != path:
 		await get_tree().process_frame
 	await get_tree().process_frame
-
+	
 	Net.apply_pending_state()
-
+	
+	if path == MAIN_MENU:
+		return
 	_ack_ready.rpc_id(1, multiplayer.get_unique_id())
 #endregion
 

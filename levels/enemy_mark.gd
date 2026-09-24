@@ -8,3 +8,5 @@ extends Marker3D
 # Предмет, который должен лежать по этим координатам
 # Если пусто - спавнер кидает рандомный предмет из соответствующего набора
 @export var forced_enemy : PackedScene
+## Зона патруля для крысы
+@export var patrol_zone: CollisionShape3D

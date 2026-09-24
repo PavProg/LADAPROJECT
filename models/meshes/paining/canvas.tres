@@ -1,0 +1,39 @@
+[gd_resource type="ArrayMesh" format=3 uid="uid://dacnk0m0dvycx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4vrd5"]
+resource_name = "Material.004"
+cull_mode = 2
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_fbgue"]
+_surfaces = [{
+"aabb": AABB(-1.7484556e-08, 0.09911898, -0.32108477, 1e-05, 0.8000001, 0.64216954),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"name": "Material.004",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(229, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 229, 0, 255, 255, 0, 0, 0, 0)
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "Painting_Broken_Plane"
+_surfaces = [{
+"aabb": AABB(-1.7484556e-08, 0.09911898, -0.32108477, 1e-05, 0.8000001, 0.64216954),
+"attribute_data": PackedByteArray(0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 255, 255, 254, 255, 0, 0),
+"format": 34896613399,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"material": SubResource("StandardMaterial3D_4vrd5"),
+"name": "Material.004",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(229, 0, 255, 255, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 0, 0, 0, 0, 255, 255, 255, 191, 229, 0, 255, 255, 0, 0, 255, 191, 255, 127, 0, 0, 255, 127, 0, 0, 255, 127, 0, 0, 255, 127, 0, 0)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_fbgue")

@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://fnamyk5os66v"]
+
+[ext_resource type="Theme" uid="uid://cikpbqcqce4x7" path="res://ui/hud/hud_theme.tres" id="1_dgyti"]
+[ext_resource type="Script" uid="uid://ck1qovtgnwfcc" path="res://ui/tutorialUI/NewTutorialUI/tutorial_dialogue.gd" id="1_rpd2y"]
+[ext_resource type="Script" uid="uid://bbubkrnccimhx" path="res://ui/AutoSizedLabel.gd" id="2_cdtt6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38saq"]
+bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tw1cs"]
+bg_color = Color(1, 0.49803922, 0, 1)
+
+[node name="TutorialDialogue" type="Control" unique_id=959935020 node_paths=PackedStringArray("dialogues", "task_progress_bar")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_dgyti")
+script = ExtResource("1_rpd2y")
+dialogues = [NodePath("DialoguePanel/Dialogues/Label"), NodePath("DialoguePanel/Dialogues/Label2"), NodePath("DialoguePanel/Dialogues/Label3")]
+task_progress_bar = NodePath("DialoguePanel/Progress/ProgressBar")
+metadata/_custom_type_script = "uid://ck1qovtgnwfcc"
+
+[node name="DialoguePanel" type="Panel" parent="." unique_id=1612532008]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1758572
+anchor_top = 0.70092595
+anchor_right = 0.8241428
+anchor_bottom = 0.915
+offset_left = -0.40014648
+offset_right = 0.39990234
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Dialogues" type="Control" parent="DialoguePanel" unique_id=35891649]
+layout_mode = 1
+anchor_left = 0.025
+anchor_top = 0.2
+anchor_right = 0.975
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="DialoguePanel/Dialogues" unique_id=1933081321]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.15745544
+offset_bottom = 0.1574707
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Тестовая надпись 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("2_cdtt6")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Label2" type="Label" parent="DialoguePanel/Dialogues" unique_id=1293811848]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.15745544
+offset_bottom = 0.1574707
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Тестовая надпись 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("2_cdtt6")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Label3" type="Label" parent="DialoguePanel/Dialogues" unique_id=1587890527]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "Очень длинная тестовая надпись для проверки вместимости текста в диалоговое окно. Данный текст должен рассказывать какую то очень важную информацию, которая должна быть использована игроком для прохождения туторила. И желательно, чтобы надпись нормально скейлилась."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("2_cdtt6")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="Progress" type="Panel" parent="DialoguePanel" unique_id=371461597]
+clip_children = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.12705427
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_38saq")
+metadata/_edit_use_anchors_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="DialoguePanel/Progress" unique_id=1183014391]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_tw1cs")
+value = 55.0
+show_percentage = false

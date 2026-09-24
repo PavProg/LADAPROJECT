@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c4auyfg63wfje"]
+
+[ext_resource type="PackedScene" uid="uid://c0vdypopjbexd" path="res://items/painting.tscn" id="1_ikt45"]
+[ext_resource type="PackedScene" uid="uid://6ihdk11epm0j" path="res://items/Painting_broken.tscn" id="2_53gf6"]
+[ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="3_h1hl7"]
+[ext_resource type="AudioStream" uid="uid://dclxt6xpvxyqq" path="res://vfx-sfx-music/sounds/items/glass_hit.mp3" id="4_756w5"]
+[ext_resource type="ArrayMesh" uid="uid://cb2x1x3ho8de1" path="res://models/meshes/painting_mesh.tres" id="5_swqaq"]
+[ext_resource type="Texture2D" uid="uid://c1ei24u4ebqgy" path="res://img/bedr.png" id="6_ikt45"]
+
+[sub_resource type="Resource" id="Resource_53gf6"]
+resource_local_to_scene = true
+script = ExtResource("3_h1hl7")
+distructed_scene = ExtResource("2_53gf6")
+value = 4
+damage = 15
+max_durability = 50
+durability = 50
+sound = ExtResource("4_756w5")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prgcg"]
+albedo_texture = ExtResource("6_ikt45")
+
+[node name="painting" unique_id=1572425250 instance=ExtResource("1_ikt45")]
+export_item_data = SubResource("Resource_53gf6")
+
+[node name="Collision" parent="." index="0" unique_id=1571951147]
+transform = Transform3D(0.42, 0, 0, 0, -1.8358783e-08, -0.42, 0, 0.42, -1.8358783e-08, 0, -0.052481323, -2.2940314e-09)
+
+[node name="Mesh" parent="." index="1" unique_id=1425624763]
+transform = Transform3D(1.9106855e-15, -4.371139e-08, -1, -1, -4.371139e-08, 0, -4.371139e-08, 1, -4.371139e-08, 0, -0.052, -0.5)
+mesh = ExtResource("5_swqaq")
+surface_material_override/0 = SubResource("StandardMaterial3D_prgcg")
+
+[node name="HurtArea" parent="." index="4" unique_id=98437864]
+transform = Transform3D(0.865, 0, 0, 0, 0.865, 0, 0, 0, 0.865, 0, -0.052481323, -2.2940314e-09)
