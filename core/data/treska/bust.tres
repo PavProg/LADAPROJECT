@@ -11,4 +11,5 @@ distructed_scene = ExtResource("1_pfawm")
 max_durability = 2000
 durability = 2000
 sound = ExtResource("3_ijast")
+tag = "игые"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

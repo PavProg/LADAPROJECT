@@ -15,3 +15,15 @@ class_name ItemData
 @export var velocity_length_threshold: float = 0.5
 @export var sound: AudioStream
 # Поля тестовые сделаны для примера .tres и могут меняться
+
+
+## описывает для задачи что это за объект (задается всегда)
+@export var tag: String = ""
+## описывает для задания какого цвета объект ( ! задается не всегда ! )
+@export var color: String = ""
+
+func to_payload() -> Dictionary:
+	var payload := {"tag": tag}
+	if color != "":
+		payload["color"] = color
+	return payload

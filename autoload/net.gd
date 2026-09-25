@@ -420,7 +420,7 @@ func spawn_enemies() -> void:
 			if m.patrol_zone != null:
 				enemy_node._setup_blackboard_vars(m.patrol_zone)
 			else:
-				print_rich("[color=yellow] [Warning] Отсутсвует зона патруля!!!")
+				print_rich("[color=red] [ERROR] Отсутсвует зона патруля!!!")
 
 ## сервер спавнит врага
 func _server_spawn_enemies(scene_path: String, pos: Vector3, yaw: float = 0.0) -> Node:

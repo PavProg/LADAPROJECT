@@ -24,6 +24,13 @@ func take_damage(dmg: int, attacker_peer_id: int = 0) -> void:
 	
 	if final_damage <= 0: return
 	item.item_data.durability -= final_damage
+	
+	## task
+	var payload = item.item_data.to_payload()
+	payload["amount"] = final_damage
+	Events.object_damaged.emit(payload)
+	##
+	
 	# вклчюаение метки + ее задание урона
 	# item.toggle_damage_label(final_damage)
 	call_toggle_damage_label.rpc(final_damage)	# Рассылка по сети
@@ -35,6 +42,7 @@ func take_damage(dmg: int, attacker_peer_id: int = 0) -> void:
 
 	# Прочность кончилась — разрушаемся
 	if item.item_data.durability <= 0:
+		Events.object_destroyed.emit(item.item_data.to_payload())
 		_destroy()
 		return
 

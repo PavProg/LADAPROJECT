@@ -54,12 +54,12 @@ func update(delta: float) -> void:
 			takeoff_timeout -= delta
 			if not player.is_on_floor():
 				_phase = JumpPhase.IN_AIR
+				dialougue.add_progress(STEP)
 			elif  takeoff_timeout <= 0.0:
 				_phase = JumpPhase.WAIT
 		JumpPhase.IN_AIR:
 			if player.is_on_floor():
 				_phase = JumpPhase.WAIT
-				dialougue.add_progress(STEP)
 	
 	was_on_floor = on_floor
 	

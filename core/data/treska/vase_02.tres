@@ -11,4 +11,6 @@ distructed_scene = ExtResource("1_qcoio")
 value = 4
 damage = 20
 sound = ExtResource("3_te65w")
+tag = "vase"
+color = "green"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

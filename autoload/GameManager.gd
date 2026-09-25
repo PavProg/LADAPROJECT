@@ -40,6 +40,38 @@ var revive_amount: int = 5
 #   клиенты ничего не считают сами — только принимают присланное значение.
 # Так у всех пиров всегда одна и та же квота.
 
+#region Отдельный истинно верный реестр died_players
+## Рассылка здесь - заглушка. TODO перенести под общий снапшот от Net.gd
+@rpc("authority", "call_local", "reliable")
+func sync_died_players(list: Array) -> void:
+	died_players.clear()
+	for id in list:
+		died_players.append(int(id))
+
+func died_players_add(peer_id: int) -> void:
+	if not multiplayer.is_server(): return
+	if died_players.has(peer_id): return
+
+	died_players.append(peer_id)
+	sync_died_players.rpc(died_players)
+
+func died_players_erase(peer_id: int) -> void:
+	if not multiplayer.is_server: return
+	if not died_players.has(peer_id): return
+
+	died_players.erase(peer_id)
+	sync_died_players.rpc(died_players)
+
+
+func died_players_clear_all() -> void:
+	if not multiplayer.is_server(): return
+
+	died_players.clear()
+	sync_died_players.rpc(died_players)
+
+#endregion
+
+
 func check_if_revive() -> bool:
 	if revive_amount <= 0.0: 
 		print("Revive attempts are over")

@@ -11,3 +11,7 @@ signal player_died(player_id: int, spectate_mode: bool)
 
 # Сигнал на будущее если нужна будет подсказка к нажатию на кнопку
 signal prompt_changed(text: String)
+
+
+signal object_destroyed(payload: Dictionary)
+signal object_damaged(payload: Dictionary)

@@ -10,4 +10,5 @@ distructed_scene = ExtResource("1_yooaw")
 value = 4
 max_durability = 30
 durability = 30
+tag = "idol"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

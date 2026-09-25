@@ -55,7 +55,7 @@ func _pick_point(e : Enemy) -> Vector3:
 	# print_rich("[color=red] [DEBUG] Точка патруля по зоне не выбрана!")
 	
 	# Если радиус нулевой спавним рандомно по ВСЕЙ карте
-	if wander_radius <= 0.0 or zone != null:
+	if wander_radius <= 0.0:
 		return NavigationServer3D.map_get_random_point(map, e.agent.navigation_layers, true)
 	
 	# Точка в радиусе врага + смещение

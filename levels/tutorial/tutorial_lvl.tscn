@@ -8,9 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://ds3hm0fafve1j" path="res://models/lvl_objects/pedestal_02.tscn" id="8_n4ioi"]
 [ext_resource type="PackedScene" uid="uid://by35nkgu3l8xy" path="res://items/vase_01.tscn" id="9_5xkaf"]
 [ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="9_hln6a"]
+[ext_resource type="PackedScene" uid="uid://vmf2h36yybsp" path="res://items/painting_we.tscn" id="11_7ur2p"]
 [ext_resource type="PackedScene" uid="uid://b74ne3agklkt0" path="res://items/box.tscn" id="13_wpgsx"]
 [ext_resource type="PackedScene" uid="uid://d308do73hfux8" path="res://actors/props/tutorial_toilet.tscn" id="15_7fk8j"]
-[ext_resource type="PackedScene" uid="uid://c0vdypopjbexd" path="res://items/painting.tscn" id="16_wjgwa"]
 [ext_resource type="PackedScene" uid="uid://dlmx2m36odbko" path="res://items/vase_02.tscn" id="17_6mb8y"]
 [ext_resource type="PackedScene" uid="uid://dp84rs8rlfywx" path="res://items/New_tutorial_vase.tscn" id="19_o1c41"]
 
@@ -350,9 +350,9 @@ forced_item = ExtResource("13_wpgsx")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
 [node name="ItemMark4" type="Marker3D" parent="ItemMarks" unique_id=427794352]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5739213, -4)
 script = ExtResource("9_hln6a")
-forced_item = ExtResource("16_wjgwa")
+forced_item = ExtResource("11_7ur2p")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
 [node name="ItemMark5" type="Marker3D" parent="ItemMarks" unique_id=1590025804]
@@ -362,7 +362,7 @@ forced_item = ExtResource("9_5xkaf")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
 [node name="ItemMark6" type="Marker3D" parent="ItemMarks" unique_id=1755419578]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.124646306, 21.758633)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.053299785, 21.758633)
 script = ExtResource("9_hln6a")
 forced_item = ExtResource("19_o1c41")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"

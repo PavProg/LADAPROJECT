@@ -12,4 +12,5 @@ value = 4
 max_durability = 30
 durability = 30
 sound = ExtResource("3_l8xld")
+tag = "idol"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

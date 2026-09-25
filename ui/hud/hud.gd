@@ -4,11 +4,11 @@ var player
 @onready var healthValue: Label = $Stats/VBoxContainer/HealthRow/Value
 @onready var staminaValue: Label = $Stats/VBoxContainer/StaminaRow/Value
 @onready var quota: MarginContainer = $Quota
-@onready var quotaValue: Label = $Quota/HBoxContainer/Value
+@onready var quotaValue: Label = $Quota/VBoxContainer/HBoxContainer/Value
 @onready var crosshairTexture: TextureRect = $Crosshair/CrosshairTexture
 @onready var healthSuffix: Label = $Stats/VBoxContainer/HealthRow/Suffix
 @onready var staminaSuffix: Label = $Stats/VBoxContainer/StaminaRow/Suffix
-@onready var quotaSuffix: Label = $Quota/HBoxContainer/Suffix
+@onready var quotaSuffix: Label = $Quota/VBoxContainer/HBoxContainer/Suffix
 @onready var crosshair: CenterContainer = $Crosshair
 
 @export_subgroup("Crosshairs")

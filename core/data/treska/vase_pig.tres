@@ -14,4 +14,5 @@ damage = 50
 max_durability = 1000
 durability = 1000
 sound = ExtResource("3_tc53y")
+tag = "pig"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

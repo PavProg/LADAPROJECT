@@ -25,13 +25,11 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 ## Базовые имена анимаций. Реальные в AnimationPlayer могут иметь префикс
 ## арматуры ("RatArmature|Rat_Idle") - его снимает _resolve_anim.
-@export var ANIM_IDLE: StringName = &"Idle"
-@export var ANIM_WALK: StringName = &"Walk"
-@export var ANIM_RUN: StringName = &"Run"
-@export var ANIM_ATTACK: StringName = &"Attack"
-## ВАЖНО. У охранника нет анимации смерти (рэгдолл вместо нее), она заменена на поиск. 
-## TODO добавить запуск анимации поиска в поиске
-@export var ANIM_DEATH: StringName = &"Death"
+const ANIM_IDLE := &"Rat_Idle"
+const ANIM_WALK := &"Rat_Walk"
+const ANIM_RUN := &"Rat_Run"
+const ANIM_ATTACK := &"Rat_Attack"
+const ANIM_DEATH := &"Rat_Death"
 
 ## Бежать или идти. Ставится тем, кто задаёт цель (см. set_move_target)
 var is_sprinting: bool = false
@@ -61,6 +59,7 @@ func _setup_nav() -> void:
 
 func _setup_blackboard_vars(zone: CollisionShape3D) -> void:
 	bt_player.get_blackboard().set_var("patrol_zone", zone)
+	# print_rich("[color=green] [DEBUG-NAV] Переменная patrol_zone добавлена в BT blackboard")
 
 ## sprint задаёт тот, кто ставит цель: Chase - true, патруль/поиск - false.
 ## Так скорость всегда соответствует намерению и сбрасывается сама.

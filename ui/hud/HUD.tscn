@@ -105,10 +105,13 @@ grow_horizontal = 0
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Quota" unique_id=1297509015]
+[node name="VBoxContainer" type="VBoxContainer" parent="Quota" unique_id=1897333219]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="Quota/HBoxContainer" unique_id=1657901904]
+[node name="HBoxContainer" type="HBoxContainer" parent="Quota/VBoxContainer" unique_id=1297509015]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1657901904]
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 size_flags_vertical = 4
@@ -116,21 +119,104 @@ texture = ExtResource("9_cxhb7")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Caption" type="Label" parent="Quota/HBoxContainer" unique_id=230858644]
+[node name="Caption" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=230858644]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0.20392157, 1)
 theme_override_constants/outline_size = 12
 text = ": "
 
-[node name="Value" type="Label" parent="Quota/HBoxContainer" unique_id=1287765924]
+[node name="Value" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1287765924]
 custom_minimum_size = Vector2(215, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 12
 horizontal_alignment = 1
 
-[node name="Suffix" type="Label" parent="Quota/HBoxContainer" unique_id=1548859294]
+[node name="Suffix" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1548859294]
 layout_mode = 2
 theme_override_constants/outline_size = 12
+
+[node name="TasksContainer" type="VBoxContainer" parent="Quota/VBoxContainer" unique_id=923317096]
+layout_mode = 2
+
+[node name="Vases" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=680872088]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break vases: 0/5"
+horizontal_alignment = 2
+
+[node name="RedVases" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=43710208]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break red vases: 0/3"
+horizontal_alignment = 2
+
+[node name="GreenVases" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=2000923879]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break green vases: 0/3"
+horizontal_alignment = 2
+
+[node name="DamageVases" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=714013881]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Deal damage to vases: 0/600"
+horizontal_alignment = 2
+
+[node name="DamagePaintings" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=709473994]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Deal damage to paintings: 0/500"
+horizontal_alignment = 2
+
+[node name="DamageArmor" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=362574712]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Deal damage to knight armor: 0/500"
+horizontal_alignment = 2
+
+[node name="Paintings" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=1345142943]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break paintins: 0/5"
+horizontal_alignment = 2
+
+[node name="BreakPig" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=525249915]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break Pig vase"
+horizontal_alignment = 2
+
+[node name="BreakBox" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=1577935068]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break box"
+horizontal_alignment = 2
+
+[node name="BreakIdols" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=1088182932]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Break stone idols: 0/3"
+horizontal_alignment = 2
 
 [node name="Hint" type="MarginContainer" parent="." unique_id=1722386578]
 layout_mode = 1

@@ -11,4 +11,5 @@ damage = 15
 max_durability = 50
 durability = 50
 sound = ExtResource("3_wa0gb")
+tag = "painting"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

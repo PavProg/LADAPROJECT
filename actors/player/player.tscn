@@ -5,6 +5,7 @@
 [ext_resource type="Resource" uid="uid://kw5402wo3yc4" path="res://core/data/treska/player_data.tres" id="2_lsqbn"]
 [ext_resource type="PackedScene" uid="uid://dq6lrgttc8rti" path="res://models/player/character.tscn" id="3_a744p"]
 [ext_resource type="Script" uid="uid://denqqixng63id" path="res://core/components/grab_component.gd" id="3_ax26v"]
+[ext_resource type="Script" uid="uid://c6cmd7k2f8emv" path="res://actors/player/task_list.gd" id="9_388e2"]
 [ext_resource type="AudioStream" uid="uid://bcd43wknkgqyk" path="res://vfx-sfx-music/sounds/character/step.wav" id="37_jjb1w"]
 [ext_resource type="AudioStream" uid="uid://dxtsonx6je6lt" path="res://vfx-sfx-music/sounds/character/30_Jump_03.wav" id="38_ivjma"]
 [ext_resource type="AudioStream" uid="uid://bo6x3xln1odxt" path="res://vfx-sfx-music/sounds/character/jumpland.mp3" id="39_ivjma"]
@@ -145,6 +146,9 @@ volume_db = -50.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88175535, -1.4951843)
 visible = false
 text = "СМЕРТЬ"
+
+[node name="TaskListManager" type="Node" parent="." unique_id=1077129890]
+script = ExtResource("9_388e2")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="timeout" from="EnduranceTimer" to="." method="_on_endurance_timer_timeout"]

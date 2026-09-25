@@ -13,4 +13,5 @@ damage = 10
 max_durability = 2000
 durability = 2000
 sound = ExtResource("3_y1ll2")
+tag = "armor"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

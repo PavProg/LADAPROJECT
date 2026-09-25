@@ -13,4 +13,5 @@ damage = 25
 max_durability = 200
 durability = 200
 sound = ExtResource("3_hokou")
+tag = "box"
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"

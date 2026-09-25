@@ -1,5 +1,11 @@
 extends CharacterBody3D
 
+#region Tasks
+## менеджер всех тасок у хоста и клиентов
+@onready var task_list_manager = $TaskListManager
+#var show_tasks: bool = false
+#endregion
+
 #region Ragdoll vars
 @onready var physical_bone_controller: PhysicalBoneSimulator3D = $Character/root/Skeleton3D/PhysicalBoneSimulator3D
 @onready var physical_bone_spine: PhysicalBone3D = $"Character/root/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine"
@@ -86,6 +92,7 @@ var SPECTATEMODE := preload("res://actors/player/SpectateCamera.tscn")
 @onready var revive_hold_timer: float = 0.0
 @export var revive_hold_time: float = 3.0
 @export var death_penalty: float = 0.4 # пусть 40% пока что
+
 #endregion
 
 #region vars for interpolations
@@ -145,6 +152,12 @@ func _ready() -> void:
 	self.add_to_group("player")
 	if is_multiplayer_authority():
 		Events.local_player_spawned.emit(self)
+		
+		if multiplayer.is_server():
+			task_list_manager.load_tasks(2)
+		else:
+			task_list_manager.request_tasks.rpc_id(1)
+		
 	
 	set_unseen_meshes_visibiliy(false)
 	#enable_upper_body_ragdoll(true)
@@ -308,11 +321,13 @@ func input():
 	input_movement_vector = Vector2.ZERO
 	need_jump = false
 	running = false
+	#show_tasks = false
 	if UiManager.is_game_blocked():
 		return
 	input_movement_vector = Input.get_vector("move_left", "move_right", "move_forward","move_backward")
 	need_jump = Input.is_action_just_pressed("jump")
 	running = Input.is_action_pressed("run")
+	#show_tasks = Input.is_action_just_pressed("tasks")
 
 	if Input.is_action_just_pressed("ragdoll") and is_multiplayer_authority() and _health > 0:
 		_request_ragdoll.rpc_id(1, not is_ragdoll)
@@ -340,6 +355,7 @@ func _physics_process(delta: float) -> void:
 		process_revive_hold(delta)
 		handle_footsteps(delta)
 		handle_landing()
+		tasks_process()
 	
 	# Вынес из авторитета, тк узел игрока должен следовать за своим локальным трупом у каждого пира
 	# иначе спектейт и подсказки уйдут в пустое место
@@ -356,6 +372,18 @@ func _physics_process(delta: float) -> void:
 		else:
 			_correct_ragdoll_root(delta)
 
+#endregion
+
+#region TasksFuncs
+func tasks_process() -> void:
+	#if show_tasks:
+		#task_list_manager.show_tasks()
+		#pass
+	#else:
+		#task_list_manager.hide_tasks()
+		#pass
+		
+	pass
 #endregion
 
 #region Релей трансформа
@@ -623,8 +651,8 @@ func take_damage(amount: int, peer_id: int) -> void:
 	_is_death = true
 	set_ragdoll_state(true)
 
-	if not GameManager.died_players.has(peer_id):
-		GameManager.died_players.append(peer_id)
+	
+	GameManager.died_players_add(peer_id)
 	
 	if Net.spawned_ids.size() == 1:
 		_death()
@@ -635,7 +663,7 @@ func take_damage(amount: int, peer_id: int) -> void:
 		GameManager.flag_is_death = true
 		await get_tree().create_timer(timer_to_death).timeout
 		LevelManager.go_to_hub()
-		GameManager.died_players.clear()
+		GameManager.died_players_clear_all()
 		return
 	
 	_multiplayer_death.rpc_id(peer_id, alive_ids)
@@ -703,7 +731,7 @@ func retarget_spectate(alive_ids: Array) -> void:
 	_spectate_camera.start_spectating(alive)
 #endregion
 
-#region КНОПКА ИНТЕРАКТА + RAYCAST
+#region КНОПКА ИНТЕРАКТА + RAYCAST + revive
 func raycast_from_camera(max_distance: float = 100.0) -> Node3D:
 	# Рейкаст должен выполняться только у клиента, который управляет игроком
 	if not is_multiplayer_authority():
@@ -766,14 +794,19 @@ func try_interact(max_search_depth : int = 5) -> void:
 func start_revive_hold(revived: CharacterBody3D) -> void:
 	print("REVIVE ---- start_revive_hold")
 	
-	if !GameManager.check_if_revive() or !GameManager.died_players.has(str(revive_target.name).to_int()) or !revive_target.is_death: # порверяем что попытки есть еще (попытки синхронизируются в момент изменения с сервером)
+	revive_target = revived
+	print("Dead players: ", GameManager.died_players)
+	print("revive_target is dead? : ", revive_target._is_death)
+	if !GameManager.check_if_revive() or !(GameManager.died_players.has(str(revive_target.name).to_int()) or revive_target._is_death): # порверяем что попытки есть еще (попытки синхронизируются в момент изменения с сервером)
+		revive_target = null
 		print("Unable to revive")
 		return
+	
+	print_rich("[color=red] Array died players. Gamemanager: ", GameManager.died_players)
 
 	if revive_target == revived:
 		return # уже держим именно этого игрока
 
-	revive_target = revived
 	revive_hold_timer = 0.0
 	# Включить какой-то UI для ревайва # TODO UI
 
@@ -822,9 +855,7 @@ func request_revive(peer_id: int) -> void:
 	if not multiplayer.is_server():
 		return
 	_is_death = false
-	if GameManager.died_players.has(peer_id):
-		GameManager.died_players.erase(peer_id)
-		print("GameManager.died_players.erase")
+	GameManager.died_players_erase(peer_id)
 	_health_update.rpc(data.max_health * death_penalty)
 	set_ragdoll_state(false)
 	GameManager.on_quote_earned(-100, peer_id)

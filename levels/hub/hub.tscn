@@ -6,11 +6,29 @@
 [ext_resource type="Script" uid="uid://23ms0mjlw8y1" path="res://levels/item_mark.gd" id="4_vjyq5"]
 [ext_resource type="PackedScene" uid="uid://07s54quk74k1" path="res://items/vase_tutorial.tscn" id="5_hc650"]
 [ext_resource type="PackedScene" uid="uid://blbum820d17iu" path="res://ui/tutorialUI/tutorial.tscn" id="7_hc650"]
+[ext_resource type="PackedScene" uid="uid://x2n4k5cm17qp" path="res://actors/player/player.tscn" id="7_peekt"]
+[ext_resource type="Script" uid="uid://lvyabd1v4xvg" path="res://core/data/player_data.gd" id="8_ro0uo"]
 
 [sub_resource type="Environment" id="Environment_tw1cs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_38saq"]
 size = Vector3(5.129883, 5.01001, 6.7021484)
+
+[sub_resource type="Resource" id="Resource_peekt"]
+resource_local_to_scene = true
+script = ExtResource("8_ro0uo")
+max_health = 100.0
+health = 100.0
+max_endurance = 50.0
+endurance = 50.0
+speed = 3.5
+run_speed = 7.0
+jump_velocity = 6.0
+endurance_recovery_time = 3.0
+endurance_recovery_speed = 0.1
+interaction_range = 10.0
+velocity_threshold = 0.1
+metadata/_custom_type_script = "uid://lvyabd1v4xvg"
 
 [node name="Hub" type="Node3D" unique_id=366666532]
 
@@ -202,3 +220,8 @@ collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TutorArea" unique_id=176281743]
 shape = SubResource("BoxShape3D_38saq")
+
+[node name="Player" parent="." unique_id=177930427 instance=ExtResource("7_peekt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4839591, 0)
+export_data = SubResource("Resource_peekt")
+_is_death = true
