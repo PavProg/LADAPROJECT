@@ -33,7 +33,7 @@ func take_damage(dmg: int, attacker_peer_id: int = 0) -> void:
 	
 	# вклчюаение метки + ее задание урона
 	# item.toggle_damage_label(final_damage)
-	call_toggle_damage_label.rpc(final_damage)	# Рассылка по сети
+	_apply_durability.rpc(item.item_data.durability, final_damage)	# Рассылка по сети
 	## DAMAGE SOUND
 	item.play_sound()
 
@@ -129,3 +129,9 @@ func _on_hurt_area_body_entered(body: Node3D) -> void:
 
 	take_damage(actual_damage)
 	pass
+
+@rpc("authority", "call_local", "reliable")
+func _apply_durability(new_durability: int, damage_dealt: int) -> void:
+	item.item_data.durability = new_durability
+	item.update_durability_label_value()
+	item.toggle_damage_label(damage_dealt)

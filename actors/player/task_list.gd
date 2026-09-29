@@ -297,6 +297,8 @@ func _apply_done(task_name: String) -> void:
 #region UI
 
 ## Собирает лейблы заново. Вызывается при получении/генерации списка заданий.
+
+
 func rebuild_task_labels() -> void:
 	if tasks_container == null:
 		print("Пробуем привязать контейнер из ребилда")
@@ -309,10 +311,22 @@ func rebuild_task_labels() -> void:
 	# чистим старые
 	for child in tasks_container.get_children():
 		child.queue_free()
-	task_labels.clear()
+		task_labels.clear()
 
 	print("task.keys() = ", tasks.keys())
-	
+
+	## Добавить надпись extra:
+	var title := Label.new()
+	title.text = "Extra:"
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.add_theme_font_size_override("font_size", 40)
+	title.add_theme_color_override("font_outline_color", Color.BLACK)
+	title.add_theme_constant_override("outline_size", 5)
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tasks_container.add_child(title)
+
 	for task_name in tasks.keys():
 		var lbl := Label.new()
 		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

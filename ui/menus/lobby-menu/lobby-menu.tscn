@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://chteork7nnmac" path="res://ui/menus/lobby-menu/scripts/lobby-menu-main.gd" id="1_1a12d"]
 [ext_resource type="Theme" uid="uid://cachw4rx6lxd1" path="res://ui/menus/menu_theme.tres" id="1_kxree"]
 [ext_resource type="Texture2D" uid="uid://cpw1mln5557e5" path="res://models/materials/#fypfypfyp.jpg" id="2_o660l"]
+[ext_resource type="VideoStream" uid="uid://o8dsne1bjhyk" path="res://ui/0000-0300.ogv" id="3_ojraa"]
 
 [node name="LobbyMenu" type="Control" unique_id=1754632581]
 layout_mode = 3
@@ -14,7 +15,20 @@ grow_vertical = 2
 theme = ExtResource("1_kxree")
 script = ExtResource("1_1a12d")
 
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1029935257]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("3_ojraa")
+autoplay = true
+expand = true
+loop = true
+
 [node name="Background" type="TextureRect" parent="." unique_id=1108455201]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

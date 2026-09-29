@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://dlmx2m36odbko" path="res://items/vase_02.tscn" id="9_ab6sy"]
 [ext_resource type="PackedScene" uid="uid://b0y6dxa6w12cg" path="res://items/painting_ot.tscn" id="9_b3iu4"]
 [ext_resource type="Script" uid="uid://4n5pw1nmxp16" path="res://levels/enemy_mark.gd" id="9_hdccr"]
+[ext_resource type="PackedScene" uid="uid://bmibot2tj2f2v" path="res://items/rock_02.tscn" id="9_ribjd"]
+[ext_resource type="PackedScene" uid="uid://ba4ujeevje4xr" path="res://items/rock_03.tscn" id="10_4k0u5"]
 [ext_resource type="PackedScene" uid="uid://dqvpton34n4nr" path="res://models/lvl_objects/bench.tscn" id="10_53ppc"]
 [ext_resource type="PackedScene" uid="uid://vmf2h36yybsp" path="res://items/painting_we.tscn" id="10_c17db"]
 [ext_resource type="PackedScene" uid="uid://b74ne3agklkt0" path="res://items/box.tscn" id="10_j7stf"]
@@ -21,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://ds3hm0fafve1j" path="res://models/lvl_objects/pedestal_02.tscn" id="11_pn0yg"]
 [ext_resource type="PackedScene" uid="uid://du3cv2yeqejk8" path="res://items/vase_pig.tscn" id="11_pscyn"]
 [ext_resource type="PackedScene" uid="uid://cbbrtre4kh62t" path="res://models/lvl_objects/pedestal_01.tscn" id="12_g8gvu"]
+[ext_resource type="PackedScene" uid="uid://bnv7xqogn66pr" path="res://items/rock_01.tscn" id="13_1tss1"]
 [ext_resource type="PackedScene" uid="uid://b5gnh8a8yyhju" path="res://models/lvl_objects/cell_door.tscn" id="18_nyebc"]
 [ext_resource type="PackedScene" uid="uid://bpxbdjkr3trll" path="res://actors/props/toilet.tscn" id="18_pscyn"]
 [ext_resource type="PackedScene" uid="uid://eufc5302ot0q" path="res://items/vent_enter.tscn" id="21_d2hf7"]
@@ -45,36 +48,6 @@ agent_height = 0.5
 size = Vector3(0.5136719, 0.19946289, 0.125)
 
 [sub_resource type="SystemFont" id="SystemFont_siltq"]
-
-[sub_resource type="Resource" id="Resource_hqwgk"]
-resource_local_to_scene = true
-script = ExtResource("23_8g47p")
-distructed_scene = ExtResource("22_ugsr7")
-value = 4
-max_durability = 4
-durability = 4
-sound = ExtResource("24_e24jb")
-metadata/_custom_type_script = "uid://kydu1xjp8i1b"
-
-[sub_resource type="Resource" id="Resource_b3iu4"]
-resource_local_to_scene = true
-script = ExtResource("23_8g47p")
-distructed_scene = ExtResource("22_ugsr7")
-value = 4
-max_durability = 4
-durability = 4
-sound = ExtResource("24_e24jb")
-metadata/_custom_type_script = "uid://kydu1xjp8i1b"
-
-[sub_resource type="Resource" id="Resource_c17db"]
-resource_local_to_scene = true
-script = ExtResource("23_8g47p")
-distructed_scene = ExtResource("22_ugsr7")
-value = 4
-max_durability = 4
-durability = 4
-sound = ExtResource("24_e24jb")
-metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 
 [sub_resource type="Resource" id="Resource_ribjd"]
 resource_local_to_scene = true
@@ -139,12 +112,34 @@ metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 [sub_resource type="Resource" id="Resource_e1t8b"]
 resource_local_to_scene = true
 script = ExtResource("23_8g47p")
-display_name = "hummer"
-damage = 8
-sound = ExtResource("28_nyebc")
+distructed_scene = ExtResource("22_ugsr7")
+value = 4
+max_durability = 4
+durability = 4
+sound = ExtResource("24_e24jb")
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 
 [sub_resource type="Resource" id="Resource_vuvbf"]
+resource_local_to_scene = true
+script = ExtResource("23_8g47p")
+distructed_scene = ExtResource("22_ugsr7")
+value = 4
+max_durability = 4
+durability = 4
+sound = ExtResource("24_e24jb")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="Resource" id="Resource_vpf8q"]
+resource_local_to_scene = true
+script = ExtResource("23_8g47p")
+distructed_scene = ExtResource("22_ugsr7")
+value = 4
+max_durability = 4
+durability = 4
+sound = ExtResource("24_e24jb")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="Resource" id="Resource_jxa2c"]
 resource_local_to_scene = true
 script = ExtResource("23_8g47p")
 display_name = "hummer"
@@ -152,7 +147,15 @@ damage = 8
 sound = ExtResource("28_nyebc")
 metadata/_custom_type_script = "uid://kydu1xjp8i1b"
 
-[sub_resource type="Resource" id="Resource_vpf8q"]
+[sub_resource type="Resource" id="Resource_63g4p"]
+resource_local_to_scene = true
+script = ExtResource("23_8g47p")
+display_name = "hummer"
+damage = 8
+sound = ExtResource("28_nyebc")
+metadata/_custom_type_script = "uid://kydu1xjp8i1b"
+
+[sub_resource type="Resource" id="Resource_adqkr"]
 resource_local_to_scene = true
 script = ExtResource("23_8g47p")
 display_name = "hummer"
@@ -300,6 +303,18 @@ script = ExtResource("7_6qrfd")
 forced_item = ExtResource("8_hqwgk")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
+[node name="Stone2" type="Marker3D" parent="ItemMarks" unique_id=286571452]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8, 1.2131882, 18.538462)
+script = ExtResource("7_6qrfd")
+forced_item = ExtResource("9_ribjd")
+metadata/_custom_type_script = "uid://23ms0mjlw8y1"
+
+[node name="Stone3" type="Marker3D" parent="ItemMarks" unique_id=881225829]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -51.275887, 1.4100271, 4.643906)
+script = ExtResource("7_6qrfd")
+forced_item = ExtResource("10_4k0u5")
+metadata/_custom_type_script = "uid://23ms0mjlw8y1"
+
 [node name="Painting2" type="Marker3D" parent="ItemMarks" unique_id=376980234]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 3, 3.021)
 script = ExtResource("7_6qrfd")
@@ -346,6 +361,12 @@ metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 49.98, 3.013, -6)
 script = ExtResource("7_6qrfd")
 forced_item = ExtResource("8_hqwgk")
+metadata/_custom_type_script = "uid://23ms0mjlw8y1"
+
+[node name="Stone1" type="Marker3D" parent="ItemMarks" unique_id=274702073]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 51.46844, 4.1057687, 1.7479906)
+script = ExtResource("7_6qrfd")
+forced_item = ExtResource("13_1tss1")
 metadata/_custom_type_script = "uid://23ms0mjlw8y1"
 
 [node name="Painting13" type="Marker3D" parent="ItemMarks" unique_id=836218493]
@@ -594,39 +615,39 @@ shadow_enabled = true
 
 [node name="vent_entry" parent="Vent_panels" unique_id=1572425250 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, -21.5, 0, 4)
-export_item_data = SubResource("Resource_hqwgk")
+export_item_data = SubResource("Resource_ribjd")
 
 [node name="vent_entry9" parent="Vent_panels" unique_id=1035788871 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 40.5, 0, 10.1)
-export_item_data = SubResource("Resource_b3iu4")
+export_item_data = SubResource("Resource_4k0u5")
 
 [node name="vent_entry2" parent="Vent_panels" unique_id=285516269 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -36.5, 0, -6)
-export_item_data = SubResource("Resource_c17db")
+export_item_data = SubResource("Resource_1tss1")
 
 [node name="vent_entry3" parent="Vent_panels" unique_id=76547891 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, -50.5, 4, 10.1)
-export_item_data = SubResource("Resource_ribjd")
+export_item_data = SubResource("Resource_5b6nk")
 
 [node name="vent_entry4" parent="Vent_panels" unique_id=1678642051 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1.1924881e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, -1.1924881e-08, -5.2125306e-16, -18.1, 4, 10.5)
-export_item_data = SubResource("Resource_4k0u5")
+export_item_data = SubResource("Resource_dkxow")
 
 [node name="vent_entry5" parent="Vent_panels" unique_id=1869297041 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 37.9, 4, -16.5)
-export_item_data = SubResource("Resource_1tss1")
+export_item_data = SubResource("Resource_iulp2")
 
 [node name="vent_entry8" parent="Vent_panels" unique_id=1267600180 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 50.1, 4, -1.5)
-export_item_data = SubResource("Resource_5b6nk")
+export_item_data = SubResource("Resource_e1t8b")
 
 [node name="vent_entry6" parent="Vent_panels" unique_id=1595382437 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 14.5, 4, -15.1)
-export_item_data = SubResource("Resource_dkxow")
+export_item_data = SubResource("Resource_vuvbf")
 
 [node name="vent_entry7" parent="Vent_panels" unique_id=1125990047 instance=ExtResource("21_d2hf7")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -14.5, 4, -15.1)
-export_item_data = SubResource("Resource_iulp2")
+export_item_data = SubResource("Resource_vpf8q")
 
 [node name="shelfs" type="Node" parent="." unique_id=594419284]
 
@@ -710,15 +731,15 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -17.
 
 [node name="SignStandig" parent="." unique_id=1336073646 instance=ExtResource("27_tvs3f")]
 transform = Transform3D(-0.9177546, 0, -0.3971479, 0, 1, 0, 0.3971479, 0, -0.9177546, 4, 0.05727893, 8)
-export_item_data = SubResource("Resource_e1t8b")
+export_item_data = SubResource("Resource_jxa2c")
 
 [node name="SignStandig2" parent="." unique_id=1336511344 instance=ExtResource("27_tvs3f")]
 transform = Transform3D(0.68454707, 0, -0.72896856, 0, 1, 0, 0.72896856, 0, 0.68454707, 22, 0.05727893, -5)
-export_item_data = SubResource("Resource_vuvbf")
+export_item_data = SubResource("Resource_63g4p")
 
 [node name="SignStandig3" parent="." unique_id=722862016 instance=ExtResource("27_tvs3f")]
 transform = Transform3D(0.68454707, 0, -0.72896856, 0, 1, 0, 0.72896856, 0, 0.68454707, 36, 0.05727893, -10)
-export_item_data = SubResource("Resource_vpf8q")
+export_item_data = SubResource("Resource_adqkr")
 
 [node name="EscapeToilets" type="Node" parent="." unique_id=584017233]
 

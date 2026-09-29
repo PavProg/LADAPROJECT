@@ -19,8 +19,8 @@ var/charge_speed/hint = 0
 var/charge_speed/hint_string = ""
 
 [sub_resource type="BBNode" id="BBNode_nrd4b"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_qiw21"]
 animation_player = SubResource("BBNode_nrd4b")
@@ -32,6 +32,7 @@ min_duration = 0.7
 max_duration = 1.5
 
 [sub_resource type="BTAction" id="BTAction_ulbrf"]
+group = &"player"
 script = ExtResource("1_sf4l8")
 group = &"player"
 
@@ -43,8 +44,8 @@ children = [SubResource("BTPlayAnimation_qiw21"), SubResource("BTRandomWait_xlud
 script = ExtResource("2_5nwkp")
 
 [sub_resource type="BBNode" id="BBNode_wpj6d"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_olf37"]
 animation_player = SubResource("BBNode_wpj6d")
@@ -65,8 +66,8 @@ children = [SubResource("BTAction_85keo"), SubResource("BTPlayAnimation_olf37"),
 script = ExtResource("4_hi228")
 
 [sub_resource type="BBNode" id="BBNode_giv5l"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_usdja"]
 animation_player = SubResource("BBNode_giv5l")
@@ -77,8 +78,8 @@ blend = 0.1
 duration = 0.4
 
 [sub_resource type="BBNode" id="BBNode_s8evu"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_ppmxd"]
 await_completion = 2.0
@@ -86,6 +87,7 @@ animation_player = SubResource("BBNode_s8evu")
 animation_name = &"attack_1"
 
 [sub_resource type="BTAction" id="BTAction_u22bc"]
+speed_var = &"charge_speed"
 script = ExtResource("5_au5yc")
 speed_var = &"charge_speed"
 
@@ -97,8 +99,8 @@ children = [SubResource("BTPlayAnimation_ppmxd"), SubResource("BTAction_u22bc")]
 duration = 0.2
 
 [sub_resource type="BBNode" id="BBNode_3oljv"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_q4uis"]
 await_completion = 2.0
@@ -106,6 +108,7 @@ animation_player = SubResource("BBNode_3oljv")
 animation_name = &"attack_2"
 
 [sub_resource type="BTAction" id="BTAction_yuxl3"]
+speed_var = &"charge_speed"
 script = ExtResource("5_au5yc")
 speed_var = &"charge_speed"
 
@@ -117,8 +120,8 @@ children = [SubResource("BTPlayAnimation_q4uis"), SubResource("BTAction_yuxl3")]
 duration = 0.2
 
 [sub_resource type="BBNode" id="BBNode_ot40l"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_ye5pt"]
 await_completion = 2.0
@@ -126,6 +129,7 @@ animation_player = SubResource("BBNode_ot40l")
 animation_name = &"attack_3"
 
 [sub_resource type="BTAction" id="BTAction_rwp18"]
+speed_var = &"charge_speed"
 script = ExtResource("5_au5yc")
 speed_var = &"charge_speed"
 

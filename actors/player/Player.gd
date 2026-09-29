@@ -157,7 +157,7 @@ func _ready() -> void:
 			task_list_manager.load_tasks(2)
 		else:
 			task_list_manager.request_tasks.rpc_id(1)
-		
+	
 	
 	set_unseen_meshes_visibiliy(false)
 	#enable_upper_body_ragdoll(true)
@@ -660,6 +660,7 @@ func take_damage(amount: int, peer_id: int) -> void:
 	
 	var alive_ids: Array[int] = Net.get_alive_peer_ids()
 	if alive_ids.is_empty():
+		UiManager.hud.get_node("./VBoxContainer/ProgressBar").visible = false
 		GameManager.flag_is_death = true
 		await get_tree().create_timer(timer_to_death).timeout
 		LevelManager.go_to_hub()
@@ -681,8 +682,9 @@ func _health_update(value: float) -> void:
 
 ## Смерть в синглплеере (нищете)
 func _death() -> void:
+	UiManager.hud.get_node("./VBoxContainer/ProgressBar").visible = false
 	start_ragdoll()
-	death_label.visible = true
+	#death_label.visible = true
 	await get_tree().create_timer(timer_to_death).timeout
 	GameManager.flag_is_death = true
 	LevelManager.go_to_hub()
@@ -693,7 +695,7 @@ func _multiplayer_death(alive_ids: Array) -> void:
 	if is_instance_valid(_spectate_camera):
 		return
 	
-	death_label.visible = true
+	#death_label.visible = true
 	_spectate_mode = true
 	
 	$CameraController/Camera3D.current = false
@@ -705,7 +707,7 @@ func _multiplayer_death(alive_ids: Array) -> void:
 	_spectate_camera = SPECTATEMODE.instantiate()
 	get_tree().current_scene.add_child(_spectate_camera)
 	_spectate_camera.start_spectating(alive)
-	
+
 	Events.player_died.emit(str(name).to_int(), true)
 
 func is_dead() -> bool:
@@ -803,12 +805,14 @@ func start_revive_hold(revived: CharacterBody3D) -> void:
 		return
 	
 	print_rich("[color=red] Array died players. Gamemanager: ", GameManager.died_players)
+	
+	# Включить UI progress bar для ревайва # TODO UI
+	UiManager.hud.get_node("./VBoxContainer/ProgressBar").visible = true
 
 	if revive_target == revived:
 		return # уже держим именно этого игрока
 
 	revive_hold_timer = 0.0
-	# Включить какой-то UI для ревайва # TODO UI
 
 func cancel_revive_hold() -> void:
 	print("REVIVE ---- cancel_revive_hold")
@@ -816,7 +820,10 @@ func cancel_revive_hold() -> void:
 		return
 	revive_target = null
 	revive_hold_timer = 0.0
-	# Выключить отключить UI для ревайва # TODO UI
+	
+	UiManager.hud.get_node("./VBoxContainer/ProgressBar").value = 0.0
+	# Выключить UI progress bar для ревайва # TODO UI
+	UiManager.hud.get_node("./VBoxContainer/ProgressBar").visible = false
 
 # каждый физ кадр
 func process_revive_hold(delta: float) -> void:
@@ -830,20 +837,21 @@ func process_revive_hold(delta: float) -> void:
 		return
  
 	# отпустили кнопку
-	if not Input.is_action_pressed("interact"):
-		print("REVIVE -- is_action_pressed FALSE")
+	if Input.is_action_just_released("interact"):
+		print("REVIVE -- is_action_just_released FALSE")
 		cancel_revive_hold()
 		return
 
 	# прицел увели с цели - тоже сбрасываем (перепроверка рейкастом)
 	var current_target = raycast_from_camera(data.interaction_range)
-	if  !current_target and player_of(current_target) != revive_target:
+	if  !current_target or player_of(current_target) != revive_target:
 		print("REVIVE -- raycast_from_camera FALSE")
 		cancel_revive_hold()
 		return
- 
+
 	revive_hold_timer += delta
- 
+	UiManager.hud.get_node("./VBoxContainer/ProgressBar").value = revive_hold_timer
+	
 	if revive_hold_timer >= revive_hold_time:
 		var revived = revive_target as CharacterBody3D
 		print("REVIVE -- Revive ended - player alive")

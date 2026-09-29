@@ -9,7 +9,8 @@ const END_SCALE = Vector2(0.7, 0.7)
 
 func play(amount: int, from: Vector2, to: Vector2) -> void:
 	#print("play popup")
-	text = "+%d" % amount
+	text = "%+d" % amount
+	modulate = Color(1.0, 1.0, 1.0) if amount >= 0 else Color(1.0, 0.4, 0.4)
 	position = from
 	scale = STARTING_SCALE
 	modulate.a = 1.0

@@ -170,6 +170,7 @@ func _on_confirm_join_pressed() -> void:
 ## Кнопка для перехода в сингл
 func _on_single_pressed() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	GameManager.required_quote_next_level = GameManager.base_quote
 	Net.is_peer_active = false
 	LevelManager.go_to_hub()
 
@@ -183,6 +184,7 @@ func _on_tutor_pressed() -> void:
 ## Кнопка хоста
 func _on_host_pressed() -> void:
 	status_label.text = "Creating a room..."
+	GameManager.required_quote_next_level = GameManager.base_quote
 	host_button.disabled = true
 	NetworkSteam.create_group()
 

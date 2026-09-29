@@ -9,6 +9,8 @@ var flag_is_death = false
 
 ## квота которую нужно набрать за ТЕКУЩИЙ уровень
 var required_quote: int = 0
+## стандартая квота
+var base_quote: int = 20
 ## квота которую нужно набрать за СЛЕДУЮЩИЙ уровень
 var required_quote_next_level: int = 20 # на первом уровне
 ## квота на текущий момент в уровне || сбрасывается в 0 каждый уровень
@@ -44,8 +46,9 @@ var revive_amount: int = 5
 ## Рассылка здесь - заглушка. TODO перенести под общий снапшот от Net.gd
 @rpc("authority", "call_local", "reliable")
 func sync_died_players(list: Array) -> void:
+	var incoming := list.duplicate()   # ← снимаем алиасинг
 	died_players.clear()
-	for id in list:
+	for id in incoming:
 		died_players.append(int(id))
 
 func died_players_add(peer_id: int) -> void:
@@ -56,7 +59,7 @@ func died_players_add(peer_id: int) -> void:
 	sync_died_players.rpc(died_players)
 
 func died_players_erase(peer_id: int) -> void:
-	if not multiplayer.is_server: return
+	if not multiplayer.is_server(): return
 	if not died_players.has(peer_id): return
 
 	died_players.erase(peer_id)
@@ -73,13 +76,13 @@ func died_players_clear_all() -> void:
 
 
 func check_if_revive() -> bool:
-	if revive_amount <= 0.0: 
+	if revive_amount <= 0.0:
 		print("Revive attempts are over")
 		return false
 	elif current_quote < 100:
 		print("Not enough quote")
 		return false
-
+	print("check_if_revive TRUE")
 	return true
 
 # выполняется у всех (и хоста и клиентов)
@@ -95,6 +98,8 @@ func on_quote_earned(quote: int, earner_peer_id: int = 0) -> void:
 	current_quote += quote
 	if current_quote >= required_quote:
 		current_state = quote_states.FINISHED
+	else:
+		current_state = quote_states.PROCESS
 	# Рассылаем актуальную квоту ВСЕМ пирам (call_local => и самому серверу тоже).
 	_sync_quote.rpc(current_quote, current_state, required_quote)
 	# Отдельная рассылка для UI попапа (всем, с инфо об источнике)
@@ -113,6 +118,8 @@ func _sync_quote(value: int, state: int, req: int) -> void:
 		#% [multiplayer.get_unique_id(), current_quote, required_quote])
 
 # Вызывается из main.gd на КАЖДОМ пире => старт детерминирован и одинаков у всех — отдельный RPC тут не нужен.
+# Обновление от Темы. RPC нужен, чтобы у клиента квота обновлялась на старте уровня и не была 0/0
+@rpc("authority", "call_local", "reliable")
 func on_level_start(new_req_quote: int) -> void:
 	current_state = quote_states.PROCESS
 	current_quote = 0

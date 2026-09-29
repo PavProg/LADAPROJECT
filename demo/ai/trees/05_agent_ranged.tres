@@ -19,8 +19,8 @@ var/run_speed/hint = 1
 var/run_speed/hint_string = "10,1000,10"
 
 [sub_resource type="BBNode" id="BBNode_nrd4b"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_qiw21"]
 animation_player = SubResource("BBNode_nrd4b")
@@ -32,6 +32,7 @@ min_duration = 0.7
 max_duration = 1.5
 
 [sub_resource type="BTAction" id="BTAction_c4cxo"]
+group = &"player"
 script = ExtResource("1_4xk1i")
 group = &"player"
 
@@ -40,8 +41,8 @@ custom_name = "Take a break"
 children = [SubResource("BTPlayAnimation_qiw21"), SubResource("BTRandomWait_xlud8"), SubResource("BTAction_c4cxo")]
 
 [sub_resource type="BBNode" id="BBNode_ok0r5"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_unftu"]
 animation_player = SubResource("BBNode_ok0r5")
@@ -50,12 +51,17 @@ blend = 0.1
 speed = 1.5
 
 [sub_resource type="BTAction" id="BTAction_op6l6"]
+flank_side = 1
+range_min = 400
+range_max = 1000
 script = ExtResource("4_53hao")
 flank_side = 1
 range_min = 400
 range_max = 1000
 
 [sub_resource type="BTAction" id="BTAction_ycjun"]
+speed_var = &"run_speed"
+avoid_var = &"target"
 script = ExtResource("3_q4r2p")
 speed_var = &"run_speed"
 avoid_var = &"target"
@@ -80,14 +86,17 @@ run_chance = 0.3
 children = [SubResource("BTCooldown_2lneu")]
 
 [sub_resource type="BTAction" id="BTAction_kuuw2"]
+range_min = 400
+range_max = 1000
+position_var = &"shoot_pos"
 script = ExtResource("4_53hao")
 range_min = 400
 range_max = 1000
 position_var = &"shoot_pos"
 
 [sub_resource type="BBNode" id="BBNode_kc64r"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_panch"]
 animation_player = SubResource("BBNode_kc64r")
@@ -95,6 +104,7 @@ animation_name = &"walk"
 blend = 0.1
 
 [sub_resource type="BTAction" id="BTAction_66hsk"]
+target_position_var = &"shoot_pos"
 script = ExtResource("3_q4r2p")
 target_position_var = &"shoot_pos"
 
@@ -105,12 +115,13 @@ children = [SubResource("BTAction_66hsk")]
 script = ExtResource("5_aexyq")
 
 [sub_resource type="BTCondition" id="BTCondition_1fnyc"]
+tolerance = 150.0
 script = ExtResource("2_a8qex")
 tolerance = 150.0
 
 [sub_resource type="BBNode" id="BBNode_s6vt4"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_qa8jy"]
 animation_player = SubResource("BBNode_s6vt4")
@@ -120,8 +131,8 @@ blend = 0.1
 [sub_resource type="BTWait" id="BTWait_gbcyb"]
 
 [sub_resource type="BBNode" id="BBNode_qkfqt"]
-saved_value = NodePath("AnimationPlayer")
 resource_name = "AnimationPlayer"
+saved_value = NodePath("AnimationPlayer")
 
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_0ktds"]
 await_completion = 1.0
@@ -130,8 +141,8 @@ animation_name = &"throw"
 blend = 0.05
 
 [sub_resource type="BBNode" id="BBNode_1yxc5"]
-saved_value = NodePath(".")
 resource_name = "."
+saved_value = NodePath(".")
 
 [sub_resource type="BTCallMethod" id="BTCallMethod_yx4fk"]
 node = SubResource("BBNode_1yxc5")

@@ -20,6 +20,9 @@ var _content_spawned: bool = false
 ## Флаг текущего уровня туториала
 var is_tutor: bool = false
 
+## Флаг текущего уровня
+var is_level: bool = false
+
 ## Номер загрузки уровня, растёт на каждый _load
 var epoch: int = 0
 
@@ -74,12 +77,14 @@ func go_to_hub() -> void:
 		return
 	_run_index = -1
 	is_tutor = false
+	is_level = false
 	_load(HUB)
 
 func go_to_tutor() -> void:
 	if not multiplayer.is_server():
 		return
 	is_tutor = true
+	is_level = false
 	_load(TUTORIAL)
 
 # func start_first_run() -> void:
@@ -95,6 +100,7 @@ func next_level() -> void:
 		GameManager.on_level_end()
 	print_rich("[color=red] [DEBUG] requared_quate_next_level: ", GameManager.required_quote_next_level, "; death flag: ", GameManager.flag_is_death)
 	_run_index += 1
+	is_level = true
 	is_tutor = false
 	if _run_index >= RUNS.size():
 		go_to_hub()
@@ -120,6 +126,7 @@ func change_scene(path: String, new_epoch: int) -> void:
 	Net.begin_epoch(new_epoch)	# локальные реестры обнуляются ДО загрузки сцены
 	
 	if path == MAIN_MENU:
+		current_scene_path = ""
 		UiManager.clear_game_ui()
 	
 	get_tree().change_scene_to_file(path)
@@ -153,7 +160,7 @@ func _ack_ready(peer_id: int) -> void:
 		_dbg("ack от %d принят, но сервер ещё грузится - рассылка отложена" % peer_id)
 		return
 
-	GameManager.on_level_start(GameManager.required_quote_next_level)
+	GameManager.on_level_start.rpc(GameManager.required_quote_next_level)
 	_sync_all_peers()
 
 func _spawn_level_content() -> void:
@@ -218,3 +225,9 @@ func debug_report() -> String:
 	return "epoch=%d загружено=%s (peers/equipped - серверные, тут пусто всегда)" % [
 		epoch, loaded]
 #endregion
+
+func is_hub() -> bool:
+	return _run_index == -1 and not is_tutor
+	
+func is_run_level() -> bool:
+	return _run_index >= 0 and not is_tutor

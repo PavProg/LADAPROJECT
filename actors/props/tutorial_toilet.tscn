@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://d308do73hfux8"]
 
-[ext_resource type="Script" uid="uid://btclpmh2qcw5p" path="res://actors/props/tutorial_toilet.gd" id="1_77cfw"]
+[ext_resource type="Script" uid="uid://bxw2r4oq7s8oc" path="res://actors/props/tutorial_toilet.gd" id="1_77cfw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7qc5q"]
 resource_name = "ceramic"

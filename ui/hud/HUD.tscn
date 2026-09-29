@@ -10,6 +10,22 @@
 [ext_resource type="Texture2D" uid="uid://dn4jpqumbbu00" path="res://ui/icons/hp-heart-icon-512.png" id="7_aixkq"]
 [ext_resource type="Texture2D" uid="uid://b1fnihlw0l4qa" path="res://ui/icons/stamina-icon-512.png" id="8_cxhb7"]
 [ext_resource type="Texture2D" uid="uid://23cyc7uyo07u" path="res://ui/icons/explosion-icon-512-dollar.png" id="9_cxhb7"]
+[ext_resource type="Script" uid="uid://bbubkrnccimhx" path="res://ui/AutoSizedLabel.gd" id="11_5uuaq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38saq"]
+bg_color = Color(0.14509805, 0.14509805, 0.14509805, 0.8117647)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.5526121, 0.5462798, 0.5462798, 1)
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tw1cs"]
+bg_color = Color(0.8758008, 0.8758008, 0.8758008, 1)
 
 [node name="Hud" type="Control" unique_id=1916678595 node_paths=PackedStringArray("damageFeed")]
 layout_mode = 3
@@ -137,6 +153,16 @@ theme_override_constants/outline_size = 12
 
 [node name="TasksContainer" type="VBoxContainer" parent="Quota/VBoxContainer" unique_id=923317096]
 layout_mode = 2
+
+[node name="OptionalText" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=219844128]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 35
+text = "Optional:"
+horizontal_alignment = 2
+script = ExtResource("11_5uuaq")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
 
 [node name="Vases" type="Label" parent="Quota/VBoxContainer/TasksContainer" unique_id=680872088]
 layout_mode = 2
@@ -270,3 +296,35 @@ offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=31586779]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.57
+anchor_right = 0.5
+anchor_bottom = 0.578
+offset_left = -93.0
+offset_top = -20.0
+offset_right = 93.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=2131979613]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "[E] to revive"
+script = ExtResource("11_5uuaq")
+metadata/_custom_type_script = "uid://bbubkrnccimhx"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=681772987]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 41
+theme_override_styles/background = SubResource("StyleBoxFlat_38saq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tw1cs")
+value = 33.36
+show_percentage = false

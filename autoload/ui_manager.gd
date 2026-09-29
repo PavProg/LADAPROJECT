@@ -38,16 +38,20 @@ func _local_player_spawned(player):
 	var quota : MarginContainer = hud.get_node("./Quota")
 	var hint : MarginContainer = hud.get_node("./Hint")
 	var damage_feed : Control = hud.get_node("./QuotaDamageFeed")
-	
+	var task_container : Control = hud.get_node("./Quota/VBoxContainer/TasksContainer")
+
 	if get_tree().current_scene.name == "Hub":
 		quota.visible = false
 		hint.visible = true
 		damage_feed.visible = false
-
+	elif get_tree().current_scene.name == "TutorialLvl":
+		task_container.visible = false
+		hint.visible = false
 	else:
 		quota.visible = true
 		hint.visible = false
 		damage_feed.visible = true
+		task_container.visible = true
 		
 	hud.set_player(player)
 	

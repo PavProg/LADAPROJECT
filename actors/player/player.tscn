@@ -145,7 +145,6 @@ volume_db = -50.0
 [node name="DeathLabel" type="Label3D" parent="." unique_id=1147117128]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88175535, -1.4951843)
 visible = false
-text = "СМЕРТЬ"
 
 [node name="TaskListManager" type="Node" parent="." unique_id=1077129890]
 script = ExtResource("9_388e2")

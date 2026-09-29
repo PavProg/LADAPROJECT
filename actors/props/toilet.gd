@@ -5,12 +5,10 @@ class_name EscapeToilet
 @export var escape_area : Area3D
 
 func on_interact() -> void:
-	if not LevelManager.is_tutor:
-		LevelManager.next_level()
-		return
 
-	if LevelManager.is_tutor and GameManager.current_quote >= GameManager.required_quote:
-		request_exit.rpc_id(1)
+	print("Запрос перехода")
+	# хаб или обычный уровень — сервер сам решит, пускать или нет
+	request_next_level.rpc_id(1)
 		
 @rpc("any_peer", "call_local", "reliable")
 func request_exit() -> void:
@@ -18,4 +16,19 @@ func request_exit() -> void:
 		return
 	if GameManager.current_state != GameManager.quote_states.FINISHED:
 		return 
+	LevelManager.next_level()
+
+@rpc("any_peer", "call_local", "reliable")
+func request_next_level() -> void:
+	if not multiplayer.is_server():
+		return
+
+	# Хаб — выходим всегда, квоты тут нет.
+	if LevelManager.is_hub():
+		LevelManager.next_level()
+		return
+
+	# Обычный уровень — только при набранной квоте.
+	if GameManager.current_state != GameManager.quote_states.FINISHED:
+		return
 	LevelManager.next_level()
