@@ -49,11 +49,11 @@ grow_vertical = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
-anchor_top = 0.5
+anchor_top = 0.46600002
 anchor_right = 0.25
 anchor_bottom = 0.85
+offset_top = 61.19995
 grow_vertical = 0
-theme_override_constants/separation = 8
 
 [node name="Header" type="Label" parent="EntryPanel/MenuButtonsContainer" unique_id=903471288]
 layout_mode = 2
@@ -83,16 +83,17 @@ size_flags_vertical = 3
 text = "Exit"
 
 [node name="JoinGamePopup" type="Panel" parent="." unique_id=1935420677]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 0.35
-anchor_right = 0.6
-anchor_bottom = 0.55
-offset_left = -248.0
-offset_top = 32.0
-offset_right = 359.99988
-offset_bottom = 320.0
+anchor_left = 0.31100002
+anchor_top = 0.36800003
+anchor_right = 0.72900003
+anchor_bottom = 0.689
+offset_left = 1.1999512
+offset_top = -0.4000244
+offset_right = -1.2000732
+offset_bottom = -0.20007324
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -124,11 +125,10 @@ alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="JoinGamePopup/VBoxContainer" unique_id=1013887654]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-theme_override_constants/separation = 15
 alignment = 1
 
 [node name="ConfirmJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=1687324910]
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Join"
 
@@ -140,26 +140,28 @@ text = "Cancel"
 [node name="RoomPanel" type="Panel" parent="." unique_id=1502377843]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.32
-anchor_top = 0.18
-anchor_right = 0.68
-anchor_bottom = 0.86
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 160.28003
-offset_bottom = 76.359985
+anchor_left = 0.30600002
+anchor_top = 0.158
+anchor_right = 0.73700005
+anchor_bottom = 0.90200007
+offset_left = -0.8000488
+offset_top = -0.4000244
+offset_right = 0.67993164
+offset_bottom = 0.7598877
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="RoomPanel" unique_id=1178549302]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 19.640015
-offset_top = 58.640022
-offset_right = 19.640015
-offset_bottom = 58.640015
+anchors_preset = -1
+anchor_left = 0.016
+anchor_top = 0.044000003
+anchor_right = 0.97300005
+anchor_bottom = 0.98300004
+offset_left = 0.30753326
+offset_top = -0.33582306
+offset_right = 52.26355
+offset_bottom = 81.426025
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.9568148, 0.93947464)
@@ -202,6 +204,7 @@ text = "Copy"
 layout_mode = 2
 
 [node name="PlayersHeader" type="Label" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=816427925]
+visible = false
 layout_mode = 2
 text = "Players"
 
@@ -212,7 +215,6 @@ size_flags_vertical = 3
 [node name="PlayersList" type="VBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer/PlayersScroll" unique_id=1032851619]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 4
 
 [node name="PlayerRowTemplate" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/PlayersScroll/PlayersList" unique_id=1409663072]
 layout_mode = 2
@@ -220,7 +222,6 @@ text = "Player"
 
 [node name="ButtonsRow" type="VBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1592015736]
 layout_mode = 2
-theme_override_constants/separation = 6
 
 [node name="InviteFriendButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=1866340298]
 custom_minimum_size = Vector2(0, 34)
@@ -243,12 +244,12 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
 anchor_top = 0.9
-anchor_right = 0.95
-anchor_bottom = 0.95
+anchor_right = 0.95600003
+anchor_bottom = 0.9760001
 offset_left = -2.0
 offset_top = 8.0
-offset_right = -2.0
-offset_bottom = 47.0
+offset_right = -18.800049
+offset_bottom = 0.1998291
 grow_horizontal = 2
 grow_vertical = 0
 text = "Ready"

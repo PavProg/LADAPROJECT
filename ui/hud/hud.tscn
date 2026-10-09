@@ -112,11 +112,12 @@ theme_override_constants/outline_size = 12
 
 [node name="Quota" type="MarginContainer" parent="." unique_id=114989361]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = -1
+anchor_left = 0.734
 anchor_right = 1.0
-offset_left = -163.0
-offset_bottom = 73.0
+anchor_bottom = 0.512
+offset_left = 581.7998
+offset_bottom = -848.60004
 grow_horizontal = 0
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
@@ -135,19 +136,20 @@ texture = ExtResource("9_cxhb7")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Caption" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=230858644]
+[node name="Caption" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=113985633]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0.20392157, 1)
 theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 100
 text = ": "
 
-[node name="Value" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1287765924]
+[node name="Value" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=13227920]
 custom_minimum_size = Vector2(215, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 12
 horizontal_alignment = 1
 
-[node name="Suffix" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1548859294]
+[node name="Suffix" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1020900334]
 layout_mode = 2
 theme_override_constants/outline_size = 12
 

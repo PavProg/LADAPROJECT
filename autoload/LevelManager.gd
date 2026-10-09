@@ -3,7 +3,8 @@ extends Node
 const HUB := "res://levels/hub/hub_old.tscn"
 const TUTORIAL := "res://levels/tutorial/tutorial_lvl.tscn"
 const RUNS := [
-	"res://levels/run_XX/run_level_1.tscn"	# Первый уровень
+	"res://levels/run_XX/run_level_1_procedural.tscn"	# Первый уровень
+	#"res://levels/run_XX/run_level_1.tscn"	# Первый уровень
 ]
 const MAIN_MENU: String = "res://ui/menus/lobby-menu/lobby-menu.tscn"
 
@@ -20,9 +21,6 @@ var _content_spawned: bool = false
 ## Флаг текущего уровня туториала
 var is_tutor: bool = false
 
-## Флаг текущего уровня
-var is_level: bool = false
-
 ## Номер загрузки уровня, растёт на каждый _load
 var epoch: int = 0
 
@@ -36,6 +34,8 @@ var _equipped: Array[int] = []
 var _last_sent: Array[int] = []
 
 var _heartbeat_t: float = 0.0
+
+var level_seed: int = 0
 
 #region PEERS
 func _ready() -> void:
@@ -57,7 +57,7 @@ func _on_connected_peer(peer_id: int) -> void:
 		return
 	if current_scene_path != "":
 		# Эпоху отдаём вместе со сценой: пир должен знать, какие снапшоты для него свежие.
-		change_scene.rpc_id(peer_id, current_scene_path, epoch)
+		change_scene.rpc_id(peer_id, current_scene_path, epoch, level_seed)
 
 func _on_disconnected_peer(peer_id: int) -> void:
 	if not multiplayer.is_server(): return
@@ -77,14 +77,12 @@ func go_to_hub() -> void:
 		return
 	_run_index = -1
 	is_tutor = false
-	is_level = false
 	_load(HUB)
 
 func go_to_tutor() -> void:
 	if not multiplayer.is_server():
 		return
 	is_tutor = true
-	is_level = false
 	_load(TUTORIAL)
 
 # func start_first_run() -> void:
@@ -98,9 +96,8 @@ func next_level() -> void:
 		return
 	if _run_index != 0:
 		GameManager.on_level_end()
-	print_rich("[color=red] [DEBUG] requared_quate_next_level: ", GameManager.required_quote_next_level, "; death flag: ", GameManager.flag_is_death)
+	#print_rich("[color=red] [DEBUG] requared_quate_next_level: ", GameManager.required_quote_next_level, "; death flag: ", GameManager.flag_is_death)
 	_run_index += 1
-	is_level = true
 	is_tutor = false
 	if _run_index >= RUNS.size():
 		go_to_hub()
@@ -114,15 +111,17 @@ func _load(path: String) -> void:
 	current_scene_path = path
 	_content_spawned = false
 	epoch += 1					# всё, что было отправлено до этой строки, протухло
+	level_seed = randi()
 	_peers.clear()
 	_equipped.clear()
 	_last_sent.clear()
 	_dbg("загрузка %s, epoch=%d" % [path, epoch])
-	change_scene.rpc(path, epoch)
+	change_scene.rpc(path, epoch, level_seed)
 
 @rpc("authority","call_local", "reliable")
-func change_scene(path: String, new_epoch: int) -> void:
+func change_scene(path: String, new_epoch: int, new_seed: int) -> void:
 	epoch = new_epoch
+	level_seed = new_seed
 	Net.begin_epoch(new_epoch)	# локальные реестры обнуляются ДО загрузки сцены
 	
 	if path == MAIN_MENU:
@@ -136,11 +135,33 @@ func change_scene(path: String, new_epoch: int) -> void:
 		await get_tree().process_frame
 	await get_tree().process_frame
 	
+	await _wait_level_built()
+	var gen := get_tree().get_first_node_in_group("level_generator")
+	if gen and not multiplayer.is_server():
+		_report_layout.rpc_id(1, gen._layout_hash())
+	
+	if epoch != new_epoch:
+		return
+	
 	Net.apply_pending_state()
 	
 	if path == MAIN_MENU:
 		return
 	_ack_ready.rpc_id(1, multiplayer.get_unique_id())
+
+@rpc("any_peer", "reliable")
+func _report_layout(h: int) -> void:
+	if not multiplayer.is_server(): return
+	var gen := get_tree().get_first_node_in_group("level_generator")
+	if gen and gen._layout_hash() != h:
+		push_error("[LEVEL] планировка у пира %d РАЗОШЛАСЬ" % multiplayer.get_remote_sender_id())
+
+## Ждет генератор, если он есть в сцене
+func _wait_level_built() -> void:
+	var gen := get_tree().get_first_node_in_group("level_generator")
+	if gen == null or gen.is_level_ready:
+		return
+	await gen.level_ready
 #endregion
 
 #region rpc spawn

@@ -143,8 +143,8 @@ func _on_start_button_pressed() -> void:
 
 ## Кнопка приглашения стим
 func _on_invite_button_pressed() -> void:
-	print("[STEAM] overlay enabled: ", Steam.isOverlayEnabled())
-	print("[STEAM] lobby_id: ", NetworkSteam.lobby_id)
+	#print("[STEAM] overlay enabled: ", Steam.isOverlayEnabled())
+	#print("[STEAM] lobby_id: ", NetworkSteam.lobby_id)
 	Steam.activateGameOverlayInviteDialog(NetworkSteam.lobby_id)
 
 ## Кнопка копирования кода группы

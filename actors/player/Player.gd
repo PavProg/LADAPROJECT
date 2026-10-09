@@ -794,17 +794,17 @@ func try_interact(max_search_depth : int = 5) -> void:
 					target = target.get_parent()
 
 func start_revive_hold(revived: CharacterBody3D) -> void:
-	print("REVIVE ---- start_revive_hold")
+	#print("REVIVE ---- start_revive_hold")
 	
 	revive_target = revived
-	print("Dead players: ", GameManager.died_players)
-	print("revive_target is dead? : ", revive_target._is_death)
+	#print("Dead players: ", GameManager.died_players)
+	#print("revive_target is dead? : ", revive_target._is_death)
 	if !GameManager.check_if_revive() or !(GameManager.died_players.has(str(revive_target.name).to_int()) or revive_target._is_death): # порверяем что попытки есть еще (попытки синхронизируются в момент изменения с сервером)
 		revive_target = null
-		print("Unable to revive")
+		#print("Unable to revive")
 		return
 	
-	print_rich("[color=red] Array died players. Gamemanager: ", GameManager.died_players)
+	#print_rich("[color=red] Array died players. Gamemanager: ", GameManager.died_players)
 	
 	# Включить UI progress bar для ревайва # TODO UI
 	UiManager.hud.get_node("./VBoxContainer/ProgressBar").visible = true
@@ -815,7 +815,7 @@ func start_revive_hold(revived: CharacterBody3D) -> void:
 	revive_hold_timer = 0.0
 
 func cancel_revive_hold() -> void:
-	print("REVIVE ---- cancel_revive_hold")
+	#print("REVIVE ---- cancel_revive_hold")
 	if revive_target == null:
 		return
 	revive_target = null
@@ -829,23 +829,23 @@ func cancel_revive_hold() -> void:
 func process_revive_hold(delta: float) -> void:
 	if revive_target == null: return
 	
-	print("REVIVE -- Processing")
+	#print("REVIVE -- Processing")
 	
 	if UiManager.is_game_blocked():
-		print("REVIVE -- UiManager.is_game_blocked")
+		#print("REVIVE -- UiManager.is_game_blocked")
 		cancel_revive_hold()
 		return
  
 	# отпустили кнопку
 	if Input.is_action_just_released("interact"):
-		print("REVIVE -- is_action_just_released FALSE")
+		#print("REVIVE -- is_action_just_released FALSE")
 		cancel_revive_hold()
 		return
 
 	# прицел увели с цели - тоже сбрасываем (перепроверка рейкастом)
 	var current_target = raycast_from_camera(data.interaction_range)
 	if  !current_target or player_of(current_target) != revive_target:
-		print("REVIVE -- raycast_from_camera FALSE")
+		#print("REVIVE -- raycast_from_camera FALSE")
 		cancel_revive_hold()
 		return
 
@@ -854,7 +854,7 @@ func process_revive_hold(delta: float) -> void:
 	
 	if revive_hold_timer >= revive_hold_time:
 		var revived = revive_target as CharacterBody3D
-		print("REVIVE -- Revive ended - player alive")
+		#print("REVIVE -- Revive ended - player alive")
 		cancel_revive_hold()
 		revived.request_revive.rpc_id(1, str(revived.name).to_int())
 
@@ -873,10 +873,10 @@ func request_revive(peer_id: int) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func multiplayer_revive() -> void:
 	
-	print("_multiplayer_revive")
+	#print("_multiplayer_revive")
 	if not is_instance_valid(_spectate_camera): return
 	
-	print("_spectate_camera instance is valid")
+	#print("_spectate_camera instance is valid")
 	$CameraController/Camera3D.current = true
 	death_label.visible = false
 	_spectate_camera.stop_spectating()

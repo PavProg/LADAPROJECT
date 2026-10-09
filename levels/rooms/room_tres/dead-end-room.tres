@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RoomData" format=3 uid="uid://bf0i0mj3hf735"]
+
+[ext_resource type="Script" uid="uid://c58cawnxb5w1o" path="res://levels/rooms/room_data.gd" id="1_0mg5p"]
+[ext_resource type="PackedScene" uid="uid://ql6yavq8osxg" path="res://levels/rooms/dead-end-room.tscn" id="1_puiyi"]
+
+[resource]
+script = ExtResource("1_0mg5p")
+scene = ExtResource("1_puiyi")
+size = Vector2i(6, 6)
+doors = 1

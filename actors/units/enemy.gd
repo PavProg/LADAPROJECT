@@ -58,7 +58,7 @@ func _setup_nav() -> void:
 	# Настраивается вместе с range_attack: path_desired < target_desird < range_attack
 
 func _setup_blackboard_vars(zone: CollisionShape3D) -> void:
-	bt_player.get_blackboard().set_var("patrol_zone", zone)
+	$BTPlayer.get_blackboard().set_var("patrol_zone", zone)
 	# print_rich("[color=green] [DEBUG-NAV] Переменная patrol_zone добавлена в BT blackboard")
 
 ## sprint задаёт тот, кто ставит цель: Chase - true, патруль/поиск - false.
@@ -177,7 +177,8 @@ func recover_from_ragdoll() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func recover_fx() -> void:
-	print("[ENEMY/REPLICATION] Крыса встала")
+	pass
+	#print("[ENEMY/REPLICATION] Крыса встала")
 
 @rpc("any_peer", "call_local", "reliable")
 func toggle_damage_label(damage: int) -> void:

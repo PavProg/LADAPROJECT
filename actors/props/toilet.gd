@@ -6,7 +6,7 @@ class_name EscapeToilet
 
 func on_interact() -> void:
 
-	print("Запрос перехода")
+	#print("Запрос перехода")
 	# хаб или обычный уровень — сервер сам решит, пускать или нет
 	request_next_level.rpc_id(1)
 		

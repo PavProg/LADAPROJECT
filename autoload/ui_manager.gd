@@ -100,7 +100,7 @@ func settings_close():
 
 func quit_pressed():
 	Net.clear_peer_for_exit()
-	LevelManager.change_scene(MAIN_MENU, -1)
+	LevelManager.change_scene(MAIN_MENU, -1, 0)
 	clear_game_ui()
 
 

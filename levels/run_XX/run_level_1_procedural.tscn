@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://kxve7rmv0p5c"]
+
+[ext_resource type="Script" uid="uid://c2ryv81cf6pq7" path="res://levels/run_XX/level_generator.gd" id="1_medlo"]
+[ext_resource type="Script" uid="uid://c58cawnxb5w1o" path="res://levels/rooms/room_data.gd" id="2_clffi"]
+[ext_resource type="Resource" uid="uid://bpgavsmvw6xve" path="res://levels/rooms/room_tres/cross-room-1.tres" id="3_hgdn5"]
+[ext_resource type="Resource" uid="uid://buai3oiq0pc1n" path="res://levels/rooms/room_tres/cross-room-2.tres" id="4_0yh5d"]
+[ext_resource type="Resource" uid="uid://bf0i0mj3hf735" path="res://levels/rooms/room_tres/dead-end-room.tres" id="5_fyper"]
+[ext_resource type="Resource" uid="uid://cbvlqqacjibdd" path="res://levels/rooms/room_tres/straight-room-1.tres" id="6_rwkbt"]
+[ext_resource type="Resource" uid="uid://dh4jwncrqlhvn" path="res://levels/rooms/room_tres/straight-room-2.tres" id="7_ra8ch"]
+[ext_resource type="Resource" uid="uid://dg1cn1r1tka55" path="res://levels/rooms/room_tres/t-cross-room-1.tres" id="8_3hxqi"]
+[ext_resource type="Resource" uid="uid://l5bdxl340so8" path="res://levels/rooms/room_tres/t-cross-room-2.tres" id="9_nf4v7"]
+[ext_resource type="PackedScene" uid="uid://bbi3na47vqnwt" path="res://levels/rooms/door-cap.tscn" id="10_hgdn5"]
+[ext_resource type="PackedScene" uid="uid://bpxbdjkr3trll" path="res://actors/props/toilet.tscn" id="11_y06vd"]
+
+[sub_resource type="Environment" id="Environment_tw1cs"]
+background_color = Color(0.23514152, 0.26834738, 0.33923045, 1)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_d3btd"]
+cell_height = 0.1
+agent_height = 0.5
+agent_radius = 0.25
+
+[node name="RunLevel1" type="Node3D" unique_id=1480632097]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=597844963]
+environment = SubResource("Environment_tw1cs")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=165571438]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.006386757, 0.0020153522, 0.004943371)
+navigation_mesh = SubResource("NavigationMesh_d3btd")
+
+[node name="LevelGenerator" type="Node3D" parent="NavigationRegion3D" unique_id=2075996635]
+script = ExtResource("1_medlo")
+rooms = Array[ExtResource("2_clffi")]([ExtResource("3_hgdn5"), ExtResource("4_0yh5d"), ExtResource("5_fyper"), ExtResource("6_rwkbt"), ExtResource("7_ra8ch"), ExtResource("8_3hxqi"), ExtResource("9_nf4v7")])
+start_room = ExtResource("5_fyper")
+door_cap = ExtResource("10_hgdn5")
+exit_scene = ExtResource("11_y06vd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=52949054]
+transform = Transform3D(0.90408254, -0.41847858, 0.08666277, 0, 0.20278734, 0.9792228, -0.42735788, -0.8852982, 0.1833365, 0, 16.437328, 0)
+shadow_enabled = true
+
+[node name="PlayersCont" type="Node3D" parent="." unique_id=675958365]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="EnemiesCont" type="Node3D" parent="." unique_id=1683205091]
+
+[node name="ItemMarks" type="Node3D" parent="." unique_id=1192260039]
+
+[node name="EnemyMarkCont" type="Node3D" parent="." unique_id=2077580678]
+
+[node name="RatZones" type="Node3D" parent="." unique_id=2063626390]
+
+[node name="Items" type="Node3D" parent="." unique_id=1285001544]

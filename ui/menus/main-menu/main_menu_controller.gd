@@ -34,7 +34,8 @@ func _on_host_pressed():
 		#get_tree().change_scene_to_packed(host_scene)
 		NetworkSteam.create_group()
 	else:
-		print("Ошибка: хост-сцена не назначена в инспекторе!")
+		pass
+		#print("Ошибка: хост-сцена не назначена в инспекторе!")
 
 func _on_join_pressed():
 	# Показываем попап
@@ -50,10 +51,10 @@ func _on_confirm_join_pressed():
 	var uid = uid_enter_box.text.strip_edges()
 	if uid.is_empty():
 		# Можно добавить визуальную обратную связь
-		print("Введите UID игры")
+		#print("Введите UID игры")
 		return
 	
-	print("Подключение к игре с UID: ", uid)
+	#print("Подключение к игре с UID: ", uid)
 	# Закрываем попап после подтверждения
 	join_popup.visible = false
 	NetworkSteam._on_group_joined_by_uuid(uid)

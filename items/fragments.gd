@@ -9,7 +9,7 @@ func _ready() -> void:
 	pass
 
 func _on_disappear_timer_timeout() -> void:
-	print("_on_disappear_timer_timeout")
+	#print("_on_disappear_timer_timeout")
 	if not multiplayer.is_server(): return
 	delete_fragments.rpc()
 	pass

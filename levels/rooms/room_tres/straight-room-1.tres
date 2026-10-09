@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RoomData" format=3 uid="uid://cbvlqqacjibdd"]
+
+[ext_resource type="Script" uid="uid://c58cawnxb5w1o" path="res://levels/rooms/room_data.gd" id="1_j16gi"]
+[ext_resource type="PackedScene" uid="uid://ulvasfg4hohq" path="res://levels/rooms/straight-room-1.tscn" id="1_o1c3s"]
+
+[resource]
+script = ExtResource("1_j16gi")
+scene = ExtResource("1_o1c3s")
+size = Vector2i(6, 6)
+doors = 5

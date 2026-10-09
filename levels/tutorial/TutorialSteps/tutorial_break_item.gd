@@ -6,7 +6,7 @@ extends TutorialStep
 var items_left : int = 0
 
 func enter() -> void:
-	print(self.name + " step entered")
+	#print(self.name + " step entered")
 
 	if step_dialogue:
 		step_dialogue.visible = true
@@ -24,7 +24,7 @@ func enter() -> void:
 			items_left += 1
 			body.tree_exiting.connect(_on_object_destroy)
 
-	print("BreakItem: предметов в зоне %d" % items_left)
+	#print("BreakItem: предметов в зоне %d" % items_left)
 
 func _on_object_destroy() -> void:
 	items_left -= 1

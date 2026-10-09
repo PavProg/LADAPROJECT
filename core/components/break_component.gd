@@ -78,7 +78,8 @@ func _destroy() -> void:
 	if item.item_data.id != null:
 		Net.despawn_item(item.name)
 	else:
-		print("Не вышло найти id предмета")
+		pass
+		#print("Не вышло найти id предмета")
 		
 
 # вызывается когда объект сталкивается с объектом уровня(статичное). Нужен так как _on_hurt_area_area_entered отслеживает только Area3D, но никак не StaticBody3D

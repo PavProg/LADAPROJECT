@@ -7,4 +7,4 @@ const MAIN_MENU : String = "res://ui/menus/lobby-menu/lobby-menu.tscn"
 
 func on_interact() -> void:
 	Net.clear_peer_for_exit()
-	LevelManager.change_scene(MAIN_MENU, -1)
+	LevelManager.change_scene(MAIN_MENU, -1, 0)

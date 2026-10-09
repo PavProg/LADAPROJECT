@@ -77,12 +77,12 @@ func died_players_clear_all() -> void:
 
 func check_if_revive() -> bool:
 	if revive_amount <= 0.0:
-		print("Revive attempts are over")
+		#print("Revive attempts are over")
 		return false
 	elif current_quote < 100:
-		print("Not enough quote")
+		#print("Not enough quote")
 		return false
-	print("check_if_revive TRUE")
+	#print("check_if_revive TRUE")
 	return true
 
 # выполняется у всех (и хоста и клиентов)

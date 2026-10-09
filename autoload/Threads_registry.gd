@@ -9,14 +9,14 @@ func _ready() -> void:
 	
 func _on_grabbed(item: Node, by_peer: int) -> void:
 	if not multiplayer.is_server():
-		print("[REGISTRY WARNING] Взятый предмет не добавился в реестр")
+		#print("[REGISTRY WARNING] Взятый предмет не добавился в реестр")
 		return
 	_taken[by_peer] = item
 	#print("[REGISTRY TEST] Взят предмет: ", by_peer, " - ", item)
 	
 func _on_dropped(item: Node) -> void:
 	if not multiplayer.is_server():
-		print("[REGISTRY WARNING] Упавший предмет не учтен в реестре")
+		#print("[REGISTRY WARNING] Упавший предмет не учтен в реестре")
 		return
 	for peer in _taken.keys():
 		if _taken[peer] == item:

@@ -37,7 +37,7 @@ func _physics_process(_delta: float) -> void:
 			owner.set_grab_blend_amount(1.0)
 			
 			_grab_target = item
-			# if _grab_target is RigidBody3D and _grab_target.has_method("set_durability_label_visibility"): _grab_target.set_durability_label_visibility(true)
+			if _grab_target is RigidBody3D and _grab_target.has_method("set_durability_label_visibility"): _grab_target.set_durability_label_visibility(true)
 			Events.local_item_held_changed.emit(item)
 	elif Input.is_action_just_released("grab"):
 		_request_release.rpc_id(1)
@@ -87,8 +87,8 @@ func _aim_item() -> Node:
 			if victim == null:
 				return null
 			
-			print("Dead players: ", GameManager.died_players)
-			print("revive_target is dead? : ", victim._is_death)
+			#print("Dead players: ", GameManager.died_players)
+			#print("revive_target is dead? : ", victim._is_death)
 			if victim._is_death or GameManager.died_players.has(str(victim.name).to_int()):
 				UiManager.hud.get_node("./VBoxContainer/ProgressBar").max_value = owner.revive_hold_time
 				UiManager.hud.get_node("./VBoxContainer/Label").visible = true
@@ -106,9 +106,6 @@ func _request_grab(item_path: NodePath) -> void:
 	var who := get_multiplayer_authority()   # id владельца этого GrabComponent = кто просит
 	# если хватаем объект
 	if grabbed_object and grabbed_object.is_in_group("item"):
-		if grabbed_object and grabbed_object.has_method("set_durability_label_visibility"):
-			print_rich("[color=yellow] [DEBUG-GRAB] Захват произошел")
-			grabbed_object.set_durability_label_visibility(true)
 		if grabbed_object.has_method("enable_gravity"): grabbed_object.enable_gravity(true)
 		owner.try_grab(grabbed_object)
 		_held_object = grabbed_object

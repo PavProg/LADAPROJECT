@@ -3,7 +3,7 @@ extends TutorialStep
 const AWAIT_TIME : float = 4.0
 
 func enter() -> void:
-	print(self.name + " step entered")
+	#print(self.name + " step entered")
 	
 	if step_dialogue:
 		step_dialogue.visible = true

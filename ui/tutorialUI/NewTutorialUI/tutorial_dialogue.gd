@@ -40,7 +40,7 @@ func show_next_dialogue() -> void:
 	var current_dialogue_index = dialogues.find(current_dialogue)
 	
 	if (current_dialogue_index + 1) < dialogues.size():
-		print(dialogues.size())
+		#print(dialogues.size())
 		show_new_dialogue(dialogues[current_dialogue_index + 1])
 	
 func add_progress(progress: float) -> void:

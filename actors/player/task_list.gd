@@ -111,26 +111,28 @@ func _process(delta: float) -> void:
 	pass
 	
 func _bind_container() -> void:
-	print("Вызов _bind_container")
+	#print("Вызов _bind_container")
 	var player := get_parent()
 
 	if player == null:
-		print("игрок не найден")
+		#print("игрок не найден")
 		return
-	print(UiManager)
-	print(UiManager.hud)
+	#print(UiManager)
+	#print(UiManager.hud)
 	tasks_container = UiManager.hud.find_child("TasksContainer", true, false) as Container
 	
-	print(tasks_container)
+	#print(tasks_container)
 	
 	if tasks_container == null:
-		print("TaskManageer контейнер не найден")
+		pass
+		#print("TaskManageer контейнер не найден")
 	else:
 		if not tasks.is_empty():
-			print("Вызов rebuild_task_labels")
+			#print("Вызов rebuild_task_labels")
 			rebuild_task_labels()
 		else:
-			print("пустой tasks")
+			pass
+			#print("пустой tasks")
 			
 ## вызывается на старте уровня
 # вызывает сервер только у себя
@@ -139,7 +141,7 @@ func load_tasks(ammount_of_tasks: int) -> void:
 	tasks.clear()
 	progress.clear()
 	completed.clear()
-	print("TASKS -- load_tasks")
+	#print("TASKS -- load_tasks")
 	var main_dict = main_tasks_pull
 	var keys = main_dict.keys()
 	keys.shuffle()
@@ -151,7 +153,7 @@ func load_tasks(ammount_of_tasks: int) -> void:
 		# закидываем в массив тасок игрока нужные (ammount_of_tasks) рандомные
 		tasks[k] = main_tasks_pull[k]
 		pass
-	print("TASKS -- generated: ", tasks.values())
+	#print("TASKS -- generated: ", tasks.values())
 	rebuild_task_labels()
 	pass
 
@@ -161,7 +163,7 @@ func request_tasks() -> void:
 	if not multiplayer.is_server(): return
 	var request_peer = multiplayer.get_remote_sender_id()
 	if request_peer == 0 or request_peer == 1: return
-	print("TASKS -- request_tasks")
+	#print("TASKS -- request_tasks")
 	
 	var host_task_manager: TaskListManager = null
 	for player in get_tree().get_nodes_in_group("player"):
@@ -173,10 +175,10 @@ func request_tasks() -> void:
 		push_error("TASKS -- host TaskListManager not found")
 		return
 
-	print(
-		"TASKS -- server source tasks: ",
-		host_task_manager.tasks.values()
-	)
+	#print(
+		#"TASKS -- server source tasks: ",
+		#host_task_manager.tasks.values()
+	#)
 	# вызывается только у запросившего клиента
 	sync_tasks.rpc_id(
 		request_peer,
@@ -196,13 +198,13 @@ func sync_tasks(_tasks: Dictionary, _progress: Dictionary, _completed: Dictionar
 	progress = _progress.duplicate()
 	completed = _completed.duplicate()
 
-	print("TASKS -- sync_tasks: ", tasks.keys())
+	#print("TASKS -- sync_tasks: ", tasks.keys())
 	rebuild_task_labels()
 	
 func show_tasks() -> void:
-	print("TASKS -- show_tasks")
+	#print("TASKS -- show_tasks")
 	# TODO UI отображение заданий
-	print("TASKS -- : ", tasks.values())
+	#print("TASKS -- : ", tasks.values())
 	pass
 	
 func hide_tasks() -> void:
@@ -213,16 +215,16 @@ func hide_tasks() -> void:
 # вызывается с сервера у сервера + клиентов
 @rpc("authority", "call_local", "reliable")
 func task_done(task_name: String) -> void:
-	print("TASKS -- task_done: ", task_name)
+	#print("TASKS -- task_done: ", task_name)
 	completed[task_name] = true
 	# вычеркивание таски в UI
 	# TODO UI вычеркивание в UI
-	print("TASKS -- completed tasks: ", completed)
+	#print("TASKS -- completed tasks: ", completed)
 	pass
 
 
 func on_task_event(payload: Dictionary, action_name: String) -> void:
-	print("TASKS -- _on_event")
+	#print("TASKS -- _on_event")
 	# пробегаемся по всем задача на уровень
 	for task_name in tasks.keys():
 		if completed.get(task_name, false): continue
@@ -301,19 +303,19 @@ func _apply_done(task_name: String) -> void:
 
 func rebuild_task_labels() -> void:
 	if tasks_container == null:
-		print("Пробуем привязать контейнер из ребилда")
+		#print("Пробуем привязать контейнер из ребилда")
 		_bind_container()
 	if tasks_container == null:
-		print("Пошел нахуй")
+		#print("Пошел нахуй")
 		return
 
-	print("Пересобираем контейнер тасок")
+	#print("Пересобираем контейнер тасок")
 	# чистим старые
 	for child in tasks_container.get_children():
 		child.queue_free()
 		task_labels.clear()
 
-	print("task.keys() = ", tasks.keys())
+	#print("task.keys() = ", tasks.keys())
 
 	## Добавить надпись extra:
 	var title := Label.new()
@@ -338,7 +340,7 @@ func rebuild_task_labels() -> void:
 		lbl.add_theme_constant_override("outline_size", 10)
 		tasks_container.add_child(lbl)
 		task_labels[task_name] = lbl
-		print(task_name)
+		#print(task_name)
 		_refresh_label(task_name)
 
 func _refresh_label(task_name: String) -> void:

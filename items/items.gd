@@ -38,7 +38,8 @@ func set_durability_label_visibility(is_visible: bool) -> void:
 # включить и анимировать damage label
 func toggle_damage_label(damage: int) -> void:
 	if item_data.display_name == "hummer":
-		print("[LABEL] Ошибка label молотка 0")
+		pass
+		#print("[LABEL] Ошибка label молотка 0")
 	damage_label.text = str(damage)
 	damage_label.scale = Vector3.ZERO
 	damage_label.modulate = Color.WHITE 
@@ -64,7 +65,8 @@ func toggle_damage_label(damage: int) -> void:
 	
 func update_durability_label_value():
 	if item_data.display_name == "hummer":
-		print("[LABEL] Ошибка label молотка")
+		pass
+		#print("[LABEL] Ошибка label молотка")
 	if durability_label: 
 		durability_label.text = str(item_data.durability)
 	pass

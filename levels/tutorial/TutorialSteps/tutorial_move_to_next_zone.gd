@@ -5,20 +5,20 @@ class_name NextAreaStep
 @export var door : Node3D
 
 func enter() -> void:
-	print(self.name + " step entered")
+	#print(self.name + " step entered")
 	
 	if step_dialogue:
 		step_dialogue.visible = true
 		
 	target_area.body_entered.connect(_on_body_entered)
-	print(target_area.name)
+	#print(target_area.name)
 	raise_door()
 
 func _on_body_entered(body: Node3D) -> void:
 	# Зона ловит не только игрока, но и предметы - завершать шаг должен игрок
 	if not body.is_in_group("player"):
 		return
-	print("entered zone" + target_area.name)
+	#print("entered zone" + target_area.name)
 	target_area.body_entered.disconnect(_on_body_entered)
 	complete()
 

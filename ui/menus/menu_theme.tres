@@ -3,35 +3,63 @@
 [ext_resource type="FontFile" uid="uid://d2r0kiqpeaoha" path="res://models/fonts/Dangrek-Regular.ttf" id="1_xad2o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xad2o"]
-bg_color = Color(0.1, 0.1, 0.1, 0.3)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.3147471, 0.5345401, 0.67508966, 1)
+skew = Vector2(0.2, 0)
+border_width_bottom = 15
+border_color = Color(0.21826762, 0.3985844, 0.5133039, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lta3a"]
-bg_color = Color(0.5632439, 0.56324387, 0.56324387, 0.21568628)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hih0"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.2861866, 0.49718934, 0.6323302, 1)
+skew = Vector2(0.2, 0)
+border_width_bottom = 15
+border_color = Color(0.19269371, 0.35819292, 0.4623416, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ode5j"]
-bg_color = Color(0, 0, 0, 0.41568628)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw0wk"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.3147471, 0.5345401, 0.67508966, 1)
+skew = Vector2(0.2, 0)
+border_width_bottom = 15
+border_color = Color(0.21826762, 0.3985844, 0.5133039, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ochnt"]
-bg_color = Color(0.6784314, 0.6784314, 0.6784314, 0.38039216)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgcj0"]
+content_margin_left = 20.0
+content_margin_top = 25.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.3147471, 0.5345401, 0.67508966, 1)
+skew = Vector2(0.2, 0)
+border_width_top = 15
+border_color = Color(0.21960784, 0.4, 0.5137255, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67fxd"]
-bg_color = Color(0, 0, 0, 0.5411765)
+bg_color = Color(0, 0, 0, 0.7647059)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
@@ -41,9 +69,9 @@ corner_radius_bottom_left = 15
 default_font = ExtResource("1_xad2o")
 default_font_size = 50
 Button/styles/disabled = SubResource("StyleBoxFlat_xad2o")
-Button/styles/hover = SubResource("StyleBoxFlat_lta3a")
-Button/styles/normal = SubResource("StyleBoxFlat_ode5j")
-Button/styles/pressed = SubResource("StyleBoxFlat_ochnt")
+Button/styles/hover = SubResource("StyleBoxFlat_4hih0")
+Button/styles/normal = SubResource("StyleBoxFlat_pw0wk")
+Button/styles/pressed = SubResource("StyleBoxFlat_sgcj0")
 HBoxContainer/constants/separation = 20
 MarginContainer/constants/margin_bottom = 30
 MarginContainer/constants/margin_left = 30
@@ -52,4 +80,4 @@ MarginContainer/constants/margin_top = 30
 Panel/styles/panel = SubResource("StyleBoxFlat_67fxd")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_67fxd")
 TabContainer/styles/panel = SubResource("StyleBoxFlat_67fxd")
-VBoxContainer/constants/separation = 20
+VBoxContainer/constants/separation = 10

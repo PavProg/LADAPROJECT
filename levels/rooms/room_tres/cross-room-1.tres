@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RoomData" format=3 uid="uid://bpgavsmvw6xve"]
+
+[ext_resource type="PackedScene" uid="uid://dj763wvftj5a2" path="res://levels/rooms/cross-room-1.tscn" id="1_xb4oo"]
+[ext_resource type="Script" uid="uid://c58cawnxb5w1o" path="res://levels/rooms/room_data.gd" id="2_j451y"]
+
+[resource]
+script = ExtResource("2_j451y")
+scene = ExtResource("1_xb4oo")
+size = Vector2i(6, 6)
+doors = 15
