@@ -4,6 +4,8 @@
 [ext_resource type="Theme" uid="uid://cachw4rx6lxd1" path="res://ui/menus/menu_theme.tres" id="1_kxree"]
 [ext_resource type="Texture2D" uid="uid://cpw1mln5557e5" path="res://models/materials/#fypfypfyp.jpg" id="2_o660l"]
 [ext_resource type="VideoStream" uid="uid://o8dsne1bjhyk" path="res://ui/0000-0300.ogv" id="3_ojraa"]
+[ext_resource type="PackedScene" uid="uid://clangsel0001" path="res://ui/menus/lobby-menu/language_selector.tscn" id="4_lang"]
+[ext_resource type="FontFile" uid="uid://d2r0kiqpeaoha" path="res://models/fonts/Dangrek-Regular.ttf" id="5_8q315"]
 
 [node name="LobbyMenu" type="Control" unique_id=1754632581]
 layout_mode = 3
@@ -57,33 +59,34 @@ grow_vertical = 0
 
 [node name="Header" type="Label" parent="EntryPanel/MenuButtonsContainer" unique_id=903471288]
 layout_mode = 2
-text = "Lobby"
+text = "LOBBY_HEADER"
 
 [node name="Tutorial" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=942576857]
 layout_mode = 2
-text = "Tutorial"
+size_flags_vertical = 3
+text = "LOBBY_TUTORIAL"
 
 [node name="SinglePlayer" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=296002533]
 layout_mode = 2
-text = "Single Player"
+size_flags_vertical = 3
+text = "LOBBY_SINGLE_PLAYER"
 
 [node name="HostButton" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=1490237766]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Host Game"
+text = "LOBBY_HOST_GAME"
 
 [node name="JoinButton" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=286104913]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Join Game"
+text = "LOBBY_JOIN_GAME"
 
 [node name="ExitButton" type="Button" parent="EntryPanel/MenuButtonsContainer" unique_id=750663482]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Exit"
+text = "LOBBY_EXIT"
 
 [node name="JoinGamePopup" type="Panel" parent="." unique_id=1935420677]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.31100002
@@ -109,9 +112,10 @@ alignment = 1
 
 [node name="JoinPopupPrompt" type="Label" parent="JoinGamePopup/VBoxContainer" unique_id=622981340]
 layout_mode = 2
-text = "To join the game, enter its code"
+text = "LOBBY_JOIN_PROMPT"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="JoinGamePopup/VBoxContainer" unique_id=1849330271]
 layout_mode = 2
@@ -120,6 +124,7 @@ theme_override_constants/margin_right = 20
 
 [node name="UIDEnterBox" type="LineEdit" parent="JoinGamePopup/VBoxContainer/MarginContainer" unique_id=506274119]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("5_8q315")
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="JoinGamePopup/VBoxContainer" unique_id=1013887654]
@@ -128,14 +133,14 @@ layout_mode = 2
 alignment = 1
 
 [node name="ConfirmJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=1687324910]
-custom_minimum_size = Vector2(180, 0)
+custom_minimum_size = Vector2(180, 100)
 layout_mode = 2
-text = "Join"
+text = "LOBBY_JOIN"
 
 [node name="CancelJoinButton" type="Button" parent="JoinGamePopup/VBoxContainer/HBoxContainer" unique_id=344209671]
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
-text = "Cancel"
+text = "LOBBY_CANCEL"
 
 [node name="RoomPanel" type="Panel" parent="." unique_id=1502377843]
 layout_mode = 1
@@ -177,8 +182,9 @@ theme_override_constants/separation = 10
 [node name="RoomHeader" type="Label" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=651002374]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
-text = "Lobby Room"
+text = "LOBBY_ROOM_HEADER"
 horizontal_alignment = 1
+clip_text = true
 
 [node name="CodeRow" type="HBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1094776520]
 layout_mode = 2
@@ -186,19 +192,22 @@ theme_override_constants/separation = 8
 
 [node name="CodeLabel" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/CodeRow" unique_id=489331207]
 layout_mode = 2
-text = "Code:"
+text = "LOBBY_CODE_LABEL"
 vertical_alignment = 1
 
 [node name="CodeValue" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/CodeRow" unique_id=1760884493]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("5_8q315")
 text = "------"
 vertical_alignment = 1
+clip_text = true
 
 [node name="CopyCodeButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/CodeRow" unique_id=1445097368]
-custom_minimum_size = Vector2(60, 0)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-text = "Copy"
+size_flags_vertical = 3
+text = "LOBBY_COPY"
 
 [node name="Separator" type="HSeparator" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1233709450]
 layout_mode = 2
@@ -218,26 +227,27 @@ size_flags_horizontal = 3
 
 [node name="PlayerRowTemplate" type="Label" parent="RoomPanel/MarginContainer/RoomContainer/PlayersScroll/PlayersList" unique_id=1409663072]
 layout_mode = 2
-text = "Player"
+text = "LOBBY_PLAYER_ROW"
 
 [node name="ButtonsRow" type="VBoxContainer" parent="RoomPanel/MarginContainer/RoomContainer" unique_id=1592015736]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 
 [node name="InviteFriendButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=1866340298]
-custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
-text = "Invite Friend"
+size_flags_vertical = 3
+text = "LOBBY_INVITE_FRIEND"
 
 [node name="StartGameButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=708235419]
-custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
+size_flags_vertical = 3
 disabled = true
-text = "Start Game"
+text = "LOBBY_START_GAME"
 
 [node name="LeaveButton" type="Button" parent="RoomPanel/MarginContainer/RoomContainer/ButtonsRow" unique_id=1251906047]
-custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-text = "Leave Lobby"
+size_flags_vertical = 3
+text = "LOBBY_LEAVE"
 
 [node name="StatusLabel" type="Label" parent="." unique_id=933748261]
 layout_mode = 1
@@ -252,5 +262,21 @@ offset_right = -18.800049
 offset_bottom = 0.1998291
 grow_horizontal = 2
 grow_vertical = 0
-text = "Ready"
+text = "LOBBY_STATUS_READY"
 vertical_alignment = 1
+
+[node name="LanguageSelector" parent="." unique_id=548565527 instance=ExtResource("4_lang")]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.938
+anchor_top = 0.90200007
+anchor_right = 0.98300004
+anchor_bottom = 0.97300005
+offset_left = 19.291992
+offset_top = 27.399902
+offset_right = 0.984375
+offset_bottom = -0.40014648
+grow_horizontal = 0
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true

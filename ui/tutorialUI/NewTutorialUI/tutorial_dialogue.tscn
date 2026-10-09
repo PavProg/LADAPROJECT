@@ -13,6 +13,7 @@ corner_radius_top_right = 15
 bg_color = Color(1, 0.49803922, 0, 1)
 
 [node name="TutorialDialogue" type="Control" unique_id=959935020 node_paths=PackedStringArray("dialogues", "task_progress_bar")]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +27,7 @@ task_progress_bar = NodePath("DialoguePanel/Progress/ProgressBar")
 metadata/_custom_type_script = "uid://ck1qovtgnwfcc"
 
 [node name="DialoguePanel" type="Panel" parent="." unique_id=1612532008]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1758572
@@ -39,6 +41,7 @@ grow_vertical = 0
 metadata/_edit_use_anchors_ = true
 
 [node name="Dialogues" type="Control" parent="DialoguePanel" unique_id=35891649]
+visible = false
 layout_mode = 1
 anchor_left = 0.025
 anchor_top = 0.2
@@ -92,7 +95,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 45
 text = "Очень длинная тестовая надпись для проверки вместимости текста в диалоговое окно. Данный текст должен рассказывать какую то очень важную информацию, которая должна быть использована игроком для прохождения туторила. И желательно, чтобы надпись нормально скейлилась."
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -101,6 +104,7 @@ script = ExtResource("2_cdtt6")
 metadata/_custom_type_script = "uid://bbubkrnccimhx"
 
 [node name="Progress" type="Panel" parent="DialoguePanel" unique_id=371461597]
+visible = false
 clip_children = 1
 layout_mode = 1
 anchors_preset = -1
@@ -112,6 +116,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_38saq")
 metadata/_edit_use_anchors_ = true
 
 [node name="ProgressBar" type="ProgressBar" parent="DialoguePanel/Progress" unique_id=1183014391]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://clangsel0001"]
+
+[ext_resource type="Script" uid="uid://csuu8gcwem42g" path="res://ui/menus/lobby-menu/scripts/language_selector.gd" id="1_lang"]
+
+[node name="LanguageSelector" type="Control" unique_id=1552254402]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 60.0
+offset_bottom = 60.0
+script = ExtResource("1_lang")
+
+[node name="FlagButton" type="Button" parent="." unique_id=1066469018]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="LanguagePopup" type="Panel" parent="." unique_id=45282067]
+visible = false
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+
+[node name="List" type="VBoxContainer" parent="LanguagePopup" unique_id=642951674]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

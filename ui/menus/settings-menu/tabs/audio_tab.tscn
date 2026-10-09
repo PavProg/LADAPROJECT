@@ -24,7 +24,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MasterVolumeRow" unique_id=155657155]
 custom_minimum_size = Vector2(315, 0)
 layout_mode = 2
-text = "Master Volume"
+text = "AUDIO_TAB_MASTER_VOLUME"
 
 [node name="Slider" type="HSlider" parent="MarginContainer/VBoxContainer/MasterVolumeRow" unique_id=179109438]
 layout_mode = 2
@@ -52,7 +52,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SFXVolumeRow" unique_id=1705021428]
 custom_minimum_size = Vector2(315, 0)
 layout_mode = 2
-text = "SFX Volume"
+text = "AUDIO_TAB_SFX_VOLUME"
 
 [node name="Slider" type="HSlider" parent="MarginContainer/VBoxContainer/SFXVolumeRow" unique_id=1869179383]
 layout_mode = 2

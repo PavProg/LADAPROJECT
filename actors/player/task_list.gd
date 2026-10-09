@@ -4,42 +4,42 @@ class_name TaskListManager
 ## словарь всех заданий с кратким названием задания и его описанием для игрока
 # { "task_name": "task_description" }
 const main_tasks_pull: Dictionary = {
-	"5_vases": 				"Break vases",
-	"3_red_vases": 			"Break red vases",
-	"3_green_vases": 		"Break green vases",
-	"600_damage_vases": 	"Deal damage to vases",
-	"500_damage_paintings": "Deal damage to paintings",
-	"5_paintins":			"Break paintings",
-	"PIG_vase": 			"Break PIG vase",
-	"1000_damage_armor": 	"Deal damage to knight armor",
-	"break_box": 			"Break box",
-	"break_3_idol": 		"Break stone idols",
+	"5_vases": 				"TASK_5_VASES_DESC",
+	"3_red_vases": 			"TASK_3_RED_VASES_DESC",
+	"3_green_vases": 		"TASK_3_GREEN_VASES_DESC",
+	"600_damage_vases": 	"TASK_600_DAMAGE_VASES_DESC",
+	"500_damage_paintings": "TASK_500_DAMAGE_PAINTINGS_DESC",
+	"5_paintins":			"TASK_5_PAINTINGS_DESC",
+	"PIG_vase": 			"TASK_PIG_VASE_DESC",
+	"1000_damage_armor": 	"TASK_1000_DAMAGE_ARMOR_DESC",
+	"break_box": 			"TASK_BREAK_BOX_DESC",
+	"break_3_idol": 		"TASK_BREAK_3_IDOL_DESC",
 }
 # описания заданий
 const TASK_DEFS := {
 	"5_vases": {
-		"desc": "Break vases",
+		"desc": "TASK_5_VASES_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "vase"},
 		"mode": "count",
 		"target": 5,
 	},
 	"3_red_vases": {
-		"desc": "Break red vases",
+		"desc": "TASK_3_RED_VASES_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "vase", "color": "red"},
 		"mode": "count",
 		"target": 3,
 	},
 	"3_green_vases": {
-		"desc": "Break green vases",
+		"desc": "TASK_3_GREEN_VASES_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "vase", "color": "green"},
 		"mode": "count",
 		"target": 3,
 	},
 	"600_damage_vases": {
-		"desc": "Deal damage to vases",
+		"desc": "TASK_600_DAMAGE_VASES_DESC",
 		"action": "object_damaged",
 		"filter": {"tag": "vase"},
 		"mode": "sum",
@@ -47,7 +47,7 @@ const TASK_DEFS := {
 		"target": 600,
 	},
 	"500_damage_paintings": {
-		"desc": "Deal damage to paintings",
+		"desc": "DTASK_500_DAMAGE_PAINTINGS_DESC",
 		"action": "object_damaged",
 		"filter": {"tag": "painting"},
 		"mode": "sum",
@@ -55,21 +55,21 @@ const TASK_DEFS := {
 		"target": 500,
 	},
 	"5_paintins": {
-		"desc": "Break paintings",
+		"desc": "TASK_5_PAINTINGS_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "painting"},
 		"mode": "count",
 		"target": 5,
 	},
 	"PIG_vase": {
-		"desc": "Break PIG vase",
+		"desc": "TASK_PIG_VASE_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "pig"},
 		"mode": "count",
 		"target": 1,
 	},
 	"1000_damage_armor": {
-		"desc": "Deal damage to knight armor",
+		"desc": "TASK_1000_DAMAGE_ARMOR_DESC",
 		"action": "object_damaged",
 		"filter": {"tag": "armor"},
 		"mode": "sum",
@@ -77,14 +77,14 @@ const TASK_DEFS := {
 		"target": 1000,
 	},
 	"break_box": {
-		"desc": "Break box",
+		"desc": "TASK_BREAK_BOX_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "box"},
 		"mode": "count",
 		"target": 1,
 	},
 	"break_3_idol": {
-		"desc": "Break stone idols",
+		"desc": "TASK_BREAK_3_IDOL_DESC",
 		"action": "object_destroyed",
 		"filter": {"tag": "idol"},
 		"mode": "count",
@@ -306,7 +306,6 @@ func rebuild_task_labels() -> void:
 		#print("Пробуем привязать контейнер из ребилда")
 		_bind_container()
 	if tasks_container == null:
-		#print("Пошел нахуй")
 		return
 
 	#print("Пересобираем контейнер тасок")
@@ -319,13 +318,14 @@ func rebuild_task_labels() -> void:
 
 	## Добавить надпись extra:
 	var title := Label.new()
-	title.text = "Extra:"
+	title.text = "TASK_OPTIONAL_LABEL"
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title.add_theme_font_size_override("font_size", 40)
+	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_outline_color", Color.BLACK)
-	title.add_theme_constant_override("outline_size", 5)
+	title.add_theme_constant_override("outline_size", 10)
+	#title.add_theme_font_override("font", preload("uid://d2r0kiqpeaoha"))
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tasks_container.add_child(title)
 
@@ -335,9 +335,10 @@ func rebuild_task_labels() -> void:
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		lbl.add_theme_font_size_override("font_size", 35)
+		lbl.add_theme_font_size_override("font_size", 45)
 		lbl.add_theme_color_override("font_outline_color", Color.BLACK)
 		lbl.add_theme_constant_override("outline_size", 10)
+		#lbl.add_theme_font_override("font", preload("uid://d2r0kiqpeaoha"))
 		tasks_container.add_child(lbl)
 		task_labels[task_name] = lbl
 		#print(task_name)
@@ -355,13 +356,16 @@ func _refresh_label(task_name: String) -> void:
 
 	var line := desc
 	if target > 1:
-		line = "%s  (%d/%d)" % [desc, mini(cur, target), target]
-
+		line = "%s  (%d/%d)" % [tr(desc), mini(cur, target), target]
+	else:
+		line = tr(desc)
+		
 	if is_done:
 		lbl.text = "✓ " + line
 		lbl.modulate = Color(0.55, 0.55, 0.55)
 	else:
 		lbl.text = line
 		lbl.modulate = Color.WHITE
+
 
 #endregion

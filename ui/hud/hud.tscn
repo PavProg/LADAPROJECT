@@ -77,7 +77,7 @@ text = ": "
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 12
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Suffix" type="Label" parent="Stats/VBoxContainer/HealthRow" unique_id=55186479]
 layout_mode = 2
@@ -104,7 +104,7 @@ text = ": "
 custom_minimum_size = Vector2(167, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 12
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Suffix" type="Label" parent="Stats/VBoxContainer/StaminaRow" unique_id=2099399902]
 layout_mode = 2
@@ -147,7 +147,7 @@ text = ": "
 custom_minimum_size = Vector2(215, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 12
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Suffix" type="Label" parent="Quota/VBoxContainer/HBoxContainer" unique_id=1020900334]
 layout_mode = 2
@@ -160,7 +160,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 34
 text = "Optional:"
 horizontal_alignment = 2
 script = ExtResource("11_5uuaq")
@@ -266,9 +266,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.74857974, 0.74857974, 0.7485797, 0.68235296)
 theme_override_font_sizes/font_size = 50
-text = "WASD - movement
-Left Mouse - grab
-E - interact"
+text = "HUD_HINT_CONTROLS"
 
 [node name="Crosshair" type="CenterContainer" parent="." unique_id=1411086051]
 layout_mode = 1
@@ -316,8 +314,8 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=2131979613]
 visible = false
 layout_mode = 2
-theme_override_font_sizes/font_size = 60
-text = "[E] to revive"
+theme_override_font_sizes/font_size = 1
+text = "HUD_REVIVE_PROMPT"
 script = ExtResource("11_5uuaq")
 metadata/_custom_type_script = "uid://bbubkrnccimhx"
 

@@ -41,12 +41,12 @@ func _process(_delta: float) -> void:
 	if not player:
 		return
 	# пока что никак не обновляется, будет работать от сигнала изменения
-	healthValue.text = "%d " % player._health
+	healthValue.text = "%d" % player._health
 	healthSuffix.text = "/ %d" % player.data.max_health
-	quotaValue.text = "%d " % GameManager.current_quote
+	quotaValue.text = "%d" % GameManager.current_quote
 	quotaSuffix.text = "/ %d" % GameManager.required_quote
 	if prevStamina != int(player.data.endurance):
-		staminaValue.text = "%d " % player.data.endurance
+		staminaValue.text = "%d" % player.data.endurance
 		staminaSuffix.text = "/ %d" % player.data.max_endurance
 		prevStamina = int(player.data.endurance)
 

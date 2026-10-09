@@ -21,4 +21,4 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="CenterContainer" unique_id=1088493421]
 layout_mode = 2
-text = "Video"
+text = "VIDEO_TAB_LABEL"

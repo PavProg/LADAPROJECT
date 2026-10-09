@@ -44,24 +44,27 @@ theme_override_constants/margin_bottom = 24
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer" unique_id=836734681]
 layout_mode = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 30
 
 [node name="Label" type="Label" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1277253050]
 layout_mode = 2
-text = "MENU"
+text = "PAUSE_MENU_HEADER"
 horizontal_alignment = 1
 
 [node name="ResumeButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=933794969]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-text = "Resume"
+text = "PAUSE_RESUME"
 
 [node name="SettingsButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1273460041]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-text = "Settings"
+text = "PAUSE_SETTINGS"
 
 [node name="QuitButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1203770688]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-text = "Quit"
+text = "PAUSE_QUIT"
 
 [connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

@@ -1,0 +1,83 @@
+keys,en,ru
+ACCESS_TAB_LABEL,Accessibility,Доступность
+AUDIO_TAB_MASTER_VOLUME,Master Volume,Общая громкость
+AUDIO_TAB_SFX_VOLUME,SFX Volume,Громкость звуковых эффектов
+AUDIO_TAB_PERCENT,%,%
+GAME_TAB_LABEL,Game,Игра
+HUD_TASK_BREAK_VASES,"Break vases: {current}/{target}","Разбить вазы: {current}/{target}"
+HUD_TASK_BREAK_RED_VASES,"Break red vases: {current}/{target}","Разбить красные вазы: {current}/{target}"
+HUD_TASK_BREAK_GREEN_VASES,"Break green vases: {current}/{target}","Разбить зелёные вазы: {current}/{target}"
+HUD_TASK_DAMAGE_VASES,"Deal damage to vases: {current}/{target}","Нанести урон вазам: {current}/{target}"
+HUD_TASK_DAMAGE_PAINTINGS,"Deal damage to paintings: {current}/{target}","Нанести урон картинам: {current}/{target}"
+HUD_TASK_DAMAGE_ARMOR,"Deal damage to knight armor: {current}/{target}","Нанести урон рыцарским доспехам: {current}/{target}"
+HUD_TASK_BREAK_PAINTINGS,"Break paintings: {current}/{target}","Разбить картины: {current}/{target}"
+HUD_TASK_BREAK_PIG_VASE,Break Pig vase,Разбить вазу-свинью
+HUD_TASK_BREAK_BOX,Break box,Разбить ящик
+HUD_TASK_BREAK_IDOLS,"Break stone idols: {current}/{target}","Разбить каменных идолов: {current}/{target}"
+HUD_HINT_CONTROLS,"WASD - movement
+Left Mouse - grab
+E - interact","WASD - движение
+Левая кнопка мыши - захват
+E - взаимодействие"
+HUD_REVIVE_PROMPT,[E] to revive,[E] — возродить
+LOBBY_HEADER,Lobby,Лобби
+LOBBY_TUTORIAL,Tutorial,Обучение
+LOBBY_SINGLE_PLAYER,Single Player,Одиночная игра
+LOBBY_HOST_GAME,Host Game,Создать игру
+LOBBY_JOIN_GAME,Join Game,Присоединиться к игре
+LOBBY_EXIT,Exit,Выход
+LOBBY_JOIN_PROMPT,"To join the game, enter its code","Чтобы присоединиться к игре, введите её код"
+LOBBY_JOIN,Join,Присоединиться
+LOBBY_CANCEL,Cancel,Отмена
+LOBBY_ROOM_HEADER,Lobby Room,Лобби
+LOBBY_CODE_LABEL,Code:,Код:
+LOBBY_COPY,Copy,Копировать
+LOBBY_PLAYERS_HEADER,Players,Игроки
+LOBBY_PLAYER_ROW,Player,Игрок
+LOBBY_INVITE_FRIEND,Invite Friend,Пригласить друга
+LOBBY_START_GAME,Start Game,Начать игру
+LOBBY_LEAVE,Leave Lobby,Покинуть лобби
+LOBBY_STATUS_READY,Ready,Готов
+LOBBY_STATUS_STEAM_UNAVAILABLE,Steam is not running – only single-player mode is available,Steam не запущен – доступен только одиночный режим
+LOBBY_STATUS_CODE_COPIED,Code copied,Код скопирован
+LOBBY_STATUS_ENTER_CODE,Enter group code,Введите код группы
+LOBBY_STATUS_SEARCHING,Searching for a room...,Поиск комнаты...
+LOBBY_STATUS_CREATING,Creating a room...,Создание комнаты...
+LOBBY_PLAYER_YOU_SUFFIX," (you)"," (вы)"
+LOBBY_PLAYER_HOST_SUFFIX," - HOST"," - ХОСТ"
+PAUSE_MENU_HEADER,MENU,МЕНЮ
+PAUSE_RESUME,Resume,Продолжить
+PAUSE_SETTINGS,Settings,Настройки
+PAUSE_QUIT,Quit,Выйти
+SETTINGS_NOT_SAVED,Settings not saved,Настройки не сохранены
+SETTINGS_HEADER,Settings,Настройки
+SETTINGS_TAB_GAME,Game,Игра
+SETTINGS_TAB_VIDEO,Video,Видео
+SETTINGS_TAB_AUDIO,Audio,Аудио
+SETTINGS_TAB_INPUT,Input,Управление
+SETTINGS_TAB_ACCESSIBILITY,Accessibility,Доступность
+SETTINGS_BACK,Back,Назад
+SETTINGS_APPLY,Apply,Применить
+INPUT_TAB_LABEL,Input,Управление
+VIDEO_TAB_LABEL,Video,Видео
+TASK_OPTIONAL_LABEL,Optional:,Дополнительно:
+TASK_5_VASES_DESC,Break vases,Разбить вазы
+TASK_3_RED_VASES_DESC,Break red vases,Разбить красные вазы
+TASK_3_GREEN_VASES_DESC,Break green vases,Разбить зелёные вазы
+TASK_600_DAMAGE_VASES_DESC,Deal damage to vases,Нанести урон вазам
+TASK_500_DAMAGE_PAINTINGS_DESC,Deal damage to paintings,Нанести урон картинам
+TASK_5_PAINTINGS_DESC,Break paintings,Разбить картины
+TASK_PIG_VASE_DESC,Break PIG vase,Разбить свинку
+TASK_1000_DAMAGE_ARMOR_DESC,Deal damage to knight armor,Нанести урон рыцарским доспехам
+TASK_BREAK_BOX_DESC,Break box,Разбить ящик
+TASK_BREAK_3_IDOL_DESC,Break stone idols,Разбить каменных идолов
+TUTORIAL_INITIAL,"Finally! You are alive! Now, you will help me to bring my revenge.","Наконец-то! Ты жив! Теперь ты поможешь мне свершить мою месть."
+TUTORIAL_MOVE_TO_NEXT_ZONE,"Go to the next room.","Перейди в следующую комнату."
+TUTORIAL_WASD,"Try to move around, using WASD.","Попробуй подвигаться, используя WASD."
+TUTORIAL_SHIFT,"Press Shift to run faster.","Нажми Shift, чтобы бежать быстрее."
+TUTORIAL_SPACE,"Press Space to jump.","Нажми Space, чтобы прыгнуть."
+TUTORIAL_R,"Use R to fall into relaxed form.","Используй R, чтобы принять расслабленную форму."
+TUTORIAL_GRAB_ITEM,"You can grab other items, using Left Mouse. Go and move this vase to another platform.","Ты можешь хватать предметы левой кнопкой мыши. Возьми эту вазу и перенеси её на другую платформу."
+TUTORIAL_GRAB_PLAYER,"You can also grab your brothers. Bring this one to the platform.","Ты также можешь хватать своих братьев. Принеси этого на платформу."
+TUTORIAL_BREAK_ITEM,"I've created you to destroy all their art. Try to break this \"art\" by throwing it.","Я создал тебя, чтобы уничтожить всё их искусство. Попробуй разбить это «искусство», побросав его."
+TUTORIAL_ESCAPE,"Now it's time to bring them destruction for my sake!","Теперь пришло время нести им разрушение во имя меня!"

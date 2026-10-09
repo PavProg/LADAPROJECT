@@ -41,7 +41,7 @@ offset_left = -374.0
 offset_top = -92.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Settings not saved "
+text = "SETTINGS_NOT_SAVED"
 
 [node name="CenterContainer" type="CenterContainer" parent="Dim" unique_id=1576368734]
 layout_mode = 1
@@ -52,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Dim/CenterContainer" unique_id=622572687]
-custom_minimum_size = Vector2(1600, 1000)
+custom_minimum_size = Vector2(1800, 1000)
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Dim/CenterContainer/PanelContainer" unique_id=1410049354]
@@ -67,52 +67,62 @@ layout_mode = 2
 
 [node name="SettingsLabel" type="Label" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1538694559]
 layout_mode = 2
-text = "Settings"
+text = "SETTINGS_HEADER"
 horizontal_alignment = 1
 
 [node name="HBoxTop" type="HBoxContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1091932528]
 layout_mode = 2
 
 [node name="GameButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=546803859]
-custom_minimum_size = Vector2(280, 0)
+custom_minimum_size = Vector2(280, 85)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_yjeg8")
-text = "Game"
+text = "SETTINGS_TAB_GAME"
+clip_text = true
 
 [node name="VideoButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=112073597]
-custom_minimum_size = Vector2(280, 0)
+custom_minimum_size = Vector2(280, 85)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
 toggle_mode = true
 button_group = ExtResource("2_yjeg8")
-text = "Video"
+text = "SETTINGS_TAB_VIDEO"
+clip_text = true
 
 [node name="AudioButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=451732526]
-custom_minimum_size = Vector2(280, 0)
+custom_minimum_size = Vector2(280, 85)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
 toggle_mode = true
 button_group = ExtResource("2_yjeg8")
-text = "Audio"
+text = "SETTINGS_TAB_AUDIO"
+clip_text = true
 
 [node name="InputButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=402714217]
-custom_minimum_size = Vector2(280, 0)
+custom_minimum_size = Vector2(280, 85)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
 toggle_mode = true
 button_group = ExtResource("2_yjeg8")
-text = "Input"
+text = "SETTINGS_TAB_INPUT"
+clip_text = true
 
 [node name="AccessibilityButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxTop" unique_id=799803880]
-custom_minimum_size = Vector2(280, 0)
+custom_minimum_size = Vector2(280, 85)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
 toggle_mode = true
 button_group = ExtResource("2_yjeg8")
-text = "Accessibility"
+text = "SETTINGS_TAB_ACCESSIBILITY"
+clip_text = true
 
 [node name="TabContainer" type="TabContainer" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1672642968]
 layout_mode = 2
@@ -148,14 +158,16 @@ metadata/_tab_index = 4
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot" unique_id=1221919169]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Back"
+text = "SETTINGS_BACK"
 
 [node name="ApplyButton" type="Button" parent="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot" unique_id=1463984578]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Apply"
+text = "SETTINGS_APPLY"
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Dim/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxBot/BackButton" to="." method="_on_back_button_pressed"]

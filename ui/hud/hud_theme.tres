@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://cikpbqcqce4x7"]
 
-[ext_resource type="FontFile" uid="uid://djf7shsj7ye48" path="res://models/fonts/RubikSprayPaint-Regular.ttf" id="1_ode5j"]
+[ext_resource type="FontFile" uid="uid://hors0m7u1fga" path="res://models/fonts/Oswald-Bold.ttf" id="1_ode5j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lta3a"]
 bg_color = Color(0.5632439, 0.56324387, 0.56324387, 0.21568628)

@@ -154,7 +154,7 @@ func _ready() -> void:
 		Events.local_player_spawned.emit(self)
 		
 		if multiplayer.is_server():
-			task_list_manager.load_tasks(2)
+			task_list_manager.load_tasks(5)
 		else:
 			task_list_manager.request_tasks.rpc_id(1)
 	

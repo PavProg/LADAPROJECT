@@ -121,6 +121,13 @@ tasks={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://locales/locales.en.translation", "res://locales/locales.ru.translation")
+locale/test="ru"
+locale/fallback="ru"
+locale/locale_filter_mode=0
+
 [layer_names]
 
 3d_physics/layer_1="world"
