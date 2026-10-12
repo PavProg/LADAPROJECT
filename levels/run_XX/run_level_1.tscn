@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://eufc5302ot0q" path="res://items/vent_enter.tscn" id="21_d2hf7"]
 [ext_resource type="PackedScene" uid="uid://drwvj3aj7jn02" path="res://items/vase_01_broken.tscn" id="22_ugsr7"]
 [ext_resource type="Script" uid="uid://kydu1xjp8i1b" path="res://core/data/item_data.gd" id="23_8g47p"]
+[ext_resource type="PackedScene" uid="uid://b23twr6fdttsj" path="res://actors/units/enemy_guard.tscn" id="23_b3iu4"]
 [ext_resource type="AudioStream" uid="uid://dclxt6xpvxyqq" path="res://vfx-sfx-music/sounds/items/glass_hit.mp3" id="24_e24jb"]
 [ext_resource type="PackedScene" uid="uid://2anayekrppcj" path="res://models/lvl_objects/shelf.tscn" id="25_ugsr7"]
 [ext_resource type="PackedScene" uid="uid://c7h1ih4lmscm6" path="res://models/lvl_objects/shelf_02.tscn" id="26_8g47p"]
@@ -48,6 +49,7 @@ agent_height = 0.5
 size = Vector3(0.5136719, 0.19946289, 0.125)
 
 [sub_resource type="SystemFont" id="SystemFont_siltq"]
+subpixel_positioning = 0
 
 [sub_resource type="Resource" id="Resource_ribjd"]
 resource_local_to_scene = true
@@ -171,6 +173,9 @@ size = Vector3(13.330078, 11.705, 23.770332)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vpf8q"]
 size = Vector3(13.330078, 11.705, 9.597931)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f67l4"]
+size = Vector3(26.657104, 5.586426, 17.341187)
 
 [node name="RunLevel1" type="Node3D" unique_id=1480632097]
 
@@ -607,6 +612,13 @@ forced_enemy = ExtResource("10_qws6t")
 patrol_zone = NodePath("../../RatZones/ArmorZone")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
 
+[node name="Guard" type="Marker3D" parent="EnemyMarkCont" unique_id=99881650 node_paths=PackedStringArray("patrol_zone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.550043, 0.5198501, -1.4936393)
+script = ExtResource("9_hdccr")
+forced_enemy = ExtResource("23_b3iu4")
+patrol_zone = NodePath("../../RatZones/GuardZone")
+metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=52949054]
 transform = Transform3D(0.90408254, -0.41847858, 0.08666277, 0, 0.20278734, 0.9792228, -0.42735788, -0.8852982, 0.1833365, 0, 16.437328, 0)
 shadow_enabled = true
@@ -777,3 +789,8 @@ debug_color = Color(1, 0, 0, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.69284, 0, 5.7574863)
 shape = SubResource("BoxShape3D_vpf8q")
 debug_color = Color(1, 0, 0, 1)
+
+[node name="GuardZone" type="CollisionShape3D" parent="RatZones" unique_id=826498728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.056805, 2.864318, -6.4802856)
+shape = SubResource("BoxShape3D_f67l4")
+debug_color = Color(0.99999994, 0.011128527, 0.056135528, 0.41960785)

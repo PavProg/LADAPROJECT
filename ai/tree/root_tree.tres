@@ -79,6 +79,7 @@ children = [SubResource("BTCondition_83l3e"), SubResource("BTAction_vx7g2"), Sub
 
 [sub_resource type="BTAction" id="BTAction_r41sq"]
 script = ExtResource("12_11yfm")
+wander_radius = 0.0
 
 [sub_resource type="BTComment" id="BTComment_d08ox"]
 

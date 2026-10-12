@@ -25,11 +25,13 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 ## Базовые имена анимаций. Реальные в AnimationPlayer могут иметь префикс
 ## арматуры ("RatArmature|Rat_Idle") - его снимает _resolve_anim.
-const ANIM_IDLE := &"Rat_Idle"
-const ANIM_WALK := &"Rat_Walk"
-const ANIM_RUN := &"Rat_Run"
-const ANIM_ATTACK := &"Rat_Attack"
-const ANIM_DEATH := &"Rat_Death"
+@export var ANIM_IDLE: StringName = &"Idle"
+@export var ANIM_WALK: StringName = &"Walk"
+@export var ANIM_RUN: StringName = &"Run"
+@export var ANIM_ATTACK: StringName = &"Attack"
+## ВАЖНО. У охранника нет анимации смерти (рэгдолл вместо нее), она заменена на поиск. 
+## TODO добавить запуск анимации поиска в поиске
+@export var ANIM_DEATH: StringName = &"Death"
 
 ## Бежать или идти. Ставится тем, кто задаёт цель (см. set_move_target)
 var is_sprinting: bool = false

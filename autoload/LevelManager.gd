@@ -21,6 +21,9 @@ var _content_spawned: bool = false
 ## Флаг текущего уровня туториала
 var is_tutor: bool = false
 
+## Флаг уровня
+var is_level: bool = false
+
 ## Номер загрузки уровня, растёт на каждый _load
 var epoch: int = 0
 
@@ -77,12 +80,14 @@ func go_to_hub() -> void:
 		return
 	_run_index = -1
 	is_tutor = false
+	is_level = false
 	_load(HUB)
 
 func go_to_tutor() -> void:
 	if not multiplayer.is_server():
 		return
 	is_tutor = true
+	is_level = false
 	_load(TUTORIAL)
 
 # func start_first_run() -> void:
@@ -98,6 +103,7 @@ func next_level() -> void:
 		GameManager.on_level_end()
 	#print_rich("[color=red] [DEBUG] requared_quate_next_level: ", GameManager.required_quote_next_level, "; death flag: ", GameManager.flag_is_death)
 	_run_index += 1
+	is_level = true
 	is_tutor = false
 	if _run_index >= RUNS.size():
 		go_to_hub()

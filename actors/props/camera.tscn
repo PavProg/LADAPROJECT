@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cl6ixt0d3auln"]
+
+[ext_resource type="ArrayMesh" uid="uid://cyk0ews2w2y0u" path="res://models/meshes/bracket.res" id="1_gi5du"]
+[ext_resource type="Script" uid="uid://dvbp7fcou7k31" path="res://actors/props/security_camera.gd" id="1_mntvw"]
+[ext_resource type="ArrayMesh" uid="uid://bqxrw342v7qfh" path="res://models/meshes/camera.res" id="2_mntvw"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ly6cn"]
+
+[node name="Camera" type="Node3D" unique_id=350042482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7956696, 0)
+script = ExtResource("1_mntvw")
+
+[node name="bracket" type="MeshInstance3D" parent="." unique_id=1959305274]
+mesh = ExtResource("1_gi5du")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1790198301]
+
+[node name="camera" type="MeshInstance3D" parent="Pivot" unique_id=1768293262]
+mesh = ExtResource("2_mntvw")
+
+[node name="Eye" type="Marker3D" parent="Pivot" unique_id=10375476]
+
+[node name="Cone" type="MeshInstance3D" parent="Pivot" unique_id=386719818]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Pivot" unique_id=1038758591]
+transform = Transform3D(-0.9883395, -4.046359e-08, -0.1522668, -0.092653796, 0.79355675, 0.60140085, 0.12083234, 0.6084962, -0.7843035, 0, 0.17038584, 0.13000208)
+light_energy = 2.0
+spot_range = 6.9530716
+spot_attenuation = 0.5
+spot_angle = 19.867392
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1456755298]
+replication_config = SubResource("SceneReplicationConfig_ly6cn")
