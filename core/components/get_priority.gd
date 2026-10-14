@@ -27,6 +27,8 @@ var _candidates: Array[Node3D] = []
 var _timer: float = 0.0
 var _cos_half_fov: float
 
+var sighting_version: int = 0
+
 ## Для тестов угла обзора врага
 @export var use_fov_check: bool = true
 
@@ -138,3 +140,8 @@ func _score(p: Node3D, dist: float) -> float:
 func clear_target() -> void:
 	current_target = null
 	has_last_known = false
+
+func report_sighting(pos: Vector3) -> void:
+	last_known_position = pos
+	has_last_known = true
+	sighting_version += 1

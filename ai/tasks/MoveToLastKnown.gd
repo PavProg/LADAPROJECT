@@ -1,6 +1,9 @@
 @tool
 extends BTAction
 
+## Бежать к точке (охранник по сигналу) или идти (крыса ищет)
+@export var sprint: bool = false
+
 @export var _repath_time: float = 0.2
 var _t = 0.0
 ## Цель уже выставлена хотя бы раз в этом заходе
@@ -33,7 +36,7 @@ func _tick(delta: float) -> Status:
 		# map_get_closet_point позволяет при случае точки цели на ящике/кафедре и тп взять ближайшую к нему
 		var goal := NavigationServer3D.map_get_closest_point(map, e.priority.last_known_position)
 
-		e.set_move_target(goal)
+		e.set_move_target(goal, sprint)
 		_target_set = true
 		if not e.agent.is_target_reachable():
 			return FAILURE	# Добраться нельзя - переходим в Patrol

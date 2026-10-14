@@ -212,6 +212,12 @@ func _sync_all_peers() -> void:
 		if _run_index >= 0:
 			Net.send_enemies_to(pid)
 			_give_starting_gear(pid)
+		_open_level_syncs(pid)
+
+func _open_level_syncs(peer_id: int) -> void:
+	if peer_id == 1:
+		return
+	get_tree().call_group("security_camera", "open_sync_for", peer_id)
 
 ## Молоток НЕ идемпотентен - каждый вызов создаёт новый предмет.
 ## Поэтому выдача защищена отдельным списком.

@@ -30,6 +30,8 @@ EnetTest="*res://autoload/enet_test.gd"
 
 window/size/viewport_width=2800
 window/size/viewport_height=1600
+window/size/window_width_override=1600
+window/size/window_height_override=900
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"

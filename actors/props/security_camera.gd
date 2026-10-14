@@ -26,6 +26,8 @@ enum State { SWEEP, TRACK }
 @export var lose_grace: float = 1.0
 ## Шанс что камера останется на уровне. Для генератора rng
 @export_range(0.0, 1.0) var spawn_chance: float = 1.0
+## Прозрачность конуса обзора (0 = невидим, 1 = непрозрачный)
+@export_range(0.0, 1.0) var cone_alpha: float = 0.2
 
 @export var color_idle: Color = Color(1.0, 0.95, 0.8)
 @export var color_alert: Color = Color(1.0, 0.15, 0.1)
@@ -156,7 +158,7 @@ func _track(delta: float) -> void:
 	var aim := _target.global_position + Vector3.UP * aim_height
 	var local: Vector3 = (pivot.get_parent() as Node3D).to_local(aim) - pivot.position
 	var yaw := atan2(-local.x, -local.z)
-	var pitch := atan2(local.y, Vector2(local.x, local.y).length())
+	var pitch := atan2(local.y, Vector2(local.x, local.z).length())
 	var lim := deg_to_rad(max_track_angle)
 	yaw = _base_yaw + clampf(angle_difference(_base_yaw, yaw), -lim, lim)
 	pivot.rotation.x = lerp_angle(pivot.rotation.x, pitch, track_speed * delta)
@@ -166,22 +168,35 @@ func _track(delta: float) -> void:
 func _report() -> void:
 	var pos := _target.global_position
 	for g in get_tree().get_nodes_in_group("security_quard"):
-		# TODO функция для сигнала о обнаружении
-		pass
+		g.on_camera_sighting(_target, pos)
 
 ## Свет и конус должны соответствовать реальному обзору
 func _fit_light_and_cone() -> void:
 	light.spot_range = detect_range
 	light.spot_angle = fov_degrees * 0.5	# Половина угла конуса
-	var m := (cone.mesh as CylinderMesh).duplicate() as CylinderMesh
+	light.transform = Transform3D.IDENTITY
+	
+	var m := CylinderMesh.new()
 	m.top_radius = 0.0
 	m.bottom_radius = detect_range * tan(deg_to_rad(fov_degrees * 0.5))
 	m.height = detect_range
 	cone.mesh = m
 	cone.rotation = Vector3(deg_to_rad(90.0), 0.0, 0.0)
 	cone.position = Vector3(0.0, 0.0, -detect_range * 0.5)
-	_cone_mat = (cone.get_active_material(0) as StandardMaterial3D).duplicate()
+	
+	var src := cone.get_active_material(0) as StandardMaterial3D
+	if src:
+		_cone_mat = src.duplicate()
+	else:
+		_cone_mat = StandardMaterial3D.new()
+		_cone_mat.albedo_color = Color(1, 1, 1, cone_alpha)
+	_cone_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	_cone_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_cone_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_cone_mat.no_depth_test = false
 	cone.material_override = _cone_mat
+	cone.transparency = 0.0
+	cone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 #endregion
 

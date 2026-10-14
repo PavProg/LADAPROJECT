@@ -40,6 +40,9 @@ var is_level_ready: bool = false
 
 ## Экземпляры комнат по индексу placed - чтобы не искать по имени
 var _room_nodes: Array[Node3D] = []
+
+## Сколько раз каждая RoomData уже поставлена в текущей попытке
+var _used: Dictionary = {}
 #endregion
 
 signal level_ready()
@@ -91,6 +94,7 @@ func try_generate(count: int) -> bool:
 	placed.clear()
 	open_doors.clear()
 	connections.clear()
+	_used.clear()
 	place(start_room, 0, Vector2i.ZERO, -1, -1)
 
 	while placed.size() < count:
@@ -108,6 +112,10 @@ func try_generate(count: int) -> bool:
 		open_doors.remove_at(idx)
 		#  пытаемся присобачить к двери комнату
 		try_attach(door, count - placed.size())
+	# Проверка обязательных комнат
+	for r in rooms:
+		if _used.get(r, 0) < r.min_count:
+			return false
 	return true
  
 func clear_items_from_level() -> void:
@@ -127,12 +135,20 @@ pass
 # Пытается приставить к двери door какую-нибудь комнату из пула
 func try_attach(door: Dictionary, remaining: int) -> bool:
 	var need_dir: int = (door.dir + 2) % 4  # новая дверь должна смотреть навстречу
+	var depth: int = placed[door.room].depth + 1
 	var room_candidates = rooms.duplicate()
 	# перемешиваем комнаты каждый раз, чтоб комнаты были наиболее случайно подобраны
 	shuffle(room_candidates)
- 
+ 	
+	_prioritize_missing(room_candidates)
+	
 	# берем каждую комнату, для нее смотрим направления дверей свободных и пытаемся прикрепить к этим дверям другие комнаты
 	for room_data: RoomData in room_candidates:
+		if room_data.max_count >= 0 and _used.get(room_data, 0) >= room_data.max_count:
+			continue
+		if depth < room_data.min_depth:
+			continue
+		
 		var local_dirs = door_dirs(room_data)
 		# если нет дверей то увы
 		if local_dirs.is_empty():
@@ -156,9 +172,20 @@ func try_attach(door: Dictionary, remaining: int) -> bool:
 			connections.append({a = door.room, a_dir = door.dir, b = new_idx, b_dir = need_dir})
 			return true
 	return false
- 
+
+## Обязательные комнаты которых еще не хватает, ставим первыми в очередь
+func _prioritize_missing(cands: Array) -> void:
+	var front: Array = []
+	var back: Array = []
+	for r in cands:
+		if _used.get(r, 0) < r.min_count:
+			front.append(r)
+		else:
+			back.append(r)
+	cands.assign(front + back)
  
 func place(data: RoomData, rot: int, center: Vector2i, parent: int, used_dir: int) -> int:
+	_used[data] = _used.get(data, 0) + 1
 	var size = rotated_size(data.size, rot)
 	var idx = placed.size()
 	placed.append({
@@ -240,6 +267,7 @@ func spawn() -> void:
 		
 		var placed_room: Dictionary = placed[i]
 		var room_instance: Node3D = placed_room.data.scene.instantiate()
+		_roll_cameras(room_instance)
 		
 		room_instance.position = Vector3(placed_room.center.x, 0, placed_room.center.y) * cell_size
 		room_instance.rotation.y = placed_room.rot * PI / 2
@@ -278,7 +306,15 @@ func spawn() -> void:
 			push_warning("PCG -- у метки %s нет зоны патруля" % i.name)
  
 # функции хэлперы
- 
+## Случайно убираем камеры по их spawn_chance
+func _roll_cameras(room: Node) -> void:
+	for cam in room.find_children("*", "Node3D", true, false):
+		if not (cam is SecurityCamera):
+			continue
+		if rng.randf() > cam.spawn_chance:
+			cam.get_parent().remove_child(cam)
+			cam.free()
+
 func door_dirs(data: RoomData) -> Array[int]:
 	var res: Array[int] = []
 	for d in 4:

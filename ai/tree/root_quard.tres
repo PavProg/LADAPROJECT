@@ -1,0 +1,80 @@
+[gd_resource type="BehaviorTree" format=3 uid="uid://cyoq7vejsxsby"]
+
+[ext_resource type="Script" uid="uid://bcqrx5v2i1am5" path="res://ai/tasks/should_ragdoll.gd" id="1_djc0i"]
+[ext_resource type="Script" uid="uid://dkda1hapriqxu" path="res://ai/tasks/start_ragdoll.gd" id="2_02xi0"]
+[ext_resource type="Script" uid="uid://bts6wfs0ul3mh" path="res://ai/tasks/BTCondition_HasTarget.gd" id="3_14b1x"]
+[ext_resource type="Script" uid="uid://cugnywyispp7q" path="res://ai/tasks/BTCondition_HasTargetAttack.gd" id="4_e711a"]
+[ext_resource type="Script" uid="uid://bpjrluek8dlbb" path="res://ai/tasks/FaceTarget.gd" id="5_2ueln"]
+[ext_resource type="Script" uid="uid://bc4ldti6r8n2g" path="res://ai/tasks/StartAttack.gd" id="6_0vpxn"]
+[ext_resource type="Script" uid="uid://dtd5k5hjx13ex" path="res://ai/tasks/BTAction_CHASE.gd" id="7_ske0c"]
+[ext_resource type="Script" uid="uid://hm2gfa758qp3" path="res://ai/tasks/HasLastKnown.gd" id="8_e2xjx"]
+[ext_resource type="Script" uid="uid://bq08m74unhino" path="res://ai/tasks/MoveToLastKnown.gd" id="9_h65k7"]
+[ext_resource type="Script" uid="uid://d1en80u4yda8d" path="res://ai/tasks/LookAround.gd" id="10_pndfn"]
+[ext_resource type="Script" uid="uid://ci0y23413v0gf" path="res://ai/tasks/ReturnToPost.gd" id="11_iymhu"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_r4vih"]
+
+[sub_resource type="BTCondition" id="BTCondition_l45wt"]
+script = ExtResource("1_djc0i")
+
+[sub_resource type="BTAction" id="BTAction_pdh1q"]
+script = ExtResource("2_02xi0")
+
+[sub_resource type="BTSequence" id="BTSequence_g0vfb"]
+custom_name = "sequence \"RAGDOLL\""
+children = [SubResource("BTCondition_l45wt"), SubResource("BTAction_pdh1q")]
+
+[sub_resource type="BTCondition" id="BTCondition_b63v6"]
+script = ExtResource("3_14b1x")
+
+[sub_resource type="BTCondition" id="BTCondition_q03i8"]
+script = ExtResource("4_e711a")
+
+[sub_resource type="BTAction" id="BTAction_81fs3"]
+script = ExtResource("5_2ueln")
+
+[sub_resource type="BTAction" id="BTAction_um7hx"]
+script = ExtResource("6_0vpxn")
+
+[sub_resource type="BTSequence" id="BTSequence_c2bg5"]
+custom_name = "sequence \"ATTACK\""
+children = [SubResource("BTCondition_b63v6"), SubResource("BTCondition_q03i8"), SubResource("BTAction_81fs3"), SubResource("BTAction_um7hx")]
+
+[sub_resource type="BTCondition" id="BTCondition_2h382"]
+script = ExtResource("3_14b1x")
+
+[sub_resource type="BTAction" id="BTAction_nr47i"]
+script = ExtResource("7_ske0c")
+
+[sub_resource type="BTWait" id="BTWait_l2oa8"]
+duration = 0.1
+
+[sub_resource type="BTSequence" id="BTSequence_k55t8"]
+custom_name = "sequence \"CHASE\""
+children = [SubResource("BTCondition_2h382"), SubResource("BTAction_nr47i"), SubResource("BTWait_l2oa8")]
+
+[sub_resource type="BTCondition" id="BTCondition_djjwa"]
+script = ExtResource("8_e2xjx")
+
+[sub_resource type="BTAction" id="BTAction_s5kbd"]
+script = ExtResource("9_h65k7")
+sprint = true
+
+[sub_resource type="BTAction" id="BTAction_mbrpo"]
+script = ExtResource("10_pndfn")
+duration = 4.0
+abort_on_new_sighting = true
+
+[sub_resource type="BTSequence" id="BTSequence_w718c"]
+custom_name = "sequence \"SEARCH\""
+children = [SubResource("BTCondition_djjwa"), SubResource("BTAction_s5kbd"), SubResource("BTAction_mbrpo")]
+
+[sub_resource type="BTAction" id="BTAction_kgh1v"]
+script = ExtResource("11_iymhu")
+
+[sub_resource type="BTDynamicSelector" id="BTDynamicSelector_pxosv"]
+children = [SubResource("BTSequence_g0vfb"), SubResource("BTSequence_c2bg5"), SubResource("BTSequence_k55t8"), SubResource("BTSequence_w718c"), SubResource("BTAction_kgh1v")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_r4vih")
+root_task = SubResource("BTDynamicSelector_pxosv")

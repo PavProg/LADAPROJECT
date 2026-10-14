@@ -4,6 +4,7 @@
 [ext_resource type="MeshLibrary" uid="uid://3mwuyt2ysspf" path="res://models/tile_sets/tres/wall_tiles.tres" id="2_o63xk"]
 [ext_resource type="Script" uid="uid://4n5pw1nmxp16" path="res://levels/enemy_mark.gd" id="3_eujgg"]
 [ext_resource type="PackedScene" uid="uid://csxy3jda7v5tf" path="res://actors/units/enemy_rat.tscn" id="4_rhcee"]
+[ext_resource type="PackedScene" uid="uid://cl6ixt0d3auln" path="res://actors/props/camera.tscn" id="5_rhcee"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vmwqe"]
 size = Vector3(11.916016, 6.1767187, 10.956055)
@@ -41,3 +42,6 @@ script = ExtResource("3_eujgg")
 forced_enemy = ExtResource("4_rhcee")
 patrol_zone = NodePath("../../RatZones/ArmorZone")
 metadata/_custom_type_script = "uid://4n5pw1nmxp16"
+
+[node name="SecurityCamera" parent="." unique_id=350042482 instance=ExtResource("5_rhcee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7402854, -5.010513)
