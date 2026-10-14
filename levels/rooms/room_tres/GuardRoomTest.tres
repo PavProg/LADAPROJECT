@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RoomData" format=3 uid="uid://be1y4bdvgvlyi"]
+
+[ext_resource type="Script" uid="uid://c58cawnxb5w1o" path="res://levels/rooms/room_data.gd" id="1_det3j"]
+[ext_resource type="PackedScene" uid="uid://rsoda56s33uo" path="res://levels/rooms/GuardRoom.tscn" id="1_kx4uy"]
+
+[resource]
+script = ExtResource("1_det3j")
+max_count = 2
+scene = ExtResource("1_kx4uy")
+metadata/_custom_type_script = "uid://c58cawnxb5w1o"

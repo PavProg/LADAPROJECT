@@ -22,7 +22,7 @@ const DIRS: Array[Vector2i] = [
 ## Для отладки. Удобно воспроизводить сломанный уровень
 @export var debug_seed: int = -1
 ## Количество комнат
-@export var room_count: int = 50
+@export var room_count: int = 20
 
 ## Сцена выхода с уровня
 @export var exit_scene: PackedScene
@@ -83,9 +83,11 @@ func generate(seed_value: int, count: int) -> bool:
 	for attempt in max_restarts:
 		# Производный seed: тот же seed_value всегда даёт ту же цепочку попыток, поэтому гееннрим другой (разность из-за attempt)
 		rng.seed = seed_value * 1000003 + attempt
+		# print_rich("[color=pink][DEBUG] комнаты: ", rooms)
 		if try_generate(count):
 			spawn()
 			return true
+
 	push_error("Не удалось сгенерировать уровень за %d попыток" % max_restarts)
 	return false
 
@@ -111,7 +113,9 @@ func try_generate(count: int) -> bool:
 		# дверь более неявляется открытой
 		open_doors.remove_at(idx)
 		#  пытаемся присобачить к двери комнату
+		
 		try_attach(door, count - placed.size())
+	
 	# Проверка обязательных комнат
 	for r in rooms:
 		if _used.get(r, 0) < r.min_count:
@@ -156,7 +160,7 @@ func try_attach(door: Dictionary, remaining: int) -> bool:
 		# Пока комнат не хватает, не даём поставить тупик, если других дверей нет.
 		if remaining > 1 and open_doors.size() + local_dirs.size() - 1 == 0:
 			continue
-			
+		
 		# размешали двери для рандомности
 		shuffle(local_dirs)
 		# каждую дверь берем, вычисляем поворот комнаты(насколько нужно повернуть для этой двери), размер комнаты после поворота, центр комнат повсле поворота
@@ -170,6 +174,7 @@ func try_attach(door: Dictionary, remaining: int) -> bool:
 			# если успешно то ставим комнату на нужное место
 			var new_idx = place(room_data, rot, center, door.room, need_dir)
 			connections.append({a = door.room, a_dir = door.dir, b = new_idx, b_dir = need_dir})
+
 			return true
 	return false
 
@@ -249,9 +254,9 @@ func _pick_exit_room() -> int:
 				best_marked = i
 	return best_marked if best_marked >= 0 else best_any
 
+#region SPAWN
 # создание сцены на уже успешно сгенерированном графе
 func spawn() -> void:
-	
 	#clear_items_from_level()
 	for child in get_children():
 		child.queue_free()
@@ -268,15 +273,13 @@ func spawn() -> void:
 		var placed_room: Dictionary = placed[i]
 		var room_instance: Node3D = placed_room.data.scene.instantiate()
 		_roll_cameras(room_instance)
-		
 		room_instance.position = Vector3(placed_room.center.x, 0, placed_room.center.y) * cell_size
 		room_instance.rotation.y = placed_room.rot * PI / 2
 		room_instance.name = "Room_%02d" % i	# индекс одинаковый у всех
 		add_child(room_instance)
 		_room_nodes.append(room_instance)
- 	
+
 		migrate_marks(room_instance)
-	
 		### Закрываем проёмы, к которым ничего не подключилось.
 		# если проем закрыть нечем то увы скип
 		if door_cap == null:
@@ -301,11 +304,13 @@ func spawn() -> void:
 			add_child(cap_instance)
 	_place_exit()
 	
+	
 	for i in owner.get_node("EnemyMarkCont").get_children():
 		if i is EnemyMark and i.patrol_zone == null:
 			push_warning("PCG -- у метки %s нет зоны патруля" % i.name)
  
-# функции хэлперы
+#endregion
+#region функции хэлперы
 ## Случайно убираем камеры по их spawn_chance
 func _roll_cameras(room: Node) -> void:
 	for cam in room.find_children("*", "Node3D", true, false):
@@ -432,3 +437,5 @@ func migrate_enemy_marks(room_instance: Node3D) -> void:
 		if mark and mark is Marker3D:
 			mark.reparent(owner.get_node_or_null("EnemyMarkCont"))
 	pass
+
+#endregion

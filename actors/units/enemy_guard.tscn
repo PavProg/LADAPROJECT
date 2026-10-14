@@ -63,7 +63,7 @@ collision_layer = 128
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=1614967442]
-transform = Transform3D(0.9990349, 0.04392211, -0.00043077106, -1.055208e-10, 0.009807145, 0.9999519, 0.04392422, -0.9989868, 0.009797681, -0.02953288, 0.14009006, 0.5846363)
+transform = Transform3D(-0.006510295, -0.9999307, 0.00980694, 2.4150962e-11, 0.009807146, 0.99995196, -0.99997884, 0.0065099746, -6.384862e-05, 0.62041414, 0.14009006, -0.010250986)
 shape = SubResource("CapsuleShape3D_i2ttw")
 
 [node name="HurtBox" type="Area3D" parent="." unique_id=2013078226]
@@ -96,11 +96,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5735393, 0.1521031)
 visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1828380777]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.010841727, 0.7871094, -0.22373074)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.010841727, 0.80892265, -0.22373074)
 shape = SubResource("CapsuleShape3D_f67l4")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=864761596]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028243959, 0.77195835, 0.25026602)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028243959, 0.786466, 0.25026602)
 shape = SubResource("CapsuleShape3D_b2d7f")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=20857729]

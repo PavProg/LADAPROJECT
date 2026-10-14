@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_j451y")
+max_count = 200
 scene = ExtResource("1_xb4oo")
 size = Vector2i(6, 6)
 doors = 15

@@ -60,6 +60,10 @@ func _setup_nav() -> void:
 	# Настраивается вместе с range_attack: path_desired < target_desird < range_attack
 
 func _setup_blackboard_vars(zone: CollisionShape3D) -> void:
+	if zone == null:
+		push_error("ZONE IS NULL")
+	else:
+		print(zone)
 	$BTPlayer.get_blackboard().set_var("patrol_zone", zone)
 	# print_rich("[color=green] [DEBUG-NAV] Переменная patrol_zone добавлена в BT blackboard")
 

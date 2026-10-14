@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://dh4jwncrqlhvn" path="res://levels/rooms/room_tres/straight-room-2.tres" id="7_ra8ch"]
 [ext_resource type="Resource" uid="uid://dg1cn1r1tka55" path="res://levels/rooms/room_tres/t-cross-room-1.tres" id="8_3hxqi"]
 [ext_resource type="Resource" uid="uid://l5bdxl340so8" path="res://levels/rooms/room_tres/t-cross-room-2.tres" id="9_nf4v7"]
+[ext_resource type="Resource" uid="uid://be1y4bdvgvlyi" path="res://levels/rooms/room_tres/GuardRoomTest.tres" id="10_h43tu"]
 [ext_resource type="PackedScene" uid="uid://bbi3na47vqnwt" path="res://levels/rooms/door-cap.tscn" id="10_hgdn5"]
 [ext_resource type="PackedScene" uid="uid://bpxbdjkr3trll" path="res://actors/props/toilet.tscn" id="11_y06vd"]
 
@@ -31,7 +32,7 @@ navigation_mesh = SubResource("NavigationMesh_d3btd")
 
 [node name="LevelGenerator" type="Node3D" parent="NavigationRegion3D" unique_id=2075996635]
 script = ExtResource("1_medlo")
-rooms = Array[ExtResource("2_clffi")]([ExtResource("3_hgdn5"), ExtResource("4_0yh5d"), ExtResource("5_fyper"), ExtResource("6_rwkbt"), ExtResource("7_ra8ch"), ExtResource("8_3hxqi"), ExtResource("9_nf4v7")])
+rooms = Array[ExtResource("2_clffi")]([ExtResource("3_hgdn5"), ExtResource("4_0yh5d"), ExtResource("5_fyper"), ExtResource("6_rwkbt"), ExtResource("7_ra8ch"), ExtResource("8_3hxqi"), ExtResource("9_nf4v7"), ExtResource("10_h43tu")])
 start_room = ExtResource("5_fyper")
 door_cap = ExtResource("10_hgdn5")
 exit_scene = ExtResource("11_y06vd")
